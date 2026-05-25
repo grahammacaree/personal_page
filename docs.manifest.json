@@ -1,0 +1,39 @@
+{
+  "documents": [
+    {
+      "id": "1buOp0E4vi2MvJtYtTSC5c6Nc7WMqBUBcqcHhveu3aqI",
+      "slug": "intro",
+      "title": "Introduction",
+      "type": "intro",
+      "description": "Homepage — lead copy and links to your two stories."
+    },
+    {
+      "id": "1O1MMcTfK6FfCiR-pmhtALV_Ud2PGAQAXbE-V8zvTDeM",
+      "slug": "baseball-potato",
+      "title": "Baseball Potato",
+      "type": "story",
+      "description": "Story 1 — baseball potato*"
+    },
+    {
+      "id": "17z0jxfIqXnw8D7h1v9mkX4lKkE9zDoCYhbT2BQiHh60",
+      "slug": "dark-side-of-the-moon",
+      "title": "The Dark Side of the Moon",
+      "type": "story",
+      "description": "Story 2"
+    },
+    {
+      "id": "1O8yvV63jnksHllGibAeuCXo4GI_fkK7zC6L7fmgQl1Y",
+      "slug": "thesis",
+      "title": "Thesis",
+      "type": "thesis",
+      "description": "Anchor essay — your central argument on storytelling."
+    },
+    {
+      "id": "1xdD1Oxk587fyuabeYSkt55utNXiMGGimH9uLCDYxEo0",
+      "slug": "cv",
+      "title": "CV",
+      "type": "cv",
+      "description": "Living CV"
+    }
+  ]
+}
