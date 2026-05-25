@@ -82,8 +82,10 @@ async function docSection(doc, docUrlById) {
   }
   const idAttr =
     doc.type === "me" ? ' id="me"' : doc.type === "thesis" ? ' id="thesis"' : "";
-  const scrollHint = doc.type === "intro" ? `\n${introScrollHintSvg}` : "";
-  return `<section class="doc doc--${doc.slug}"${idAttr}>${html}${scrollHint}</section>`;
+  if (doc.type === "intro") {
+    return `<section class="doc doc--${doc.slug}"${idAttr}><div class="intro-wrap"><div class="intro-body">${html}</div>${introScrollHintSvg}</div></section>`;
+  }
+  return `<section class="doc doc--${doc.slug}"${idAttr}>${html}</section>`;
 }
 
 async function main() {

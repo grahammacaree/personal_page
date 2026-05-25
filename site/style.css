@@ -121,7 +121,6 @@ a {
   }
 
   &.doc--intro {
-    position: relative;
     box-sizing: border-box;
     min-height: 100svh;
     padding-top: var(--top-bar-height);
@@ -130,6 +129,11 @@ a {
     flex-direction: column;
     justify-content: center;
 
+    .intro-wrap {
+      position: relative;
+      width: 100%;
+    }
+
     .intro-scroll-hint {
       position: absolute;
       left: 50%;
@@ -137,7 +141,7 @@ a {
       transform: translateX(-50%);
       width: 3rem;
       height: auto;
-      color: var(--muted);
+      color: var(--accent);
       box-shadow: none;
       pointer-events: none;
     }
@@ -169,10 +173,10 @@ a {
 
     h4 {
       margin: 1.5rem 0 0.2rem;
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       font-weight: 600;
       line-height: 1.25;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--muted);
 
@@ -187,7 +191,7 @@ a {
 
     h5 {
       margin: 0.35rem 0 0.15rem;
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 400;
       color: var(--muted);
       line-height: 1.4;
@@ -199,13 +203,13 @@ a {
 
     p {
       margin: 0 0 0.65rem;
-      font-size: 0.875rem;
+      font-size: 0.75rem;
     }
 
     ul {
       margin: 0 0 1rem;
       padding-left: 1.2rem;
-      font-size: 0.875rem;
+      font-size: 0.75rem;
     }
 
     li {
@@ -276,7 +280,7 @@ a {
 
 .site-nav-current {
   box-shadow: none;
-  color: var(--text);
+  color: var(--muted);
 }
 
 .page-back {
@@ -309,7 +313,7 @@ a {
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
-  padding: 0.25rem 0;
+  padding: 0.5rem 0;
   border-top: 1px solid var(--rule);
   color: var(--muted);
   font-size: 0.8rem;
