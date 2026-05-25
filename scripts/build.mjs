@@ -26,9 +26,17 @@ function normalizeBasePath(basePath) {
   return basePath.endsWith("/") ? basePath : `${basePath}/`;
 }
 
-function siteTopBarHtml(basePath, siteName, email, { showBack = false } = {}) {
+const introScrollHintSvg = `<svg class="intro-scroll-hint" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+
+function siteTopBarHtml(basePath, siteName, email, { showBack = false, page = null } = {}) {
   const safeName = escapeHtml(siteName);
   const contactHref = email ? `mailto:${escapeHtml(email)}` : `${basePath}#me`;
+  const cvNav =
+    page === "cv"
+      ? `<span class="site-nav-current" aria-current="page">CV</span>`
+      : `<a href="${basePath}cv.html">CV</a>`;
   const left = showBack
     ? `<a href="${basePath}" class="page-back" aria-label="Back to home">
   ${backChevronSvg}
@@ -40,16 +48,20 @@ function siteTopBarHtml(basePath, siteName, email, { showBack = false } = {}) {
     ${left}
     <div class="site-top-nav-end">
       <a href="${contactHref}">Contact</a>
-      <a href="${basePath}cv.html">CV</a>
+      ${cvNav}
     </div>
   </nav>
 </header>`;
 }
 
-function siteFooterHtml(aboutHref, siteName, year) {
+function siteFooterHtml(aboutHref, siteName, year, { page = null } = {}) {
+  const aboutNav =
+    page === "about"
+      ? ""
+      : `<a href="${aboutHref}" class="site-footer-about">About this site</a>`;
   return `<footer class="site-footer">
   <p class="site-footer-copy">© ${year} ${escapeHtml(siteName)}</p>
-  <a href="${aboutHref}" class="site-footer-about">About this site</a>
+  ${aboutNav}
 </footer>`;
 }
 
@@ -68,8 +80,10 @@ async function docSection(doc, docUrlById) {
   if (ENDMARK_DOC_TYPES.has(doc.type)) {
     html = applyEndmarkToLastParagraph(html);
   }
-  const idAttr = doc.type === "me" ? ' id="me"' : "";
-  return `<section class="doc doc--${doc.slug}"${idAttr}>${html}</section>`;
+  const idAttr =
+    doc.type === "me" ? ' id="me"' : doc.type === "thesis" ? ' id="thesis"' : "";
+  const scrollHint = doc.type === "intro" ? `\n${introScrollHintSvg}` : "";
+  return `<section class="doc doc--${doc.slug}"${idAttr}>${html}${scrollHint}</section>`;
 }
 
 async function main() {
@@ -95,8 +109,6 @@ async function main() {
   const aboutRel = aboutDoc ? publicRelPath(aboutDoc) : "about-this-site.html";
   const aboutHref = `${basePath}${aboutRel}`;
   const year = String(new Date().getFullYear());
-  const siteFooter = siteFooterHtml(aboutHref, siteConfig.name, year);
-
   const sections = Object.fromEntries(
     await Promise.all(
       docs.map(async (doc) => [doc.slug, await docSection(doc, docUrlById)])
@@ -110,7 +122,12 @@ async function main() {
     path.join(publicDir, "style.css")
   );
 
-  const writePage = async (relPath, pageTitle, body, { back = false, home = false }) => {
+  const writePage = async (
+    relPath,
+    pageTitle,
+    body,
+    { back = false, home = false, page = null } = {}
+  ) => {
     const documentTitle = home
       ? escapeHtml(siteConfig.name)
       : `${escapeHtml(pageTitle)} — ${escapeHtml(siteConfig.name)}`;
@@ -123,8 +140,9 @@ async function main() {
         bodyClass: home ? "body--home" : "",
         siteTopBar: siteTopBarHtml(basePath, siteConfig.name, siteConfig.email, {
           showBack: back,
+          page,
         }),
-        siteFooter,
+        siteFooter: siteFooterHtml(aboutHref, siteConfig.name, year, { page }),
       })
     );
   };
@@ -137,6 +155,7 @@ async function main() {
     if (!out) continue;
     await writePage(out, doc.title, sections[doc.slug], {
       back: BACK_NAV_DOC_TYPES.has(doc.type),
+      page: doc.type,
     });
   }
 

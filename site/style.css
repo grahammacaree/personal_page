@@ -121,6 +121,7 @@ a {
   }
 
   &.doc--intro {
+    position: relative;
     box-sizing: border-box;
     min-height: 100svh;
     padding-top: var(--top-bar-height);
@@ -128,6 +129,18 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    .intro-scroll-hint {
+      position: absolute;
+      left: 50%;
+      top: calc(100% + 2rem);
+      transform: translateX(-50%);
+      width: 3rem;
+      height: auto;
+      color: var(--muted);
+      box-shadow: none;
+      pointer-events: none;
+    }
   }
 
   /* CV — h2 section / h4 employer / h5 role */
@@ -259,6 +272,11 @@ a {
 .site-brand {
   flex-shrink: 0;
   font-weight: 600;
+}
+
+.site-nav-current {
+  box-shadow: none;
+  color: var(--text);
 }
 
 .page-back {
