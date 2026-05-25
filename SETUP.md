@@ -24,33 +24,94 @@ Open each doc. The URL looks like:
 
 Paste `DOCUMENT_ID` into the matching `"id"` field (replace `PLACEHOLDER`).
 
-## 4. GitHub secrets and Pages
+## 4. Deploy with GitHub Actions (not the suggested templates)
 
-**Repository → Settings → Secrets and variables → Actions**
+### What you’re looking at in Settings → Pages
 
-- Add secret `GOOGLE_SERVICE_ACCOUNT_JSON` — paste the **entire** JSON key file contents.
+With **Source: GitHub Actions** selected, GitHub shows suggested starters (“GitHub Pages Jekyll”, “Static HTML”). **Ignore those.** Do not click **Configure** on them.
 
-**Settings → Pages**
+This repo already ships its own workflow:
 
-- **Build and deployment → Source:** GitHub Actions (not “Deploy from branch”).
+`.github/workflows/site.yml` — **Sync and deploy**
 
-After the first successful workflow run, the site is at:
+That file is the entire deploy pipeline. Pushing it to `main` is what registers the workflow.
 
-`https://grahammacaree.github.io/personal_page/`
+### What “GitHub Actions” as the Pages source means
 
-(`basePath` in `site.config.json` must match the repo name.)
+It does **not** mean “pick a template from the dropdown.” It means:
+
+> Only workflows that publish a Pages artifact may deploy this site.
+
+Our workflow does exactly that:
+
+1. **build** job — checkout repo → `npm ci` → sync Google Docs → `npm run build` → upload the `public/` folder as a Pages artifact  
+2. **deploy** job — take that artifact and publish it to GitHub Pages (`actions/deploy-pages`)
+
+You never commit `public/` to git. Actions builds it fresh each run.
+
+### Step-by-step (first deploy)
+
+1. **Push the repo to `main`**  
+   Ensure `.github/workflows/site.yml` is on GitHub (it lives in this project).
+
+2. **Settings → Pages → Build and deployment**  
+   - **Source:** `GitHub Actions` (you’ve done this)  
+   - Leave the Jekyll / Static HTML suggestions alone.
+
+3. **Settings → Secrets and variables → Actions**  
+   - New repository secret: `GOOGLE_SERVICE_ACCOUNT_JSON`  
+   - Value: entire service-account JSON file (see §1).  
+   - Until doc IDs and this secret exist, push builds still run but skip sync and use placeholders.
+
+4. **Run the workflow once**  
+   - **Actions** tab → **Sync and deploy** (left sidebar) → **Run workflow** → Run on `main`  
+   - Or push any commit to `main` (that also triggers it).
+
+5. **Watch the run**  
+   - Open the run → two jobs: `build` then `deploy`  
+   - Both should be green.  
+   - First time, GitHub may ask you to approve the **github-pages** environment on the `deploy` job — approve it.
+
+6. **Open the site**  
+   - **Settings → Pages** shows the live URL when deploy succeeds.  
+   - Project site: `https://grahammacaree.github.io/personal_page/`  
+   - `basePath` in `site.config.json` must stay `/personal_page/` for that URL shape.
+
+### Ongoing deploys (no manual steps)
+
+| You do | GitHub does |
+|--------|-------------|
+| Push to `main` | Runs **Sync and deploy** → new site |
+| Wait for daily cron | Same |
+| **Actions → Run workflow** | Same (handy after editing a Doc) |
+
+### If something fails
+
+- **Actions** tab → failed run → read the `build` or `deploy` log.  
+- No workflow listed? `.github/workflows/site.yml` isn’t on `main` yet.  
+- `build` ok, `deploy` pending? Approve the **github-pages** environment.  
+- Pages URL 404? Wait a minute after first green deploy; check **Settings → Pages** for the exact link.
 
 ## 5. Local preview
 
+GitHub Pages serves the site at `/personal_page/`, but a local static server serves `public/` at `/`. If CSS looks unstyled after `npm run build && npx serve public`, that path mismatch is why.
+
+**Use the preview script** (builds with `BASE_PATH=/` so links and CSS match localhost):
+
 ```bash
 npm ci
-export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
-# fill in docs.manifest.json first
-npm run site
-npx serve public
+export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/credentials.json"
+npm run site          # optional: sync + production-path build
+npm run preview       # build for localhost, then serve
 ```
 
+Open the URL `serve` prints (usually `http://localhost:3000`).
+
+Production deploys on GitHub still use `basePath` from `site.config.json` (`/personal_page/`) — do not set `BASE_PATH` in the workflow.
+
 `content/` and `public/` are generated locally and gitignored.
+
+Site styles are plain CSS with [native nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting) in `site/style.css` — no Sass or PostCSS step.
 
 ## Automation
 
@@ -61,25 +122,3 @@ npx serve public
 | **Actions → Run workflow** | Same as cron — manual refresh |
 
 Edit a doc anytime; the live site updates on the next cron run (or push, or manual workflow run). No PDF exports, no manual copy-paste.
-
-## Security — public repo + secrets
-
-**A public GitHub repo does not expose GitHub Actions secrets.**
-
-| Stored where | Public? | Used for |
-|--------------|---------|----------|
-| `GOOGLE_SERVICE_ACCOUNT_JSON` (repo secret) | **No** — encrypted, only injected into Actions runners | Sync step on GitHub’s servers |
-| Source in git (`scripts/`, templates, manifest) | **Yes** | Build logic; doc IDs are visible |
-| Built site (`public/` → Pages) | **Yes** | Static HTML/CSS only — **no secrets** |
-
-Secrets never get committed, never ship to GitHub Pages, and never appear in the static files visitors download. The published site is the same as if you’d hand-exported HTML.
-
-**Do not commit** the downloaded JSON key. It is listed in `.gitignore` as `credentials.json`; use the repo secret (or a local path via `GOOGLE_APPLICATION_CREDENTIALS`) only.
-
-**Blast radius if a key leaked:** the service account can only read Google Docs you explicitly shared with its email (Viewer). It cannot open your whole Drive, Gmail, etc. Rotate the key in Google Cloud and update the GitHub secret if you ever suspect exposure.
-
-**Doc IDs in `docs.manifest.json`** are public in git. Someone could see which document IDs you use; they still cannot export those docs without access (your Google account, or the service account key).
-
-**Fork PRs:** workflows from forks do not receive repository secrets by default, so random contributors cannot exfiltrate your key via a PR build.
-
-**What you’re trusting:** GitHub to store secrets safely (standard CI practice), and Google’s sharing model (only shared docs are readable).

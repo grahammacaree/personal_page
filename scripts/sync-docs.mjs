@@ -3,13 +3,13 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { google } from "googleapis";
 import { cleanGoogleHtml } from "./lib/clean-google-html.mjs";
+import { PLACEHOLDER } from "./lib/constants.mjs";
+import { contentRelPath } from "./lib/content-path.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const manifestPath = path.join(root, "docs.manifest.json");
 const contentDir = path.join(root, "content");
-
-const PLACEHOLDER = "PLACEHOLDER";
 
 function loadCredentials() {
   const inline = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
@@ -24,10 +24,7 @@ function loadCredentials() {
 }
 
 function contentPathFor(doc) {
-  if (doc.type === "story") {
-    return path.join(contentDir, "stories", `${doc.slug}.html`);
-  }
-  return path.join(contentDir, `${doc.slug}.html`);
+  return path.join(contentDir, contentRelPath(doc));
 }
 
 async function exportDoc(drive, doc) {
@@ -80,13 +77,15 @@ async function main() {
   });
   const drive = google.drive({ version: "v3", auth });
 
-  for (const doc of docs) {
-    if (!doc.id || doc.id === PLACEHOLDER) {
-      console.log(`skip ${doc.slug} (placeholder ID)`);
-      continue;
-    }
-    await exportDoc(drive, doc);
-  }
+  await Promise.all(
+    docs.map(async (doc) => {
+      if (!doc.id || doc.id === PLACEHOLDER) {
+        console.log(`skip ${doc.slug} (placeholder ID)`);
+        return;
+      }
+      await exportDoc(drive, doc);
+    })
+  );
 }
 
 main().catch((err) => {

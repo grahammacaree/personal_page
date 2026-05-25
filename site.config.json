@@ -1,9 +1,6 @@
 {
   "basePath": "/personal_page/",
   "name": "Graham MacAree",
-  "tagline": "Storytelling, judgement, and the stories worth telling.",
-  "contact": {
-    "email": "you@example.com",
-    "note": "Replace with your preferred contact line in site.config.json."
-  }
+  "email": "graham.macaree@gmail.com",
+  "home": ["intro", "thesis", "me"]
 }

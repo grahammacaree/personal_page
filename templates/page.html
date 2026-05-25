@@ -3,21 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{title}} — {{siteName}}</title>
+    <title>{{documentTitle}}</title>
     <link rel="stylesheet" href="{{basePath}}style.css" />
   </head>
-  <body>
-    <header class="site-header">
-      <p class="site-title"><a href="{{basePath}}">{{siteName}}</a></p>
-      <p class="site-tagline">{{tagline}}</p>
-      {{nav}}
-    </header>
-    <main class="site-main">
-      <h1>{{title}}</h1>
+  <body class="{{bodyClass}}">
+    <a class="skip-link" href="#main">Skip to content</a>
+    {{siteTopBar}}
+    <main id="main" class="site-main">
       {{body}}
     </main>
-    <footer class="site-footer">
-      <p>© {{year}} {{siteName}}</p>
-    </footer>
+    {{siteFooter}}
   </body>
 </html>

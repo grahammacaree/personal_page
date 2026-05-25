@@ -1,178 +1,143 @@
-import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { BACK_NAV_DOC_TYPES, ENDMARK_DOC_TYPES } from "./lib/constants.mjs";
+import { contentRelPath, publicRelPath } from "./lib/content-path.mjs";
+import { cleanGoogleHtml } from "./lib/clean-google-html.mjs";
+import { applyEndmarkToLastParagraph } from "./lib/endmark.mjs";
+import { escapeHtml, renderTemplate } from "./lib/html.mjs";
+import {
+  buildDocUrlMap,
+  rewriteDocLinks,
+} from "./lib/rewrite-doc-links.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const publicDir = path.join(root, "public");
 const contentDir = path.join(root, "content");
-const templatesDir = path.join(root, "templates");
 const assetsDir = path.join(root, "site");
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
-}
-
-async function readContent(relativePath, fallbackHtml) {
-  try {
-    return await readFile(path.join(contentDir, relativePath), "utf8");
-  } catch {
-    return fallbackHtml;
-  }
-}
-
-function render(template, vars) {
-  let html = template;
-  for (const [key, value] of Object.entries(vars)) {
-    html = html.replaceAll(`{{${key}}}`, value ?? "");
-  }
-  return html;
-}
-
-async function loadTemplate(name) {
-  return readFile(path.join(templatesDir, name), "utf8");
-}
+const backChevronSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
 
 function normalizeBasePath(basePath) {
   if (!basePath || basePath === "/") return "/";
   return basePath.endsWith("/") ? basePath : `${basePath}/`;
 }
 
-function docListItem(doc, basePath, section) {
-  const href = `${basePath}${section}/${doc.slug}.html`;
-  const desc = doc.description
-    ? `<p class="meta">${escapeHtml(doc.description)}</p>`
-    : "";
-  return `<li><a href="${href}">${escapeHtml(doc.title)}</a>${desc}</li>`;
+function siteTopBarHtml(basePath, siteName, email, { showBack = false } = {}) {
+  const safeName = escapeHtml(siteName);
+  const contactHref = email ? `mailto:${escapeHtml(email)}` : `${basePath}#me`;
+  const left = showBack
+    ? `<a href="${basePath}" class="page-back" aria-label="Back to home">
+  ${backChevronSvg}
+  <span>Back</span>
+</a>`
+    : `<span class="site-brand">${safeName}</span>`;
+  return `<header class="site-top">
+  <nav class="site-top-nav" aria-label="Site">
+    ${left}
+    <div class="site-top-nav-end">
+      <a href="${contactHref}">Contact</a>
+      <a href="${basePath}cv.html">CV</a>
+    </div>
+  </nav>
+</header>`;
+}
+
+function siteFooterHtml(aboutHref, siteName, year) {
+  return `<footer class="site-footer">
+  <p class="site-footer-copy">© ${year} ${escapeHtml(siteName)}</p>
+  <a href="${aboutHref}" class="site-footer-about">About this site</a>
+</footer>`;
+}
+
+async function readContent(relPath) {
+  try {
+    return await readFile(path.join(contentDir, relPath), "utf8");
+  } catch {
+    return "";
+  }
+}
+
+async function docSection(doc, docUrlById) {
+  const raw = await readContent(contentRelPath(doc));
+  const cleaned = raw ? cleanGoogleHtml(raw) : "";
+  let html = rewriteDocLinks(cleaned, docUrlById);
+  if (ENDMARK_DOC_TYPES.has(doc.type)) {
+    html = applyEndmarkToLastParagraph(html);
+  }
+  const idAttr = doc.type === "me" ? ' id="me"' : "";
+  return `<section class="doc doc--${doc.slug}"${idAttr}>${html}</section>`;
 }
 
 async function main() {
-  const [siteConfig, manifest, pageTemplate, articleTemplate] = await Promise.all([
-    readFile(path.join(root, "site.config.json"), "utf8").then(JSON.parse),
-    readFile(path.join(root, "docs.manifest.json"), "utf8").then(JSON.parse),
-    loadTemplate("page.html"),
-    loadTemplate("article.html"),
-  ]);
+  const siteConfig = JSON.parse(
+    await readFile(path.join(root, "site.config.json"), "utf8")
+  );
+  const manifest = JSON.parse(
+    await readFile(path.join(root, "docs.manifest.json"), "utf8")
+  );
+  const template = await readFile(
+    path.join(root, "templates", "page.html"),
+    "utf8"
+  );
 
-  const basePath = normalizeBasePath(siteConfig.basePath ?? "/");
+  const basePath = normalizeBasePath(
+    process.env.BASE_PATH ?? siteConfig.basePath ?? "/"
+  );
   const docs = manifest.documents ?? [];
-  const stories = docs.filter((d) => d.type === "story");
-  const thesisDoc = docs.find((d) => d.type === "thesis");
+  const home = siteConfig.home ?? ["intro", "thesis", "me"];
+  const docUrlById = buildDocUrlMap(docs, basePath);
 
-  const introFallback =
-    "<p>Introduction draft coming soon — write this in your Google Doc titled <em>Introduction</em>. Link to your two stories from here.</p>";
-  const introHtml = await readContent("intro.html", introFallback);
+  const aboutDoc = docs.find((d) => d.type === "about");
+  const aboutRel = aboutDoc ? publicRelPath(aboutDoc) : "about-this-site.html";
+  const aboutHref = `${basePath}${aboutRel}`;
+  const year = String(new Date().getFullYear());
+  const siteFooter = siteFooterHtml(aboutHref, siteConfig.name, year);
 
-  const storyItems = stories.map((s) => docListItem(s, basePath, "stories")).join("\n");
-  const thesisHref = `${basePath}thesis.html`;
-  const thesisTitle = thesisDoc?.title ?? "Thesis";
+  const sections = Object.fromEntries(
+    await Promise.all(
+      docs.map(async (doc) => [doc.slug, await docSection(doc, docUrlById)])
+    )
+  );
 
-  const nav = `
-    <nav class="site-nav">
-      <a href="${basePath}">Home</a>
-      <a href="${basePath}stories/">Stories</a>
-      <a href="${basePath}thesis.html">Thesis</a>
-      <a href="${basePath}cv.html">CV</a>
-      <a href="${basePath}contact.html">Contact</a>
-    </nav>`;
-
-  const baseVars = {
-    basePath,
-    siteName: escapeHtml(siteConfig.name),
-    tagline: escapeHtml(siteConfig.tagline),
-    nav,
-    year: String(new Date().getFullYear()),
-  };
-
-  await mkdir(publicDir, { recursive: true });
+  await rm(publicDir, { recursive: true, force: true });
   await mkdir(path.join(publicDir, "stories"), { recursive: true });
   await copyFile(
     path.join(assetsDir, "style.css"),
     path.join(publicDir, "style.css")
   );
 
-  const indexHtml = render(pageTemplate, {
-    ...baseVars,
-    title: siteConfig.name,
-    body: `
-      <section class="intro prose">${introHtml}</section>
-      <section class="featured">
-        <h2>Thesis</h2>
-        <p><a class="essay-link" href="${thesisHref}">${escapeHtml(thesisTitle)}</a></p>
-      </section>
-      <section>
-        <h2>Stories</h2>
-        <ul class="link-list">${storyItems}</ul>
-        <p><a href="${basePath}stories/">All stories →</a></p>
-      </section>`,
-  });
-  await writeFile(path.join(publicDir, "index.html"), indexHtml);
-
-  const storiesIndex = render(pageTemplate, {
-    ...baseVars,
-    title: "Stories",
-    body: `<ul class="link-list">${storyItems}</ul>`,
-  });
-  await writeFile(path.join(publicDir, "stories", "index.html"), storiesIndex);
-
-  const cvFallback =
-    "<p>CV draft coming soon — maintain this in your Google Doc titled <em>CV</em>.</p>";
-  const cvHtml = await readContent("cv.html", cvFallback);
-  await writeFile(
-    path.join(publicDir, "cv.html"),
-    render(pageTemplate, {
-      ...baseVars,
-      title: "CV",
-      body: `<article class="prose cv">${cvHtml}</article>`,
-    })
-  );
-
-  await writeFile(
-    path.join(publicDir, "contact.html"),
-    render(pageTemplate, {
-      ...baseVars,
-      title: "Contact",
-      body: `<p class="lede">${escapeHtml(siteConfig.contact?.note ?? "")}</p>
-      <p><a href="mailto:${escapeHtml(siteConfig.contact?.email ?? "")}">${escapeHtml(siteConfig.contact?.email ?? "")}</a></p>`,
-    })
-  );
-
-  if (thesisDoc) {
-    const thesisBody = await readContent(
-      "thesis.html",
-      "<p>Thesis draft in progress.</p>"
-    );
+  const writePage = async (relPath, pageTitle, body, { back = false, home = false }) => {
+    const documentTitle = home
+      ? escapeHtml(siteConfig.name)
+      : `${escapeHtml(pageTitle)} — ${escapeHtml(siteConfig.name)}`;
     await writeFile(
-      path.join(publicDir, "thesis.html"),
-      render(articleTemplate, {
-        ...baseVars,
-        title: escapeHtml(thesisDoc.title),
-        body: `<article class="prose">${thesisBody}</article>`,
-        backHref: basePath,
-        backLabel: "← Home",
+      path.join(publicDir, relPath),
+      renderTemplate(template, {
+        basePath,
+        documentTitle,
+        body,
+        bodyClass: home ? "body--home" : "",
+        siteTopBar: siteTopBarHtml(basePath, siteConfig.name, siteConfig.email, {
+          showBack: back,
+        }),
+        siteFooter,
       })
     );
-  }
+  };
 
-  for (const story of stories) {
-    const storyBody = await readContent(
-      `stories/${story.slug}.html`,
-      `<p>Draft in progress — <em>${escapeHtml(story.title)}</em>.</p>`
-    );
-    await writeFile(
-      path.join(publicDir, "stories", `${story.slug}.html`),
-      render(articleTemplate, {
-        ...baseVars,
-        title: escapeHtml(story.title),
-        body: `<article class="prose">${storyBody}</article>`,
-        backHref: `${basePath}stories/`,
-        backLabel: "← Stories",
-      })
-    );
+  const indexBody = home.map((slug) => sections[slug] ?? "").join("\n");
+  await writePage("index.html", siteConfig.name, indexBody, { home: true });
+
+  for (const doc of docs) {
+    const out = publicRelPath(doc);
+    if (!out) continue;
+    await writePage(out, doc.title, sections[doc.slug], {
+      back: BACK_NAV_DOC_TYPES.has(doc.type),
+    });
   }
 
   console.log(`built site → ${path.relative(root, publicDir)}/`);
