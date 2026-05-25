@@ -30,7 +30,12 @@ const introScrollHintSvg = `<svg class="intro-scroll-hint" xmlns="http://www.w3.
     <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>`;
 
-function siteTopBarHtml(basePath, siteName, email, { showBack = false, page = null } = {}) {
+function siteTopBarHtml(
+  basePath,
+  siteName,
+  email,
+  { showBack = false, page = null, hideOnLoad = false } = {}
+) {
   const safeName = escapeHtml(siteName);
   const contactHref = email ? `mailto:${escapeHtml(email)}` : `${basePath}#me`;
   const cvNav =
@@ -43,7 +48,8 @@ function siteTopBarHtml(basePath, siteName, email, { showBack = false, page = nu
   <span>Back</span>
 </a>`
     : `<span class="site-brand">${safeName}</span>`;
-  return `<header class="site-top">
+  const hiddenClass = hideOnLoad ? " site-top--hidden" : "";
+  return `<header class="site-top${hiddenClass}">
   <nav class="site-top-nav" aria-label="Site">
     ${left}
     <div class="site-top-nav-end">
@@ -83,7 +89,7 @@ async function docSection(doc, docUrlById) {
   const idAttr =
     doc.type === "me" ? ' id="me"' : doc.type === "thesis" ? ' id="thesis"' : "";
   if (doc.type === "intro") {
-    return `<section class="doc doc--${doc.slug}"${idAttr}><div class="intro-wrap"><div class="intro-body">${html}</div>${introScrollHintSvg}</div></section>`;
+    return `<section class="doc doc--${doc.slug}"${idAttr}><div class="intro-wrap"><div class="intro-body intro-nav-sentinel">${html}</div>${introScrollHintSvg}</div></section>`;
   }
   return `<section class="doc doc--${doc.slug}"${idAttr}>${html}</section>`;
 }
@@ -123,6 +129,7 @@ async function main() {
     path.join(assetsDir, "style.css"),
     path.join(publicDir, "style.css")
   );
+  await copyFile(path.join(assetsDir, "nav.js"), path.join(publicDir, "nav.js"));
 
   const writePage = async (
     relPath,
@@ -143,8 +150,12 @@ async function main() {
         siteTopBar: siteTopBarHtml(basePath, siteConfig.name, siteConfig.email, {
           showBack: back,
           page,
+          hideOnLoad: home,
         }),
         siteFooter: siteFooterHtml(aboutHref, siteConfig.name, year, { page }),
+        pageScript: home
+          ? `<script src="${basePath}nav.js" defer></script>`
+          : "",
       })
     );
   };

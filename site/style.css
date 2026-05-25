@@ -32,6 +32,18 @@ body {
 
   &.body--home {
     padding-top: 0;
+
+    .site-main {
+      width: 100%;
+      max-width: none;
+    }
+
+    .doc:not(.doc--intro) {
+      width: 92vw;
+      max-width: var(--measure);
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 }
 
@@ -89,7 +101,7 @@ a {
   }
 
   h1 {
-    margin: 3rem 0 calc(1.25rem * 1.75);
+    margin: 3rem 0 1.75rem;
     font-size: 1.5rem;
     font-weight: 600;
     line-height: 1.2;
@@ -122,8 +134,9 @@ a {
 
   &.doc--intro {
     box-sizing: border-box;
+    width: 100%;
     min-height: 100svh;
-    padding-top: var(--top-bar-height);
+    padding-top: 0;
     padding-bottom: 2rem;
     display: flex;
     flex-direction: column;
@@ -131,7 +144,9 @@ a {
 
     .intro-wrap {
       position: relative;
-      width: 100%;
+      width: 92vw;
+      max-width: var(--measure);
+      margin: 0 auto;
     }
 
     .intro-scroll-hint {
@@ -243,6 +258,25 @@ a {
   z-index: 20;
   height: var(--top-bar-height);
   background: var(--accent);
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+
+  &.site-top--hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &.site-top--hidden {
+      transform: translateY(-100%);
+    }
+  }
 }
 
 .site-top-nav {

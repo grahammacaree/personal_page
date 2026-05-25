@@ -21,6 +21,6 @@ npm run preview # build with BASE_PATH=/, then serve public/
 
 ## Stack
 
-Node scripts (Drive export + HTML cleanup), static HTML/CSS, GitHub Actions cron. No framework, no client JS.
+Node scripts (Drive export + HTML cleanup), static HTML/CSS, GitHub Actions cron. No framework; one small script on the homepage toggles the nav while the intro is in view.
 
 Styles live in `site/style.css` using **native CSS nesting** (`&`, nested selectors) — Sass-like structure without a preprocessor; the build copies the file unchanged to `public/`.
