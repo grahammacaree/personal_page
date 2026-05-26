@@ -39,7 +39,7 @@ body {
     }
 
     .doc:not(.doc--intro) {
-      width: 92vw;
+      width: 90vw;
       max-width: var(--measure);
       margin-left: auto;
       margin-right: auto;
@@ -82,7 +82,7 @@ a {
 
 .site-main,
 .site-footer {
-  width: 92vw;
+  width: 90vw;
   max-width: var(--measure);
   margin: 0 auto;
   padding: 0;
@@ -146,7 +146,7 @@ a {
     justify-content: center;
 
     .intro-wrap {
-      width: 92vw;
+      width: 90vw;
       max-width: var(--measure);
       margin: 0 auto;
     }
@@ -302,7 +302,7 @@ a {
   align-items: center;
   justify-content: space-between;
   height: 100%;
-  width: 92vw;
+  width: 90vw;
   max-width: var(--measure);
   margin: 0 auto;
   padding: 0;
