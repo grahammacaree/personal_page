@@ -1,26 +1,41 @@
-# personal_page
+# grahammacaree.com — site source
 
-Personal site — intro, two stories, thesis, me, CV, about. Content lives in Google Docs; this repo syncs, builds, and publishes to GitHub Pages at [grahammacaree.com](https://grahammacaree.com).
+Source for [grahammacaree.com](https://grahammacaree.com): a static personal site whose prose lives in Google Docs and is built with a small Node pipeline.
 
-## Docs
+You do **not** need this repo, Node, or Google credentials to **read** the site.
 
-- [`SETUP.md`](SETUP.md) — Google service account, GitHub secret, Pages
-- [`GOOGLE_DOCS.md`](GOOGLE_DOCS.md) — seven-doc structure and placeholder copy
-- [`docs.manifest.json`](docs.manifest.json) — Doc ID → page mapping
-- [`site.config.json`](site.config.json) — name, email, homepage section order, `basePath`
+## What’s in here
 
-## Commands
+| Path | Purpose |
+|------|---------|
+| `scripts/` | Sync (Google Drive export) and static HTML build |
+| `templates/`, `site/` | Page shell, CSS, favicon, homepage nav script |
+| `docs.manifest.json` | Maps each Google Doc → slug and page type |
+| `site.config.json` | Site name, contact email, homepage section order |
+| `.github/workflows/site.yml` | CI: sync, build, deploy to GitHub Pages |
 
-```bash
-npm ci
-npm run sync    # export Google Docs → content/
-npm run build   # content/ → public/
-npm run site    # both
-npm run preview # build with BASE_PATH=/, then serve public/
-```
+Generated folders (`content/`, `public/`) are not committed; Actions builds `public/` on each deploy.
 
 ## Stack
 
-Node scripts (Drive export + HTML cleanup), static HTML/CSS, GitHub Actions cron. No framework; one small script on the homepage toggles the nav while the intro is in view.
+Node 20+, Cheerio (HTML cleanup), Google Drive API (read-only export). No framework, no app server.
 
-Styles live in `site/style.css` using **native CSS nesting** (`&`, nested selectors) — Sass-like structure without a preprocessor; the build copies the file unchanged to `public/`.
+## Try the build (no Google account)
+
+```bash
+npm ci
+npm run build   # needs content/ from a prior sync, or empty sections
+npm run preview # build with BASE_PATH=/ and serve public/
+```
+
+A full content sync requires maintainer credentials — see [`SETUP.md`](SETUP.md).
+
+## Maintainer docs
+
+- [`SETUP.md`](SETUP.md) — service account, GitHub secret, Pages, custom domain
+- [`GOOGLE_DOCS.md`](GOOGLE_DOCS.md) — how site content is split across Docs (authoring)
+- [`SECURITY.md`](SECURITY.md) — secrets and Doc IDs
+
+## License
+
+All rights reserved unless otherwise noted. Site prose is not licensed for reuse from this repository.

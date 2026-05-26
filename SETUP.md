@@ -1,6 +1,10 @@
-# Setup — automated Google Docs → GitHub Pages
+# Setup (maintainer)
+
+**Audience:** you, redeploying or forking this pipeline — not general visitors to [grahammacaree.com](https://grahammacaree.com).
 
 Visitors see a static site. You edit Google Docs; a daily cron (and every push to `main`) exports them, builds HTML, and deploys.
+
+See [`SECURITY.md`](SECURITY.md) for secrets and Doc sharing.
 
 ## 1. Google Cloud service account
 

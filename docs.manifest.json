@@ -4,50 +4,43 @@
       "id": "1buOp0E4vi2MvJtYtTSC5c6Nc7WMqBUBcqcHhveu3aqI",
       "slug": "intro",
       "title": "Introduction",
-      "type": "intro",
-      "description": "Homepage — lead copy and links to your two stories."
+      "type": "intro"
     },
     {
       "id": "1O1MMcTfK6FfCiR-pmhtALV_Ud2PGAQAXbE-V8zvTDeM",
       "slug": "baseball-potato",
       "title": "Baseball Potato",
-      "type": "story",
-      "description": "Story 1 — baseball potato*"
+      "type": "story"
     },
     {
       "id": "17z0jxfIqXnw8D7h1v9mkX4lKkE9zDoCYhbT2BQiHh60",
       "slug": "dark-side-of-the-moon",
       "title": "The Dark Side of the Moon",
-      "type": "story",
-      "description": "Story 2"
+      "type": "story"
     },
     {
       "id": "1O8yvV63jnksHllGibAeuCXo4GI_fkK7zC6L7fmgQl1Y",
       "slug": "thesis",
       "title": "Thesis",
-      "type": "thesis",
-      "description": "Anchor essay — your central argument on storytelling."
+      "type": "thesis"
     },
     {
       "id": "1xdD1Oxk587fyuabeYSkt55utNXiMGGimH9uLCDYxEo0",
       "slug": "cv",
       "title": "CV",
-      "type": "cv",
-      "description": "Living CV"
+      "type": "cv"
     },
     {
       "id": "1Odu99JHU9pW1EGMDdoM3Xjm0pb2f69C7GRXgheZq-vc",
       "slug": "me",
       "title": "me",
-      "type": "me",
-      "description": "me"
+      "type": "me"
     },
     {
       "id": "1WKJFIe58E6CU3reB1dJTs4Xgjol4TzDr0fur73L9E-k",
       "slug": "about-this-site",
       "title": "About this site",
-      "type": "about",
-      "description": "Technical notes on how this site is built."
+      "type": "about"
     }
   ]
 }

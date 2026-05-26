@@ -1,6 +1,8 @@
-# Google Docs — site structure
+# Google Docs — site structure (maintainer)
 
-Create one Doc per row in `docs.manifest.json`. Suggested Drive folder: `personal_site/`
+**Audience:** editing site content in Drive — not required to read the public repo.
+
+Create one Doc per row in `docs.manifest.json`. A dedicated Drive folder keeps them together.
 
 | # | Doc title (in Drive) | Manifest slug | Type | Site URL (after deploy) |
 |---|----------------------|---------------|------|-------------------------|
