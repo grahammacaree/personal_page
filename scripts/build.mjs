@@ -131,6 +131,10 @@ async function main() {
   );
   await copyFile(path.join(assetsDir, "nav.js"), path.join(publicDir, "nav.js"));
   await copyFile(path.join(assetsDir, "CNAME"), path.join(publicDir, "CNAME"));
+  await copyFile(
+    path.join(assetsDir, "favicon.svg"),
+    path.join(publicDir, "favicon.svg")
+  );
 
   const writePage = async (
     relPath,

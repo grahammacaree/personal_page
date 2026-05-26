@@ -1,4 +1,4 @@
-/** Homepage only — hide nav while the intro sentinel (100lvh) is on screen. */
+/** Homepage only — hide nav while the intro sentinel (100svh) is on screen. */
 (function () {
   const nav = document.querySelector(".site-top");
   const sentinel = document.querySelector(".intro-nav-sentinel");
