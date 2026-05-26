@@ -12,7 +12,7 @@ Create one Doc per row in `docs.manifest.json`. Suggested Drive folder: `persona
 | 6 | CV | `cv` | `cv` | `/cv.html` |
 | 7 | About this site | `about-this-site` | `about` | `/about-this-site.html` |
 
-Full paths use your `basePath`, e.g. `https://grahammacaree.github.io/personal_page/stories/baseball-potato.html`.
+Full paths use your `basePath`, e.g. `https://grahammacaree.com/stories/baseball-potato.html`.
 
 Homepage section order is set in `site.config.json` (`home`: `intro`, `thesis`, `me`). Contact is a **mailto** link in the top bar (from `email` in site config), not a separate page.
 

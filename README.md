@@ -1,6 +1,6 @@
 # personal_page
 
-Personal site — intro, two stories, thesis, me, CV, about. Content lives in Google Docs; this repo syncs, builds, and publishes to GitHub Pages.
+Personal site — intro, two stories, thesis, me, CV, about. Content lives in Google Docs; this repo syncs, builds, and publishes to GitHub Pages at [grahammacaree.com](https://grahammacaree.com).
 
 ## Docs
 

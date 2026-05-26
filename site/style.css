@@ -136,7 +136,9 @@ a {
   &.doc--intro {
     box-sizing: border-box;
     width: 100%;
-    min-height: 100svh;
+    min-height: 100vh;
+    min-height: 100lvh;
+    overflow-y: hidden;
     padding-top: 0;
     padding-bottom: 2rem;
     display: flex;
@@ -144,10 +146,25 @@ a {
     justify-content: center;
 
     .intro-wrap {
-      position: relative;
       width: 92vw;
       max-width: var(--measure);
       margin: 0 auto;
+    }
+
+    .intro-body {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 100lvh up from 2rem below intro copy — IO target, not screen-bottom */
+    .intro-nav-sentinel {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2rem;
+      height: 100vh;
+      height: 100lvh;
+      pointer-events: none;
     }
 
     .intro-scroll-hint {

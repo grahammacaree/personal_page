@@ -74,8 +74,26 @@ You never commit `public/` to git. Actions builds it fresh each run.
 
 6. **Open the site**  
    - **Settings → Pages** shows the live URL when deploy succeeds.  
-   - Project site: `https://grahammacaree.github.io/personal_page/`  
-   - `basePath` in `site.config.json` must stay `/personal_page/` for that URL shape.
+   - Production URL: `https://grahammacaree.com` (after DNS — see §5).  
+   - `basePath` in `site.config.json` is `/` for the custom domain.
+
+## 5. Custom domain (`grahammacaree.com`)
+
+The build copies `site/CNAME` into `public/CNAME` so GitHub Pages knows the custom hostname.
+
+1. **GitHub** — repo **Settings → Pages → Custom domain** → enter `grahammacaree.com` → Save. Enable **Enforce HTTPS** when DNS has propagated.
+2. **DNS** (at your registrar), for the apex domain GitHub expects **A** records (not a CNAME on `@`):
+
+   | Type | Name | Value |
+   |------|------|--------|
+   | A | `@` | `185.199.108.153` |
+   | A | `@` | `185.199.109.153` |
+   | A | `@` | `185.199.110.153` |
+   | A | `@` | `185.199.111.153` |
+
+3. Optional **www** — add `CNAME` `www` → `grahammacaree.github.io`, then set that host as a second custom domain or redirect in GitHub/DNS.
+
+After DNS propagates, the site is served at the domain root; internal links use `basePath: "/"` from `site.config.json`.
 
 ### Ongoing deploys (no manual steps)
 
@@ -92,9 +110,9 @@ You never commit `public/` to git. Actions builds it fresh each run.
 - `build` ok, `deploy` pending? Approve the **github-pages** environment.  
 - Pages URL 404? Wait a minute after first green deploy; check **Settings → Pages** for the exact link.
 
-## 5. Local preview
+## 6. Local preview
 
-GitHub Pages serves the site at `/personal_page/`, but a local static server serves `public/` at `/`. If CSS looks unstyled after `npm run build && npx serve public`, that path mismatch is why.
+Production builds use `basePath: "/"` (same as `grahammacaree.com`). `npm run preview` also sets `BASE_PATH=/` when serving locally.
 
 **Use the preview script** (builds with `BASE_PATH=/` so links and CSS match localhost):
 
@@ -107,13 +125,13 @@ npm run preview       # build for localhost, then serve
 
 Open the URL `serve` prints (usually `http://localhost:3000`).
 
-Production deploys on GitHub still use `basePath` from `site.config.json` (`/personal_page/`) — do not set `BASE_PATH` in the workflow.
+Production deploys use `basePath` from `site.config.json` (`/`) — do not set `BASE_PATH` in the workflow unless you are testing a subpath build.
 
 `content/` and `public/` are generated locally and gitignored.
 
 Site styles are plain CSS with [native nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting) in `site/style.css` — no Sass or PostCSS step.
 
-## Automation
+## 7. Automation
 
 | Trigger | What happens |
 |--------|----------------|

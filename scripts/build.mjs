@@ -89,7 +89,7 @@ async function docSection(doc, docUrlById) {
   const idAttr =
     doc.type === "me" ? ' id="me"' : doc.type === "thesis" ? ' id="thesis"' : "";
   if (doc.type === "intro") {
-    return `<section class="doc doc--${doc.slug}"${idAttr}><div class="intro-wrap"><div class="intro-body intro-nav-sentinel">${html}</div>${introScrollHintSvg}</div></section>`;
+    return `<section class="doc doc--${doc.slug}"${idAttr}><div class="intro-wrap"><div class="intro-body">${html}${introScrollHintSvg}<div class="intro-nav-sentinel" aria-hidden="true"></div></div></div></section>`;
   }
   return `<section class="doc doc--${doc.slug}"${idAttr}>${html}</section>`;
 }
@@ -130,6 +130,7 @@ async function main() {
     path.join(publicDir, "style.css")
   );
   await copyFile(path.join(assetsDir, "nav.js"), path.join(publicDir, "nav.js"));
+  await copyFile(path.join(assetsDir, "CNAME"), path.join(publicDir, "CNAME"));
 
   const writePage = async (
     relPath,
