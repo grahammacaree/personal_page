@@ -74,7 +74,8 @@
       "title": "docTitle",
       "leftNav": "back",
       "cvNav": "link",
-      "aboutLink": true
+      "aboutLink": true,
+      "scripts": ["nav.js"]
     },
     "cv": {
       "extends": "default",

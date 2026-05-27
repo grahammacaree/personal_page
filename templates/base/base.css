@@ -10,7 +10,7 @@ html {
 
 body {
   margin: 0;
-  padding-top: var(--top-bar-height);
+  padding-top: calc(var(--top-bar-height) + env(safe-area-inset-top, 0));
   color: var(--text);
   background: var(--bg);
   font-family: var(--font-serif);

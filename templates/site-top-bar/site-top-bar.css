@@ -4,7 +4,9 @@
   left: 0;
   right: 0;
   z-index: 20;
-  height: var(--top-bar-height);
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0);
+  height: calc(var(--top-bar-height) + env(safe-area-inset-top, 0));
   background: var(--accent);
   transform: translateY(0);
   opacity: 1;
