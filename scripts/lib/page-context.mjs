@@ -11,6 +11,21 @@ function documentTitle(page, siteName) {
   return `${escapeHtml(page.pageTitle)} — ${escapeHtml(siteName)}`;
 }
 
+function docForPage(page, docs) {
+  const slug = page.sectionSlugs[0];
+  return docs.find((d) => d.slug === slug);
+}
+
+function metaDescription(page, ctx) {
+  const siteDefault = ctx.siteConfig.description ?? "";
+  if (page.pageType.title === "siteName") {
+    return siteDefault ? escapeHtml(siteDefault) : "";
+  }
+  const doc = docForPage(page, ctx.docs);
+  const raw = doc?.description ?? siteDefault;
+  return raw ? escapeHtml(raw) : "";
+}
+
 function contactHref(basePath, email) {
   return email ? `mailto:${escapeHtml(email)}` : `${basePath}#main`;
 }
@@ -65,6 +80,7 @@ export function layoutVars(page, ctx) {
   return {
     basePath,
     documentTitle: documentTitle(page, ctx.siteConfig.name),
+    metaDescription: metaDescription(page, ctx),
     bodyClass: pt.bodyClass ?? "",
     pageScripts: pageScriptsHtml(basePath, pt.scripts),
     body,

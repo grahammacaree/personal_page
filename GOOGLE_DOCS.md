@@ -107,6 +107,7 @@ Optional meta page: how the site is built (Google Docs → sync → static HTML)
 
 - **Visible title on the page:** use Google’s **Title** or **Heading 1** style on the first line. The build promotes large/bold styled lines to `<h1>` (and section headings to `<h2>` / `<h3>`). Normal body text stays `<p>`.
 - **Browser tab title** comes from `docs.manifest.json` (`title` field) for pages that get their own URL (stories, CV, about). Homepage tab title is `site.config.json` → `name`.
+- **Search / link preview blurb:** `site.config.json` → `description` for the homepage. For stories, CV, and about, optional `description` on that row in `docs.manifest.json`. Intro and thesis are homepage-only — no manifest description needed. Not synced from Google Docs.
 - A strong opening line in normal text (e.g. a question hook) will correctly stay a paragraph — only styled title/heading lines become `<h1>`.
 - Avoid text boxes, comments, heavy tables.
 - Links and bold/italic export fine.

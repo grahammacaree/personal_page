@@ -4,6 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{documentTitle}}</title>
+    {{#metaDescription}}
+    <meta name="description" content="{{metaDescription}}" />
+    <meta property="og:title" content="{{documentTitle}}" />
+    <meta property="og:description" content="{{metaDescription}}" />
+    {{/metaDescription}}
     <link rel="icon" href="{{basePath}}favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="{{basePath}}style.css" />
   </head>

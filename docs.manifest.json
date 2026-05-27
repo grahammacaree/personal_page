@@ -9,14 +9,16 @@
     {
       "id": "1O1MMcTfK6FfCiR-pmhtALV_Ud2PGAQAXbE-V8zvTDeM",
       "slug": "baseball-potato",
-      "title": "Baseball Potato",
-      "type": "story"
+      "title": "Baseball’s great potato caper",
+      "type": "story",
+      "description": "When the grind of baseball got too much, Dave Bresnahan looked for answers in a surprising place"
     },
     {
       "id": "17z0jxfIqXnw8D7h1v9mkX4lKkE9zDoCYhbT2BQiHh60",
       "slug": "dark-side-of-the-moon",
-      "title": "The Dark Side of the Moon",
-      "type": "story"
+      "title": "Why is the far side of the moon so weird?",
+      "type": "story",
+      "description": "The moon is 15km thicker on one side than the other. How does something like that happen?"
     },
     {
       "id": "1O8yvV63jnksHllGibAeuCXo4GI_fkK7zC6L7fmgQl1Y",
@@ -27,14 +29,16 @@
     {
       "id": "1xdD1Oxk587fyuabeYSkt55utNXiMGGimH9uLCDYxEo0",
       "slug": "cv",
-      "title": "CV",
-      "type": "cv"
+      "title": "Graham MacAree’s CV",
+      "type": "cv",
+      "description": "Career highlights from 15+ years running technical and editorial teams."
     },
     {
       "id": "1WKJFIe58E6CU3reB1dJTs4Xgjol4TzDr0fur73L9E-k",
       "slug": "about-this-site",
-      "title": "About this site",
-      "type": "about"
+      "title": "How this website was built",
+      "type": "about",
+      "description": "The architecture and technical tradeoffs of a lightweight, custom static site generator"
     }
   ]
 }

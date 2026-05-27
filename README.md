@@ -10,10 +10,10 @@ You do **not** need this repo, Node, or Google credentials to **read** the site.
 |------|---------|
 | `scripts/` | Sync (Google Drive export) + static build |
 | `site.config.json` | Generator config — `home`, `chrome`, `docTypes`, `pageTypes` |
-| `docs.manifest.json` | Google Doc id, slug, title, and type per document |
+| `docs.manifest.json` | Google Doc id, slug, title, type; optional `description` for published pages |
 | `templates/<component>/` | One folder per component (`*.html`, `*.css`, `component.json`) |
 | `assets/` | Shared SVGs (e.g. `chevrons/left.svg`) |
-| `site/` | Favicon, homepage nav script, `CNAME` |
+| `site/` | Favicon, homepage nav script, `CNAME`, `llms.txt` (LLM context) |
 | `.github/workflows/site.yml` | CI: sync, build, deploy to GitHub Pages |
 
 Generated folders (`content/`, `public/`) are not committed; Actions builds `public/` on each deploy.

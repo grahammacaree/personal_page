@@ -21,6 +21,7 @@ export function renderSitePage(templates, registry, page, ctx) {
   return renderTemplate(templates[registry.components.get(layoutName).html], {
     basePath: slots.basePath,
     documentTitle: slots.documentTitle,
+    metaDescription: slots.metaDescription,
     bodyClass: slots.bodyClass,
     pageScripts: slots.pageScripts,
     body: slots.body,

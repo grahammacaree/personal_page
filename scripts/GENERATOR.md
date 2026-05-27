@@ -6,8 +6,8 @@ This repo is a small static site generator: **Google Docs are the CMS**, `docs.m
 
 ```
 Google Docs  ──sync──►  content/*.html  (raw fragments)
-docs.manifest.json      slug, title, type per doc
-site.config.json        docTypes + pageTypes + site chrome
+docs.manifest.json      slug, title, type; optional description (published pages)
+site.config.json        docTypes + pageTypes + site chrome + description
 templates/<name>/       component.html + component.css + component.json
 assets/                 shared SVGs, etc.
 
@@ -18,6 +18,8 @@ assets/                 shared SVGs, etc.
 ```
 
 ## Configuration (`site.config.json`)
+
+Top-level fields: `name`, `email`, `basePath`, `description` (homepage `<meta name="description">` and Open Graph fallback).
 
 ### `home` — homepage route
 
@@ -110,7 +112,7 @@ Build injects trimmed SVG into `{{introScrollHint}}` when wrapping intro content
 
 ## Adding a published story
 
-1. Add doc to `docs.manifest.json` (`type: "story"`, slug, title, Google Doc id).
+1. Add doc to `docs.manifest.json` (`type: "story"`, slug, title, Google Doc id, optional `description` for `<meta>` / Open Graph on published pages).
 2. `docTypes.story` already defines paths and uses `pageTypes.default` (back nav).
 3. Add `templates/…` only if you need a new section shape or styles.
 4. `npm run site` (sync + build).

@@ -19,7 +19,7 @@ const siteDir = path.join(root, "site");
 const repoAssetsDir = path.join(root, "assets");
 const templatesDir = path.join(root, "templates");
 
-const STATIC_ASSETS = ["nav.js", "CNAME", "favicon.svg"];
+const STATIC_ASSETS = ["nav.js", "CNAME", "favicon.svg", "llms.txt"];
 
 async function main() {
   const siteConfig = JSON.parse(

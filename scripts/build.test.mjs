@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { access, readFile } from "node:fs/promises";
 import path from "node:path";
@@ -38,10 +39,19 @@ test("build writes core public artifacts", async () => {
   await access(path.join(root, "public/index.html"));
   await access(path.join(root, "public/style.css"));
   await access(path.join(root, "public/assets/chevrons/left.svg"));
+  await access(path.join(root, "public/llms.txt"));
 
   for (const doc of manifest.documents ?? []) {
     const output = publishPathForDoc(siteConfig, doc);
     if (!output) continue;
     await access(path.join(root, "public", output));
   }
+
+  const indexHtml = await readFile(path.join(root, "public/index.html"), "utf8");
+  const desc = siteConfig.description ?? "";
+  assert.ok(desc, "site.config.json should define description for homepage meta");
+  assert.match(
+    indexHtml,
+    new RegExp(`<meta name="description" content="${desc.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`)
+  );
 });
