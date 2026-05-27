@@ -34,22 +34,6 @@ a {
   }
 }
 
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: auto;
-  z-index: 30;
-  padding: 0.5rem 0.75rem;
-  background: var(--bg);
-  color: var(--text);
-  box-shadow: none;
-
-  &:focus {
-    left: 1rem;
-    top: 1rem;
-  }
-}
-
 .site-main,
 .site-footer {
   width: 90vw;
