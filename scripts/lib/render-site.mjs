@@ -22,6 +22,8 @@ export function renderSitePage(templates, registry, page, ctx) {
     basePath: slots.basePath,
     documentTitle: slots.documentTitle,
     metaDescription: slots.metaDescription,
+    canonicalUrl: slots.canonicalUrl,
+    personJsonLd: slots.personJsonLd,
     bodyClass: slots.bodyClass,
     pageScripts: slots.pageScripts,
     body: slots.body,

@@ -4,6 +4,9 @@
   "name": "Graham MacAree",
   "email": "hi@grahammacaree.com",
   "description": "This is the personal site of Graham MacAree — engineer, editor and analyst",
+  "person": {
+    "jobTitle": "Editorial/Engineering Leader"
+  },
   "home": {
     "output": "index.html",
     "pageType": "home",

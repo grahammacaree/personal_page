@@ -19,7 +19,7 @@ assets/                 shared SVGs, etc.
 
 ## Configuration (`site.config.json`)
 
-Top-level fields: `name`, `email`, `basePath`, `url` (canonical origin for `sitemap.xml`), `description` (homepage `<meta name="description">` and Open Graph fallback).
+Top-level fields: `name`, `email`, `basePath`, `url` (canonical origin for every page, `sitemap.xml`, and Open Graph `og:url` — set to your preferred host, e.g. apex or `www`), `description` (homepage meta / OG), `person` (homepage JSON-LD `Person` fields such as `jobTitle`).
 
 ### `home` — homepage route
 

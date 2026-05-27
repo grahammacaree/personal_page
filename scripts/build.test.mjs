@@ -55,4 +55,6 @@ test("build writes core public artifacts", async () => {
     indexHtml,
     new RegExp(`<meta name="description" content="${desc.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`)
   );
+  assert.match(indexHtml, /<link rel="canonical" href="https:\/\/grahammacaree\.com\/"/);
+  assert.match(indexHtml, /"@type":"Person"/);
 });

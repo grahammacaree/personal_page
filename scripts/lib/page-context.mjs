@@ -1,4 +1,5 @@
 import { escapeHtml } from "./html.mjs";
+import { pageLoc } from "./sitemap.mjs";
 import {
   chromeConfig,
   homePageHref,
@@ -14,6 +15,28 @@ function documentTitle(page, siteName) {
 function docForPage(page, docs) {
   const slug = page.sectionSlugs[0];
   return docs.find((d) => d.slug === slug);
+}
+
+function canonicalUrl(page, ctx) {
+  const siteUrl = ctx.siteConfig.url;
+  if (!siteUrl) return "";
+  return pageLoc(siteUrl, ctx.basePath, page.output);
+}
+
+function personJsonLd(page, ctx) {
+  if (page.pageType.layout !== "home") return "";
+  const { person, name, url } = ctx.siteConfig;
+  if (!person) return "";
+
+  const payload = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name,
+    url: url?.replace(/\/$/, ""),
+    ...person,
+  };
+
+  return JSON.stringify(payload);
 }
 
 function metaDescription(page, ctx) {
@@ -77,10 +100,14 @@ export function layoutVars(page, ctx) {
   const body = page.sectionSlugs.map((slug) => ctx.sections[slug] ?? "").join("\n");
   const pt = page.pageType;
 
+  const canonical = canonicalUrl(page, ctx);
+
   return {
     basePath,
     documentTitle: documentTitle(page, ctx.siteConfig.name),
     metaDescription: metaDescription(page, ctx),
+    canonicalUrl: canonical ? escapeHtml(canonical) : "",
+    personJsonLd: personJsonLd(page, ctx),
     bodyClass: pt.bodyClass ?? "",
     pageScripts: pageScriptsHtml(basePath, pt.scripts),
     body,

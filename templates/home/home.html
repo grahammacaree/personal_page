@@ -4,11 +4,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{{documentTitle}}</title>
+    {{#canonicalUrl}}
+    <link rel="canonical" href="{{canonicalUrl}}" />
+    <meta property="og:url" content="{{canonicalUrl}}" />
+    {{/canonicalUrl}}
     {{#metaDescription}}
     <meta name="description" content="{{metaDescription}}" />
     <meta property="og:title" content="{{documentTitle}}" />
     <meta property="og:description" content="{{metaDescription}}" />
     {{/metaDescription}}
+    {{#personJsonLd}}
+    <script type="application/ld+json">{{personJsonLd}}</script>
+    {{/personJsonLd}}
     <link rel="icon" href="{{basePath}}favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="{{basePath}}style.css" />
   </head>
