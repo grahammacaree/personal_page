@@ -13,7 +13,7 @@ You do **not** need this repo, Node, or Google credentials to **read** the site.
 | `docs.manifest.json` | Google Doc id, slug, title, type; optional `description` for published pages |
 | `templates/<component>/` | One folder per component (`*.html`, `*.css`, `component.json`) |
 | `assets/` | Shared SVGs (e.g. `chevrons/left.svg`) |
-| `site/` | Favicon, homepage nav script, `CNAME`, `llms.txt` (LLM context) |
+| `site/` | Favicon, `robots.txt`, homepage nav script, `CNAME`, `llms.txt` |
 | `.github/workflows/site.yml` | CI: sync, build, deploy to GitHub Pages |
 
 Generated folders (`content/`, `public/`) are not committed; Actions builds `public/` on each deploy.

@@ -1,7 +1,7 @@
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
-/** Load every .html under templates/; keys are relative paths (e.g. home/home.html). */
+/** Load every .html under templates/; keys are relative paths (e.g. page/page.html). */
 export async function loadTemplates(templatesDir) {
   const templates = {};
 

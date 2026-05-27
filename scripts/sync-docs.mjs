@@ -1,9 +1,10 @@
-import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { google } from "googleapis";
 import { cleanGoogleHtml } from "./lib/clean-google-html.mjs";
 import { PLACEHOLDER } from "./lib/constants.mjs";
+import { fileExists } from "./lib/fs.mjs";
 import { contentPathForDoc } from "./lib/site-config.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -26,15 +27,6 @@ async function loadCredentials() {
     return JSON.parse(await readFile(credPath, "utf8"));
   }
   return null;
-}
-
-async function fileExists(filePath) {
-  try {
-    await access(filePath);
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 function contentPathFor(doc, siteConfig) {

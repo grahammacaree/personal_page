@@ -41,6 +41,7 @@ test("build writes core public artifacts", async () => {
   await access(path.join(root, "public/assets/chevrons/left.svg"));
   await access(path.join(root, "public/llms.txt"));
   await access(path.join(root, "public/sitemap.xml"));
+  await access(path.join(root, "public/robots.txt"));
 
   for (const doc of manifest.documents ?? []) {
     const output = publishPathForDoc(siteConfig, doc);

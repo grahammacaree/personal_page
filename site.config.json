@@ -64,7 +64,7 @@
   },
   "pageTypes": {
     "home": {
-      "layout": "home",
+      "layout": "page",
       "title": "siteName",
       "bodyClass": "body--home",
       "topBarHidden": true,

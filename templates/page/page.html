@@ -13,6 +13,9 @@
     <meta property="og:title" content="{{documentTitle}}" />
     <meta property="og:description" content="{{metaDescription}}" />
     {{/metaDescription}}
+    {{#personJsonLd}}
+    <script type="application/ld+json">{{personJsonLd}}</script>
+    {{/personJsonLd}}
     <link rel="icon" href="{{basePath}}favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="{{basePath}}style.css" />
   </head>

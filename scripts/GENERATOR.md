@@ -61,7 +61,7 @@ Controls layout, title, nav, footer, scripts. Use `extends` to inherit (e.g. `st
 
 | Field | Values / meaning |
 |-------|------------------|
-| `layout` | Component name (`home`, `page`) |
+| `layout` | Shell component (`page`); homepage uses `bodyClass: "body--home"` and `templates/home/home.css` |
 | `title` | `siteName` or `docTitle` |
 | `bodyClass` | Optional `<body class="…">` |
 | `topBarHidden` | Hide fixed top bar on load |

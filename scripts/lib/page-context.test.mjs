@@ -28,7 +28,7 @@ const ctx = {
 
 test("homepage uses site description", () => {
   const page = {
-    pageType: { title: "siteName", layout: "home" },
+    pageType: { title: "siteName", layout: "page", bodyClass: "body--home" },
     sectionSlugs: ["intro", "thesis"],
     pageTitle: null,
     output: "index.html",

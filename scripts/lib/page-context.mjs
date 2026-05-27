@@ -24,7 +24,7 @@ function canonicalUrl(page, ctx) {
 }
 
 function personJsonLd(page, ctx) {
-  if (page.pageType.layout !== "home") return "";
+  if (page.pageType.title !== "siteName") return "";
   const { person, name, url } = ctx.siteConfig;
   if (!person) return "";
 
@@ -94,7 +94,7 @@ function footerVars(page, ctx) {
   };
 }
 
-/** Template variables for a layout component (home / page). */
+/** Template variables for the page layout shell. */
 export function layoutVars(page, ctx) {
   const basePath = normalizeBasePath(ctx.basePath);
   const body = page.sectionSlugs.map((slug) => ctx.sections[slug] ?? "").join("\n");
