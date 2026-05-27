@@ -2,8 +2,6 @@
 
 Source for [grahammacaree.com](https://grahammacaree.com): a **lightweight static site generator** whose prose lives in **Google Docs** and builds to plain HTML.
 
-You do **not** need this repo, Node, or Google credentials to **read** the site.
-
 ## What’s in here
 
 | Path | Purpose |
@@ -20,7 +18,7 @@ Generated folders (`content/`, `public/`) are not committed; Actions builds `pub
 
 ## Stack
 
-Node 20+, Cheerio (HTML cleanup), Google Drive API (read-only export). No framework, no app server.
+Node 20+, Cheerio (HTML cleanup), Google Drive API (read-only export).
 
 ## Try the build (no Google account)
 
@@ -42,4 +40,4 @@ A full content sync requires maintainer credentials — see [`SETUP.md`](SETUP.m
 
 ## License
 
-All rights reserved unless otherwise noted. Site prose is not licensed for reuse from this repository.
+All rights reserved unless otherwise noted.
