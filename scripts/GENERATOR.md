@@ -14,12 +14,12 @@ assets/                 shared SVGs, etc.
         npm run build
               │
               ▼
-         public/          static HTML + style.css
+         public/          static HTML + style.css + sitemap.xml
 ```
 
 ## Configuration (`site.config.json`)
 
-Top-level fields: `name`, `email`, `basePath`, `description` (homepage `<meta name="description">` and Open Graph fallback).
+Top-level fields: `name`, `email`, `basePath`, `url` (canonical origin for `sitemap.xml`), `description` (homepage `<meta name="description">` and Open Graph fallback).
 
 ### `home` — homepage route
 

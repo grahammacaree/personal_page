@@ -9,6 +9,7 @@ import { buildDocUrlMap } from "./lib/rewrite-doc-links.mjs";
 import { renderSitePage } from "./lib/render-site.mjs";
 import { buildSiteStyles } from "./lib/styles.mjs";
 import { normalizeBasePath } from "./lib/site-config.mjs";
+import { buildSitemapXml } from "./lib/sitemap.mjs";
 import { loadTemplates } from "./lib/templates.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -80,6 +81,17 @@ async function main() {
     await writeFile(path.join(publicDir, page.output), html, "utf8");
     console.log(`  ${page.output}`);
   }
+
+  const siteUrl = siteConfig.url;
+  if (!siteUrl) {
+    throw new Error("site.config.json must define url for sitemap.xml");
+  }
+  await writeFile(
+    path.join(publicDir, "sitemap.xml"),
+    buildSitemapXml(siteUrl, basePath, pages),
+    "utf8"
+  );
+  console.log("  sitemap.xml");
 
   console.log(`built ${pages.length} pages → ${path.relative(root, publicDir)}/`);
 }
