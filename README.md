@@ -1,6 +1,6 @@
 # grahammacaree.com — site source
 
-Source for [grahammacaree.com](https://grahammacaree.com): a **lightweight static site generator** whose prose lives in **Google Docs** and builds to plain HTML.
+Source for [grahammacaree.com](https://grahammacaree.com): a **lightweight static site generator** whose essays live in **Google Docs** and builds to plain HTML.
 
 You do **not** need this repo, Node, or Google credentials to **read** the site.
 
@@ -42,4 +42,5 @@ A full content sync requires maintainer credentials — see [`SETUP.md`](SETUP.m
 
 ## License
 
-All rights reserved unless otherwise noted. Site prose is not licensed for reuse from this repository.
+- **Code** (generator, templates, scripts): [MIT](LICENSE)
+- **Essays** (text on the live site, authored in Google Docs): all rights reserved — not licensed for reuse from this repository

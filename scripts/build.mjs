@@ -59,7 +59,6 @@ async function main() {
   };
 
   await rm(publicDir, { recursive: true, force: true });
-  await mkdir(path.join(publicDir, "assets"), { recursive: true });
   for (const page of pages) {
     const dir = path.dirname(page.output);
     if (dir && dir !== ".") {

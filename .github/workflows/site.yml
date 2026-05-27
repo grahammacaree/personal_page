@@ -30,6 +30,8 @@ jobs:
 
       - run: npm ci
 
+      - run: npm test
+
       - name: Sync Google Docs
         run: npm run sync
         env:
