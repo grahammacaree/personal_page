@@ -1,0 +1,7 @@
+{
+  "layer": "section",
+  "order": 1,
+  "vars": {
+    "introScrollHint": { "asset": "chevrons/down.svg" }
+  }
+}

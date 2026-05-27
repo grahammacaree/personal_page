@@ -1,0 +1,73 @@
+/* CV — h2 section / h4 employer / h5 role */
+.doc.doc--cv {
+  h1 {
+    margin: 2rem 0 0;
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1.3;
+  }
+
+  h2 {
+    margin: 1.25rem 0 0.6rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+
+    + h4 {
+      margin-top: 1.1rem;
+    }
+
+    strong {
+      font-weight: inherit;
+    }
+  }
+
+  h4 {
+    margin: 1.5rem 0 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+
+    + h5 {
+      margin-top: 0.35rem;
+    }
+
+    strong {
+      font-weight: inherit;
+    }
+  }
+
+  h5 {
+    margin: 0.35rem 0 0.15rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--muted);
+    line-height: 1.4;
+
+    strong {
+      font-weight: inherit;
+    }
+  }
+
+  p {
+    margin: 0 0 0.65rem;
+    font-size: 0.75rem;
+  }
+
+  ul {
+    margin: 0 0 1rem;
+    padding-left: 1.2rem;
+    font-size: 0.75rem;
+  }
+
+  li {
+    margin-bottom: 0.4rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

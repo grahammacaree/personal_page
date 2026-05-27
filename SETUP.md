@@ -122,10 +122,13 @@ Production builds use `basePath: "/"` (same as `grahammacaree.com`). `npm run pr
 
 ```bash
 npm ci
-export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/credentials.json"
+# Place service-account JSON at ./credentials.json (gitignored), or:
+# export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/credentials.json"
 npm run site          # optional: sync + production-path build
 npm run preview       # build for localhost, then serve
 ```
+
+Sync auto-loads `credentials.json` from the repo root when no credential env vars are set.
 
 Open the URL `serve` prints (usually `http://localhost:3000`).
 
@@ -133,7 +136,7 @@ Production deploys use `basePath` from `site.config.json` (`/`) — do not set `
 
 `content/` and `public/` are generated locally and gitignored.
 
-Site styles are plain CSS with [native nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting) in `site/style.css` — no Sass or PostCSS step.
+Site styles are plain CSS with [native nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting), one folder per component under `templates/` (see [`scripts/GENERATOR.md`](scripts/GENERATOR.md)). `npm run build` discovers components and concatenates CSS into `public/style.css` — no Sass or PostCSS step. Shared icons are in `assets/` (e.g. `assets/chevrons/left.svg`).
 
 ## 7. Automation
 

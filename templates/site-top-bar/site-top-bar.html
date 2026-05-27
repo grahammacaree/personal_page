@@ -1,0 +1,24 @@
+<header class="site-top{{#topBarHidden}} site-top--hidden{{/topBarHidden}}">
+  <nav class="site-top-nav" aria-label="Site">
+    <div class="site-top-nav-start">
+      {{#leftNavBack}}
+      <a href="{{backHref}}" class="page-back" aria-label="Back to home">
+        {{backChevron}}
+        <span>Back</span>
+      </a>
+      {{/leftNavBack}}
+      {{^leftNavBack}}
+      <span class="site-brand">{{siteName}}</span>
+      {{/leftNavBack}}
+    </div>
+    <div class="site-top-nav-end">
+      <a href="{{contactHref}}">Contact</a>
+      {{#cvNavLink}}
+      <a href="{{cvHref}}">CV</a>
+      {{/cvNavLink}}
+      {{#cvNavCurrent}}
+      <span class="site-nav-current" aria-current="page">CV</span>
+      {{/cvNavCurrent}}
+    </div>
+  </nav>
+</header>

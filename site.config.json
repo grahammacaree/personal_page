@@ -2,5 +2,86 @@
   "basePath": "/",
   "name": "Graham MacAree",
   "email": "hi@grahammacaree.com",
-  "home": ["intro", "thesis", "me"]
+  "home": {
+    "output": "index.html",
+    "pageType": "home",
+    "sections": ["intro", "thesis"]
+  },
+  "chrome": {
+    "components": {
+      "topBar": "site-top-bar",
+      "footer": "site-footer"
+    },
+    "docRefs": {
+      "cv": "cv",
+      "about": "about"
+    },
+    "assets": {
+      "backChevron": "chevrons/left.svg"
+    }
+  },
+  "docTypes": {
+    "intro": {
+      "section": "intro",
+      "contentPath": "{slug}.html",
+      "publish": false
+    },
+    "thesis": {
+      "section": "document",
+      "sectionId": "thesis",
+      "contentPath": "{slug}.html",
+      "publish": false,
+      "endmark": true
+    },
+    "story": {
+      "section": "document",
+      "contentPath": "stories/{slug}.html",
+      "publishPath": "stories/{slug}.html",
+      "publish": true,
+      "pageType": "default",
+      "endmark": true
+    },
+    "cv": {
+      "section": "document",
+      "sectionStyles": ["cv"],
+      "contentPath": "{slug}.html",
+      "publishPath": "{slug}.html",
+      "publish": true,
+      "pageType": "cv"
+    },
+    "about": {
+      "section": "document",
+      "contentPath": "{slug}.html",
+      "publishPath": "{slug}.html",
+      "publish": true,
+      "pageType": "about"
+    }
+  },
+  "pageTypes": {
+    "home": {
+      "layout": "home",
+      "title": "siteName",
+      "bodyClass": "body--home",
+      "topBarHidden": true,
+      "leftNav": "brand",
+      "cvNav": "link",
+      "scripts": ["nav.js"]
+    },
+    "default": {
+      "layout": "page",
+      "title": "docTitle",
+      "leftNav": "back",
+      "cvNav": "link",
+      "aboutLink": true
+    },
+    "cv": {
+      "extends": "default",
+      "cvNav": "current",
+      "aboutLink": true
+    },
+    "about": {
+      "extends": "default",
+      "aboutLink": false
+    }
+  }
 }

@@ -1,0 +1,23 @@
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.625rem 0;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.8rem;
+
+  & .site-footer-copy {
+    margin: 0;
+  }
+
+  & .site-footer-about {
+    flex-shrink: 0;
+    box-shadow: var(--link-shadow);
+
+    &:hover {
+      box-shadow: var(--link-shadow-hover);
+    }
+  }
+}

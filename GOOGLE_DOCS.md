@@ -10,13 +10,12 @@ Create one Doc per row in `docs.manifest.json`. A dedicated Drive folder keeps t
 | 2 | Baseball Potato | `baseball-potato` | `story` | `/stories/baseball-potato.html` |
 | 3 | The Dark Side of the Moon | `dark-side-of-the-moon` | `story` | `/stories/dark-side-of-the-moon.html` |
 | 4 | Thesis | `thesis` | `thesis` | Homepage (`/`) only |
-| 5 | me | `me` | `me` | Homepage (`/`) only |
-| 6 | CV | `cv` | `cv` | `/cv.html` |
-| 7 | About this site | `about-this-site` | `about` | `/about-this-site.html` |
+| 5 | CV | `cv` | `cv` | `/cv.html` |
+| 6 | About this site | `about-this-site` | `about` | `/about-this-site.html` |
 
 Full paths use your `basePath`, e.g. `https://grahammacaree.com/stories/baseball-potato.html`.
 
-Homepage section order is set in `site.config.json` (`home`: `intro`, `thesis`, `me`). Contact is a **mailto** link in the top bar (from `email` in site config), not a separate page.
+Homepage section order is set in `site.config.json` → `home.sections` (`intro`, `thesis`). Contact is a **mailto** link in the top bar (from `email` in site config), not a separate page.
 
 ## 1. Introduction (homepage)
 
@@ -29,6 +28,8 @@ Stories on this site:
 • Baseball Potato — link to the Baseball Potato doc
 • The Dark Side of the Moon — link to that doc
 ```
+
+Put contact / CV links here if you want them on the homepage (there is no separate “me” block anymore).
 
 **Linking between your docs:** In Google Docs, use **Insert → Link** and pick another doc (or paste its `docs.google.com/document/d/…` URL). On build, those URLs are rewritten to the correct site paths using the ids in `docs.manifest.json` — no need to hand-maintain `github.io` URLs in the doc. External links pasted via Google’s redirect wrapper are cleaned to the real URL at build time.
 
@@ -79,15 +80,7 @@ What should the reader think or do differently?
 
 The build adds a square **endmark** after the last word of the final paragraph on thesis and story pages.
 
-## 5. me (homepage)
-
-Short closing block: who you are, invitation to get in touch, link to CV. Use a **mailto** link for email (same address as `site.config.json` → `email`).
-
-```
-My name is … I collect stories. … get in touch … check out my CV.
-```
-
-## 6. CV
+## 5. CV
 
 ```
 # Name
@@ -106,7 +99,7 @@ Short; only what you’d stand behind in conversation.
 
 Use Google heading styles so the build maps sections to `<h2>` (sections), `<h4>` (employer), `<h5>` (role). See formatting rules below.
 
-## 7. About this site
+## 6. About this site
 
 Optional meta page: how the site is built (Google Docs → sync → static HTML). Linked from the footer. Not part of the homepage.
 

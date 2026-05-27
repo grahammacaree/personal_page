@@ -1,6 +1,6 @@
 # grahammacaree.com — site source
 
-Source for [grahammacaree.com](https://grahammacaree.com): a static personal site whose prose lives in Google Docs and is built with a small Node pipeline.
+Source for [grahammacaree.com](https://grahammacaree.com): a **lightweight static site generator** whose prose lives in **Google Docs** and builds to plain HTML.
 
 You do **not** need this repo, Node, or Google credentials to **read** the site.
 
@@ -8,10 +8,12 @@ You do **not** need this repo, Node, or Google credentials to **read** the site.
 
 | Path | Purpose |
 |------|---------|
-| `scripts/` | Sync (Google Drive export) and static HTML build |
-| `templates/`, `site/` | Page shell, CSS, favicon, homepage nav script |
-| `docs.manifest.json` | Maps each Google Doc → slug and page type |
-| `site.config.json` | Site name, contact email, homepage section order |
+| `scripts/` | Sync (Google Drive export) + static build |
+| `site.config.json` | Generator config — `home`, `chrome`, `docTypes`, `pageTypes` |
+| `docs.manifest.json` | Google Doc id, slug, title, and type per document |
+| `templates/<component>/` | One folder per component (`*.html`, `*.css`, `component.json`) |
+| `assets/` | Shared SVGs (e.g. `chevrons/left.svg`) |
+| `site/` | Favicon, homepage nav script, `CNAME` |
 | `.github/workflows/site.yml` | CI: sync, build, deploy to GitHub Pages |
 
 Generated folders (`content/`, `public/`) are not committed; Actions builds `public/` on each deploy.
@@ -32,6 +34,8 @@ A full content sync requires maintainer credentials — see [`SETUP.md`](SETUP.m
 
 ## Maintainer docs
 
+- [`scripts/GENERATOR.md`](scripts/GENERATOR.md) — how config, components, and routes fit together
+- [`scripts/BUILD.md`](scripts/BUILD.md) — commands and pipeline steps
 - [`SETUP.md`](SETUP.md) — service account, GitHub secret, Pages, custom domain
 - [`GOOGLE_DOCS.md`](GOOGLE_DOCS.md) — how site content is split across Docs (authoring)
 - [`SECURITY.md`](SECURITY.md) — secrets and Doc IDs

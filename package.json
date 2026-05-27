@@ -6,7 +6,8 @@
     "sync": "node scripts/sync-docs.mjs",
     "build": "node scripts/build.mjs",
     "site": "npm run sync && npm run build",
-    "preview": "BASE_PATH=/ npm run build && npx --yes serve public"
+    "preview": "BASE_PATH=/ npm run build && npx --yes serve public",
+    "test": "node --test scripts/lib/html.test.mjs"
   },
   "engines": {
     "node": ">=20"

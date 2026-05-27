@@ -1,0 +1,13 @@
+:root {
+  --bg: #faf5f4;
+  --text: #1a1a1a;
+  --muted: #5c5c5c;
+  --accent: #ddb8ad;
+  --accent-bar: var(--accent);
+  --rule: #ddd8d0;
+  --measure: 30rem;
+  --top-bar-height: 2.75rem;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --link-shadow: inset 0 -0.08em 0 currentColor;
+  --link-shadow-hover: inset 0 -0.42em 0 var(--accent-bar);
+}

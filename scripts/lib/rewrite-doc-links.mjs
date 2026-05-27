@@ -1,10 +1,9 @@
 import * as cheerio from "cheerio";
-import { publicRelPath } from "./content-path.mjs";
+import { PLACEHOLDER } from "./constants.mjs";
+import { publishPathForDoc } from "./site-config.mjs";
 
 /** Google doc id in /document/d/ID or /document/u/0/d/ID paths */
 const DOC_ID = /\/document(?:\/u\/\d+)?\/d\/([a-zA-Z0-9_-]+)/;
-
-import { PLACEHOLDER } from "./constants.mjs";
 
 function unwrapGoogleRedirect(href) {
   try {
@@ -26,11 +25,11 @@ function extractDocId(href) {
 }
 
 /** Map manifest doc ids → site paths; rewrite <a href> from Google Docs URLs. */
-export function buildDocUrlMap(docs, basePath) {
+export function buildDocUrlMap(docs, basePath, siteConfig) {
   const map = new Map();
   for (const doc of docs) {
     if (!doc.id || doc.id === PLACEHOLDER) continue;
-    const rel = publicRelPath(doc);
+    const rel = publishPathForDoc(siteConfig, doc);
     map.set(doc.id, rel == null ? basePath : `${basePath}${rel}`);
   }
   return map;

@@ -1,0 +1,15 @@
+body.body--home {
+  padding-top: 0;
+
+  .site-main {
+    width: 100%;
+    max-width: none;
+  }
+
+  .doc:not(.doc--intro) {
+    width: 90vw;
+    max-width: var(--measure);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

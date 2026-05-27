@@ -1,0 +1,51 @@
+.doc.doc--intro {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow-y: hidden;
+  padding-top: 0;
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .intro-wrap {
+    width: 90vw;
+    max-width: var(--measure);
+    margin: 0 auto;
+  }
+
+  .intro-body {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 100svh up from 2rem below intro copy — IO target (svh = small/stable on mobile) */
+  .intro-nav-sentinel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2rem;
+    height: 100vh;
+    height: 100svh;
+    pointer-events: none;
+  }
+
+  .intro-scroll-hint {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 2rem);
+    transform: translateX(-50%);
+    width: 3rem;
+    color: var(--accent);
+    box-shadow: none;
+    pointer-events: none;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+}
