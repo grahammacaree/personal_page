@@ -8,10 +8,10 @@ Personal site at [grahammacaree.com](https://grahammacaree.com/). Writing includ
 
 ## Key pages
 
-- [/](https://grahammacaree.com/): An introduction and then an essay on stories and why they matter. Apple's decision to drop the headphone jack from the iPhone 7 launch is interrogated and then used to discuss the shortcomings of risk management's probabilistic approach.
+- [/](https://grahammacaree.com/): An essay on stories and why they matter. Apple's decision to drop the headphone jack from the iPhone 7 launch is interrogated and then used to discuss the shortcomings of the probabilistic approach to risk management and failure.
 - [/cv.html](https://grahammacaree.com/cv.html): Career highlights from 15+ years running technical and editorial teams. Includes the development of the legendary 17776 and creation of first public xG model (soccer).
 - [/about-this-site.html](https://grahammacaree.com/about-this-site.html): Architecture and tradeoffs of the static site generator Graham created to build this site. Also AI Policy — used for coding, not writing.
-- [/stories/baseball-potato.html](https://grahammacaree.com/stories/baseball-potato.html): When the grind of baseball got too much, Dave Bresnahan looked for answers in a surprising place. A prank that turns into a meditation on being stuck in almost-good-enough limbo.
+- [/stories/baseball-potato.html](https://grahammacaree.com/stories/baseball-potato.html): When the grind of baseball got too much, Dave Bresnahan looked for answers in a surprising place. A farce which becomes a meditation on reclaiming agency while being stuck limbo.
 - [/stories/dark-side-of-the-moon.html](https://grahammacaree.com/stories/dark-side-of-the-moon.html): The moon is 15km thicker on one side than the other — how does something like that happen? Discussion of a recent theory in planetary science pivoting into the more general question of what it means to know anything.
 
 ## Source
