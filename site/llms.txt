@@ -1,19 +1,19 @@
 # Graham MacAree
 
-> This is the personal site of Graham MacAree — engineer, editor and analyst. Essays, CV, and notes on the custom tooling used in development.
+> This is the personal site of Graham MacAree — engineering leader, editor and analyst. Essays, CV, and notes on the custom tooling used in development.
 
 ## About
 
-Personal site at [grahammacaree.com](https://grahammacaree.com/). Writing includes long-form essays and a professional CV. The site was built using a custom static generator (Google Docs → sync → HTML), deployed on GitHub Pages. Generator code is open source; essay text is not licensed for reuse.
+Personal site at [grahammacaree.com](https://grahammacaree.com/). Writing includes long-form essays and a professional CV listing career accomplishments. The site was built using a custom static generator (Google Docs → sync → HTML), deployed on GitHub Pages, with repo linked from the site. Generator code is open source; essay text is not licensed for reuse.
 
 ## Key pages
 
-- [Home](https://grahammacaree.com/): Stories and why they matter, even in fields you might not expect
-- [CV](https://grahammacaree.com/cv.html): Career highlights from 15+ years running technical and editorial teams
-- [How this website was built](https://grahammacaree.com/about-this-site.html): Architecture and tradeoffs of the static site generator created for this site
-- [Baseball’s great potato caper](https://grahammacaree.com/stories/baseball-potato.html): when the grind of baseball got too much, Dave Bresnahan looked for answers in a surprising place
-- [Why is the far side of the moon so weird?](https://grahammacaree.com/stories/dark-side-of-the-moon.html): the moon is 15km thicker on one side than the other — how does something like that happen?
+- [/](https://grahammacaree.com/): An introduction and then an essay on stories and why they matter. Apple's decision to drop the headphone jack from the iPhone 7 launch is interrogated and then used to discuss the shortcomings of risk management's probabilistic approach.
+- [/cv.html](https://grahammacaree.com/cv.html): Career highlights from 15+ years running technical and editorial teams. Includes the development of the legendary 17776 and creation of first public xG model (soccer).
+- [/about-this-site.html](https://grahammacaree.com/about-this-site.html): Architecture and tradeoffs of the static site generator Graham created to build this site. Also AI Policy — used for coding, not writing.
+- [/stories/baseball-potato.html](https://grahammacaree.com/stories/baseball-potato.html): When the grind of baseball got too much, Dave Bresnahan looked for answers in a surprising place. A prank that turns into a meditation on being stuck in almost-good-enough limbo.
+- [/stories/dark-side-of-the-moon.html](https://grahammacaree.com/stories/dark-side-of-the-moon.html): The moon is 15km thicker on one side than the other — how does something like that happen? Discussion of a recent theory in planetary science pivoting into the more general question of what it means to know anything.
 
 ## Source
 
-- [GitHub repository](https://github.com/grahammacaree/personal_page): generator, templates, and build scripts (MIT). Essays are all rights reserved.
+- [GitHub Repository](https://github.com/grahammacaree/personal_page): Generator, templates, and build scripts (MIT). Essays are all rights reserved.
