@@ -100,6 +100,9 @@ export function resolvePageType(siteConfig, typeName) {
 export function homePageHref(page, { siteConfig, basePath }) {
   const base = normalizeBasePath(basePath);
   const homeOut = homeRouteConfig(siteConfig).output;
+  if (homeOut === "index.html") {
+    return base;
+  }
   const depth = page.output.split("/").length - 1;
   if (base !== "/" || depth === 0) {
     return `${base}${homeOut}`;
