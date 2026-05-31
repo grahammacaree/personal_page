@@ -42,6 +42,7 @@ test("build writes core public artifacts", async () => {
   await access(path.join(root, "public/llms.txt"));
   await access(path.join(root, "public/sitemap.xml"));
   await access(path.join(root, "public/robots.txt"));
+  await access(path.join(root, "public/favicon-48.png"));
 
   for (const doc of manifest.documents ?? []) {
     const output = publishPathForDoc(siteConfig, doc);
@@ -58,4 +59,5 @@ test("build writes core public artifacts", async () => {
   );
   assert.match(indexHtml, /<link rel="canonical" href="https:\/\/grahammacaree\.com\/"/);
   assert.match(indexHtml, /"@type":"Person"/);
+  assert.match(indexHtml, /favicon-48\.png" type="image\/png" sizes="48x48"/);
 });

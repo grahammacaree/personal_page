@@ -2,6 +2,7 @@ import { copyFile, cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadAssets } from "./lib/assets.mjs";
+import { FAVICON_PNG_NAME, writeFaviconPng } from "./lib/favicon-png.mjs";
 import { buildAllSections } from "./lib/doc-section.mjs";
 import { discoverComponents } from "./lib/discover-components.mjs";
 import { planPages } from "./lib/pages.mjs";
@@ -70,6 +71,11 @@ async function main() {
   for (const asset of STATIC_ASSETS) {
     await copyFile(path.join(siteDir, asset), path.join(publicDir, asset));
   }
+
+  await writeFaviconPng(
+    path.join(siteDir, "favicon.svg"),
+    path.join(publicDir, FAVICON_PNG_NAME)
+  );
 
   await cp(repoAssetsDir, path.join(publicDir, "assets"), { recursive: true });
 
