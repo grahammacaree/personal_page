@@ -12,24 +12,6 @@
   "courses": [
     {
       "status": "currently",
-      "title": "Linear Algebra",
-      "href": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/",
-      "instructor": "Gilbert Strang",
-      "year": 2005,
-      "summary": [
-        "Matrix operations and elimination",
-        "Vector spaces and fundamental subspaces",
-        "Orthogonality, determinants and matrix geometry",
-        "Eigenvalues, eigenvectors and linear transforms",
-        "Singular Value Decomposition"
-      ],
-      "repo": null,
-      "pdf": "linear-algebra.pdf",
-      "notebookUuid": "c523ad76-6398-4aff-beae-3f06718f2613",
-      "notebookName": "Linear Algebra"
-    },
-    {
-      "status": "currently",
       "title": "Learning from Data",
       "href": "https://work.caltech.edu/telecourse.html",
       "instructor": "Yaser Abu-Mostafa",
@@ -45,6 +27,24 @@
       "pdf": "learning-from-data.pdf",
       "notebookUuid": "6849f12b-0129-467f-b06a-d38335812ced",
       "notebookName": "Lfd"
+    },
+    {
+      "status": "currently",
+      "title": "Linear Algebra",
+      "href": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/",
+      "instructor": "Gilbert Strang",
+      "year": 2005,
+      "summary": [
+        "Matrix operations and elimination",
+        "Vector spaces and fundamental subspaces",
+        "Orthogonality, determinants and matrix geometry",
+        "Eigenvalues, eigenvectors and linear transforms",
+        "Singular Value Decomposition"
+      ],
+      "repo": null,
+      "pdf": "linear-algebra.pdf",
+      "notebookUuid": "c523ad76-6398-4aff-beae-3f06718f2613",
+      "notebookName": "Linear Algebra"
     }
   ]
 }
