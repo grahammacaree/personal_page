@@ -2,9 +2,6 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { parseReadingEntries, renderReadingEntries } from "./parse-reading.mjs";
 import { cleanGoogleHtml } from "./clean-google-html.mjs";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 
 const sampleBlank = `
 <p>The History of Early Rome</p>
@@ -90,10 +87,11 @@ test("hr also separates entries", () => {
   assert.match(entries[1].notesHtml, /long review/);
 });
 
-test("synced reading.html parses into two homepage entries", async () => {
-  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-  const raw = await readFile(path.join(root, "content/reading.html"), "utf8");
-  const entries = parseReadingEntries(cleanGoogleHtml(raw));
+test("synced reading.html shape parses into two homepage entries", () => {
+  // Mirror of content/reading.html after sync (content/ is gitignored — CI never has it).
+  const synced = `<h2>The History of Early Rome</h2><p>Titus Livius</p><p>tr. Aubrey de Sélincourt</p><h2>Bartleby, the Scrivener</h2><p>Herman Melville</p><p>One of the most highly-regarded and certainly the most famous of Melville’s short stories. The titular Bartleby shows up in a prissy lawyer’s office and becomes an ever-present scribe while doing less and less work, on account of preferring not to. </p><p>This is a bizarre psychological exploration of alienation, and if you’ll forgive the heresy I don’t think it’s as good as its reputation. We don’t get the depth we need for a character sketch of Bartleby, and although the narrator is fleshed out he’s weak and lazy, which is not enormously interesting.</p><p>It’s still good, because it’s Melville, but it reads more like a call for help than a <em>great</em>&nbsp;short story. Send Herman (and Bartleby) to sea post-haste.</p>
+`;
+  const entries = parseReadingEntries(cleanGoogleHtml(synced));
   assert.equal(entries.length, 2);
   assert.equal(entries[0].title, "The History of Early Rome");
   assert.equal(entries[1].title, "Bartleby, the Scrivener");
