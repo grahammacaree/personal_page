@@ -16,6 +16,10 @@ body.body--studies {
   margin-right: auto;
   margin-bottom: 2rem;
 
+  > :first-child {
+    margin-top: 2rem;
+  }
+
   p {
     margin: 0 0 1rem;
   }
