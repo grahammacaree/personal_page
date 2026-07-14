@@ -21,7 +21,7 @@ const siteDir = path.join(root, "site");
 const repoAssetsDir = path.join(root, "assets");
 const templatesDir = path.join(root, "templates");
 
-const STATIC_ASSETS = ["nav.js", "CNAME", "favicon.svg", "llms.txt", "robots.txt"];
+const STATIC_ASSETS = ["nav.js", "studies.js", "CNAME", "favicon.svg", "llms.txt", "robots.txt"];
 
 async function main() {
   const siteConfig = JSON.parse(
@@ -78,6 +78,13 @@ async function main() {
   );
 
   await cp(repoAssetsDir, path.join(publicDir, "assets"), { recursive: true });
+
+  const studiesDir = path.join(root, "studies");
+  try {
+    await cp(studiesDir, path.join(publicDir, "studies"), { recursive: true });
+  } catch (err) {
+    if (err.code !== "ENOENT") throw err;
+  }
 
   const siteCss = await buildSiteStyles(templatesDir, registry.cssOrder);
   await writeFile(path.join(publicDir, "style.css"), siteCss, "utf8");

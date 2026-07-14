@@ -10,7 +10,7 @@
   "home": {
     "output": "index.html",
     "pageType": "home",
-    "sections": ["intro", "thesis"]
+    "sections": ["intro", "thesis", "reading"]
   },
   "chrome": {
     "components": {
@@ -19,7 +19,8 @@
     },
     "docRefs": {
       "cv": "cv",
-      "about": "about"
+      "about": "about",
+      "studies": "studies"
     },
     "assets": {
       "backChevron": "chevrons/left.svg"
@@ -60,6 +61,20 @@
       "publishPath": "{slug}.html",
       "publish": true,
       "pageType": "about"
+    },
+    "reading": {
+      "section": "reading",
+      "contentPath": "{slug}.html",
+      "publish": false,
+      "parse": "reading"
+    },
+    "studies": {
+      "section": "studies",
+      "contentPath": "{slug}.html",
+      "publishPath": "{slug}.html",
+      "publish": true,
+      "pageType": "studies",
+      "parse": "studies"
     }
   },
   "pageTypes": {
@@ -70,6 +85,7 @@
       "topBarHidden": true,
       "leftNav": "brand",
       "cvNav": "link",
+      "studiesNav": "link",
       "scripts": ["nav.js"]
     },
     "default": {
@@ -77,17 +93,27 @@
       "title": "docTitle",
       "leftNav": "back",
       "cvNav": "link",
+      "studiesNav": "link",
       "aboutLink": true,
       "scripts": ["nav.js"]
     },
     "cv": {
       "extends": "default",
       "cvNav": "current",
+      "studiesNav": "link",
       "aboutLink": true
     },
     "about": {
       "extends": "default",
       "aboutLink": false
+    },
+    "studies": {
+      "extends": "default",
+      "bodyClass": "body--studies",
+      "cvNav": "link",
+      "studiesNav": "current",
+      "aboutLink": true,
+      "scripts": ["nav.js", "studies.js"]
     }
   }
 }

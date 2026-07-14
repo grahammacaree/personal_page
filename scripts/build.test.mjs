@@ -43,6 +43,9 @@ test("build writes core public artifacts", async () => {
   await access(path.join(root, "public/sitemap.xml"));
   await access(path.join(root, "public/robots.txt"));
   await access(path.join(root, "public/favicon-48.png"));
+  await access(path.join(root, "public/studies/linear-algebra.pdf"));
+  await access(path.join(root, "public/studies/learning-from-data.pdf"));
+  await access(path.join(root, "public/studies.html"));
 
   for (const doc of manifest.documents ?? []) {
     const output = publishPathForDoc(siteConfig, doc);

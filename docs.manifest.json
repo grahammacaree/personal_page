@@ -39,6 +39,19 @@
       "title": "How this website was built",
       "type": "about",
       "description": "The architecture and technical tradeoffs of a lightweight, custom static site generator"
+    },
+    {
+      "id": "1VJYR2ynsNs1JCfz5lc6ja0clVDcsJceSC_24pC35eeY",
+      "slug": "reading",
+      "title": "Reading",
+      "type": "reading"
+    },
+    {
+      "id": "15kn9auGRqRIQ6zViyblnDxrjRm-hiHq9aAQaeEuu_NE",
+      "slug": "studies",
+      "title": "Studies",
+      "type": "studies",
+      "description": "Course notes from a year of rebuilding my maths foundations — problem sets included."
     }
   ]
 }

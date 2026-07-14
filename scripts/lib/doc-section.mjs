@@ -3,8 +3,20 @@ import path from "node:path";
 import { cleanGoogleHtml } from "./clean-google-html.mjs";
 import { applyEndmarkToLastParagraph } from "./endmark.mjs";
 import { renderTemplate } from "./html.mjs";
+import {
+  parseReadingEntries,
+  renderReadingEntries,
+} from "./parse-reading.mjs";
+import {
+  loadStudiesConfig,
+  renderStudiesSection,
+} from "./parse-studies.mjs";
 import { rewriteDocLinks } from "./rewrite-doc-links.mjs";
-import { contentPathForDoc, docTypeConfig } from "./site-config.mjs";
+import {
+  contentPathForDoc,
+  docTypeConfig,
+  normalizeBasePath,
+} from "./site-config.mjs";
 
 async function readContent(contentDir, relPath) {
   try {
@@ -46,6 +58,18 @@ export async function buildDocSection(
   const raw = await readContent(contentDir, contentPathForDoc(siteConfig, doc));
   const cleaned = raw ? cleanGoogleHtml(raw) : "";
   let html = rewriteDocLinks(cleaned, docUrlById);
+
+  if (docTypeCfg.parse === "reading") {
+    html = renderReadingEntries(parseReadingEntries(html));
+  }
+
+  if (docTypeCfg.parse === "studies") {
+    const studies = await loadStudiesConfig();
+    const basePath = normalizeBasePath(siteConfig.basePath ?? "/");
+    html = renderStudiesSection(html, studies, basePath, {
+      externalLinkIcon: assets["icons/external-link.svg"] ?? "",
+    });
+  }
 
   if (docTypeCfg.endmark) {
     html = applyEndmarkToLastParagraph(html);

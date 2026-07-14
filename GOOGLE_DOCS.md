@@ -12,10 +12,12 @@ Create one Doc per row in `docs.manifest.json`. A dedicated Drive folder keeps t
 | 4 | Thesis | `thesis` | `thesis` | Homepage (`/`) only |
 | 5 | CV | `cv` | `cv` | `/cv.html` |
 | 6 | About this site | `about-this-site` | `about` | `/about-this-site.html` |
+| 7 | Reading | `reading` | `reading` | Homepage (`/`) only — top two entries |
+| 8 | Studies | `studies` | `studies` | `/studies.html` — intro + course grid |
 
 Full paths use your `basePath`, e.g. `https://grahammacaree.com/stories/baseball-potato.html`.
 
-Homepage section order is set in `site.config.json` → `home.sections` (`intro`, `thesis`). Contact is a **mailto** link in the top bar (from `email` in site config), not a separate page.
+Homepage section order is set in `site.config.json` → `home.sections` (`intro`, `thesis`, `reading`). Contact is a **mailto** link in the top bar (from `email` in site config), not a separate page. The top bar also links to **CV** and **Studies**.
 
 ## 1. Introduction (homepage)
 
@@ -103,11 +105,50 @@ Use Google heading styles so the build maps sections to `<h2>` (sections), `<h4>
 
 Optional meta page: how the site is built (Google Docs → sync → static HTML). Linked from the footer. Not part of the homepage.
 
+## 7. Reading (homepage)
+
+Personal reading log. The site only shows the **top two entries** on the homepage (under the thesis): **Currently reading** then **Last read**. Everything below that stays in the Doc as your archive — the build ignores it.
+
+Put the book you’re reading now at the top. When you finish it, write the note under it and add the new current book above.
+
+```
+Title
+Author
+[optional short line — translator, edition, etc.]
+
+← blank line between entries
+
+Title
+Author
+
+Review paragraphs…
+
+← blank line
+
+Older entries… (site ignores these)
+```
+
+**Currently reading** (first entry): title, author, and short meta lines only — review text is not shown even if present.
+
+**Last read** (second entry): title, author, meta, plus the review paragraphs.
+
+Separate entries with a **blank line**, a **horizontal rule**, or by using Google’s **Title / Heading** style on each book title (the build treats each heading as a new entry). Optional short lines after the author (e.g. `tr. …`) show as meta.
+
+## 8. Studies
+
+Intro copy for `/studies.html`. The course cards (status, title, instructor, year, summary bullets, PDF, optional repo) come from `studies.config.json` in the repo — **do not** try to layout the course grid in the Doc.
+
+```
+Title: Studies
+
+A short paragraph or two on why you’re doing the maths courses / what this page is.
+```
+
 ## Formatting rules
 
 - **Visible title on the page:** use Google’s **Title** or **Heading 1** style on the first line. The build promotes large/bold styled lines to `<h1>` (and section headings to `<h2>` / `<h3>`). Normal body text stays `<p>`.
-- **Browser tab title** comes from `docs.manifest.json` (`title` field) for pages that get their own URL (stories, CV, about). Homepage tab title is `site.config.json` → `name`.
-- **Search / link preview blurb:** `site.config.json` → `description` for the homepage. For stories, CV, and about, optional `description` on that row in `docs.manifest.json`. Intro and thesis are homepage-only — no manifest description needed. Not synced from Google Docs.
+- **Browser tab title** comes from `docs.manifest.json` (`title` field) for pages that get their own URL (stories, CV, about, studies). Homepage tab title is `site.config.json` → `name`.
+- **Search / link preview blurb:** `site.config.json` → `description` for the homepage. For stories, CV, about, and studies, optional `description` on that row in `docs.manifest.json`. Intro and thesis are homepage-only — no manifest description needed. Not synced from Google Docs.
 - A strong opening line in normal text (e.g. a question hook) will correctly stay a paragraph — only styled title/heading lines become `<h1>`.
 - Avoid text boxes, comments, heavy tables.
 - Links and bold/italic export fine.

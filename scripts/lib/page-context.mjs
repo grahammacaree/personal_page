@@ -65,7 +65,7 @@ function topBarVars(page, ctx) {
   const chrome = chromeConfig(ctx.siteConfig);
   const leftNavBack = pt.leftNav === "back";
   const cvHref = publishedDocHrefFromCtx(ctx, "cv");
-  const aboutHref = publishedDocHrefFromCtx(ctx, "about");
+  const studiesHref = publishedDocHrefFromCtx(ctx, "studies");
 
   return {
     topBarHidden: !!pt.topBarHidden,
@@ -79,6 +79,10 @@ function topBarVars(page, ctx) {
     cvNavLink: pt.cvNav !== false && pt.cvNav !== "current" && !!cvHref,
     cvHref,
     cvNavCurrent: pt.cvNav === "current",
+    studiesNavLink:
+      pt.studiesNav !== false && pt.studiesNav !== "current" && !!studiesHref,
+    studiesHref,
+    studiesNavCurrent: pt.studiesNav === "current",
   };
 }
 

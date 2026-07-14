@@ -54,6 +54,7 @@ Each manifest `type` must have a `docTypes` entry:
 | `endmark` | Append endmark to last paragraph |
 | `sectionId` | Optional `id` on `<section>` |
 | `sectionStyles` | Extra CSS-only components (e.g. `cv` styles on `document` markup) |
+| `parse` | Optional post-clean transform (e.g. `reading` — keep top two log entries) |
 
 ### `pageTypes` — chrome slots
 

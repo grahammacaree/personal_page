@@ -147,3 +147,37 @@ Site styles are plain CSS with [native nesting](https://developer.mozilla.org/en
 | **Actions → Run workflow** | Same as cron — manual refresh |
 
 Edit a doc anytime; the live site updates on the next cron run (or push, or manual workflow run). No PDF exports, no manual copy-paste.
+
+## 8. Studies PDFs (reMarkable)
+
+Course notebook PDFs live in `studies/` and are published to `/studies/*.pdf`. Metadata is in `studies.config.json`.
+
+**Stack:** [RemarkableSync](https://github.com/JeffSteinbok/RemarkableSync) for Wi‑Fi SSH backup; local `rmrl` for `.rm` → PDF (with a small shim for firmware `formatVersion` 2 / `cPages` notebooks), then grayscale JPEG rasterisation (~150 dpi) so committed PDFs stay small. Tuning: `remarkable.pdfDpi` / `remarkable.pdfJpegQuality` in `studies.config.json`.
+
+### One-time setup
+
+1. RemarkableSync + rmrl are installed at  
+   `~/Library/Application Support/remarkablesync/venv/`
+2. Store the tablet SSH password:
+
+```bash
+bash scripts/setup-remarkable-ssh.sh
+```
+
+3. Confirm Wi‑Fi host in `studies.config.json` — use `"wifiHost": "auto"` (default) so each sync discovers the tablet even when DHCP moves the lease. Optional: set a specific IP/hostname as a hint. A DHCP reservation on the router is still nice-to-have but no longer required. Keep study notebooks in a tablet folder named in `remarkable.tabletFolder` (default `Studies`) so RemarkableSync does not pull the whole device.
+4. Install the weekday-evening LaunchAgent (Mon–Fri 19:00 local):
+
+```bash
+cp scripts/launchd/com.grahammacaree.sync-studies.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.grahammacaree.sync-studies.plist
+```
+
+### Manual runs
+
+| Command | What it does |
+|--------|----------------|
+| `npm run studies:sync` | Backup tablet → convert notebooks → update `studies/*.pdf` |
+| `npm run studies:push` | Same, then commit + push only if PDFs changed |
+| `npm run studies:sync -- --skip-backup` | Convert from the existing local backup only |
+
+GitHub Actions does **not** talk to the tablet; the LaunchAgent (or a manual `studies:push`) refreshes PDFs, and the usual Pages workflow publishes them on push.
