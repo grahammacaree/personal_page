@@ -41,6 +41,7 @@ A full content sync requires maintainer credentials — see [`SETUP.md`](SETUP.m
 - [`SETUP.md`](SETUP.md) — service account, GitHub Pages, custom domain, reMarkable → Drive
 - [`GOOGLE_DOCS.md`](GOOGLE_DOCS.md) — how site content is split across Docs (authoring)
 - [`SECURITY.md`](SECURITY.md) — secrets, Doc IDs, study PDF Drive folder
+- [`JOVIAN.md`](JOVIAN.md) — footer discs are Jupiter + the Galilean moons (real positions)
 
 ## License
 

@@ -41,8 +41,9 @@ Top-level fields: `name`, `email`, `basePath`, `url` (canonical origin for every
 | `components.footer` | Template folder for the footer |
 | `docRefs.cv` / `docRefs.about` | Manifest `type` used to resolve nav/footer links |
 | `assets.backChevron` | Asset path for the story back control |
+| `scripts` | Files under `site/` loaded on every page (before `pageTypes.*.scripts`) |
 
-Nav and footer URLs come from `docRefs` + `docTypes.*.publishPath` — not hardcoded in the build.
+Nav and footer URLs come from `docRefs` + `docTypes.*.publishPath` — not hardcoded in the build. Footer orbit discs: [`JOVIAN.md`](../JOVIAN.md).
 
 ### `docTypes` — content → section → URL
 

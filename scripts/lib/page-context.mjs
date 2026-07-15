@@ -99,6 +99,11 @@ function footerVars(page, ctx) {
   };
 }
 
+function allPageScripts(siteConfig, pageType) {
+  const chrome = chromeConfig(siteConfig);
+  return [...(chrome.scripts ?? []), ...(pageType.scripts ?? [])];
+}
+
 /** Template variables for the page layout shell. */
 export function layoutVars(page, ctx) {
   const basePath = normalizeBasePath(ctx.basePath);
@@ -116,7 +121,7 @@ export function layoutVars(page, ctx) {
     lastmod: lastmod ? escapeHtml(lastmod) : "",
     personJsonLd: personJsonLd(page, ctx),
     bodyClass: pt.bodyClass ?? "",
-    pageScripts: pageScriptsHtml(basePath, pt.scripts),
+    pageScripts: pageScriptsHtml(basePath, allPageScripts(ctx.siteConfig, pt)),
     body,
     topBar: topBarVars(page, ctx),
     footer: footerVars(page, ctx),

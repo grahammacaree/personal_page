@@ -72,3 +72,30 @@ test("published page falls back to site description", () => {
   };
   assert.equal(layoutVars(page, ctx).metaDescription, "Site blurb");
 });
+
+test("chrome scripts prepend pageType scripts", () => {
+  const withChromeScripts = {
+    ...ctx,
+    siteConfig: {
+      ...siteConfig,
+      chrome: {
+        ...siteConfig.chrome,
+        scripts: ["jovian.js"],
+      },
+    },
+  };
+  const page = {
+    pageType: {
+      title: "siteName",
+      layout: "page",
+      scripts: ["nav.js"],
+    },
+    sectionSlugs: ["intro"],
+    pageTitle: null,
+    output: "index.html",
+  };
+  assert.equal(
+    layoutVars(page, withChromeScripts).pageScripts,
+    '<script src="/jovian.js" defer></script>\n<script src="/nav.js" defer></script>'
+  );
+});

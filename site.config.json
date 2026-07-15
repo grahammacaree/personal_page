@@ -24,7 +24,8 @@
     },
     "assets": {
       "backChevron": "chevrons/left.svg"
-    }
+    },
+    "scripts": ["jovian.js"]
   },
   "docTypes": {
     "intro": {
