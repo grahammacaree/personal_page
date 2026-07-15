@@ -8,14 +8,18 @@ This repo is a small static site generator: **Google Docs are the CMS**, `docs.m
 Google Docs  ──sync──►  content/*.html  (raw fragments)
 docs.manifest.json      slug, title, type; optional description (published pages)
 site.config.json        docTypes + pageTypes + site chrome + description
+studies.config.json     course cards + reMarkable settings (studies page)
 templates/<name>/       component.html + component.css + component.json
 assets/                 shared SVGs, etc.
+studies/*.pdf           gitignored cache ← Drive sync or Mac convert
 
         npm run build
               │
               ▼
-         public/          static HTML + style.css + sitemap.xml
+         public/          static HTML + style.css + sitemap.xml + studies PDFs
 ```
+
+Commands: [`BUILD.md`](BUILD.md).
 
 ## Configuration (`site.config.json`)
 

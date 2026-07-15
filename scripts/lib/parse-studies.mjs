@@ -1,19 +1,11 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { escapeHtml } from "./html.mjs";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const defaultConfigPath = path.resolve(__dirname, "../../studies.config.json");
+export { loadStudiesConfig } from "./studies-config.mjs";
 
 const STATUS_LABEL = {
   currently: "Current courses",
   previously: "Previous courses",
 };
-
-export async function loadStudiesConfig(configPath = defaultConfigPath) {
-  return JSON.parse(await readFile(configPath, "utf8"));
-}
 
 function externalLink(href, icon, label) {
   if (!href) return "";

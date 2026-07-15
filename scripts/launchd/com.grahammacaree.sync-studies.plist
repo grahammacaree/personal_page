@@ -10,7 +10,7 @@
   <array>
     <string>/bin/bash</string>
     <string>/Users/grahammacaree/my-projects/apps/personal/scripts/sync-studies.sh</string>
-    <string>--push</string>
+    <string>--publish</string>
   </array>
   <key>StartCalendarInterval</key>
   <array>
@@ -18,7 +18,7 @@
       <key>Weekday</key>
       <integer>1</integer>
       <key>Hour</key>
-      <integer>19</integer>
+      <integer>14</integer>
       <key>Minute</key>
       <integer>0</integer>
     </dict>
@@ -26,7 +26,7 @@
       <key>Weekday</key>
       <integer>2</integer>
       <key>Hour</key>
-      <integer>19</integer>
+      <integer>14</integer>
       <key>Minute</key>
       <integer>0</integer>
     </dict>
@@ -34,7 +34,7 @@
       <key>Weekday</key>
       <integer>3</integer>
       <key>Hour</key>
-      <integer>19</integer>
+      <integer>14</integer>
       <key>Minute</key>
       <integer>0</integer>
     </dict>
@@ -42,7 +42,7 @@
       <key>Weekday</key>
       <integer>4</integer>
       <key>Hour</key>
-      <integer>19</integer>
+      <integer>14</integer>
       <key>Minute</key>
       <integer>0</integer>
     </dict>
@@ -50,7 +50,7 @@
       <key>Weekday</key>
       <integer>5</integer>
       <key>Hour</key>
-      <integer>19</integer>
+      <integer>14</integer>
       <key>Minute</key>
       <integer>0</integer>
     </dict>

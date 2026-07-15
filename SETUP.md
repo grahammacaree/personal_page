@@ -4,7 +4,7 @@
 
 Visitors see a static site. You edit Google Docs; a daily cron (and every push to `main`) exports them, builds HTML, and deploys.
 
-See [`SECURITY.md`](SECURITY.md) for secrets and Doc sharing.
+See [`SECURITY.md`](SECURITY.md) for secrets and Doc sharing. Commands: [`scripts/BUILD.md`](scripts/BUILD.md).
 
 ## 1. Google Cloud service account
 
@@ -83,7 +83,7 @@ You never commit `public/` to git. Actions builds it fresh each run.
 
 ## 5. Custom domain (`grahammacaree.com`)
 
-The build copies `site/CNAME` into `public/CNAME` so GitHub Pages knows the custom hostname.
+The build copies `site/CNAME` into `public/CNAME` so GitHub Pages knows the custom hostname. (With Actions publishing, the domain is owned in **Settings → Pages**; keep `site/CNAME` in sync anyway.)
 
 1. **GitHub** — repo **Settings → Pages → Custom domain** → enter `grahammacaree.com` → Save. Enable **Enforce HTTPS** when DNS has propagated.
 2. **DNS** (at your registrar), for the apex domain GitHub expects **A** records (not a CNAME on `@`):
@@ -95,89 +95,75 @@ The build copies `site/CNAME` into `public/CNAME` so GitHub Pages knows the cust
    | A | `@` | `185.199.110.153` |
    | A | `@` | `185.199.111.153` |
 
-3. Optional **www** — add `CNAME` `www` → `grahammacaree.github.io`, then set that host as a second custom domain or redirect in GitHub/DNS.
+   Optional matching **AAAA**s (GitHub’s documented IPv6 set) and `www` → `CNAME` → `grahammacaree.github.io`.
 
 After DNS propagates, the site is served at the domain root; internal links use `basePath: "/"` from `site.config.json`.
 
-### Ongoing deploys (no manual steps)
+### Ongoing deploys
 
 | You do | GitHub does |
 |--------|-------------|
-| Push to `main` | Runs **Sync and deploy** → new site |
-| Wait for daily cron | Same |
+| Push to `main` | **Sync and deploy** → new site |
+| Daily cron (14:00 UTC) | Same (sync required) |
 | **Actions → Run workflow** | Same (handy after editing a Doc) |
 
 ### If something fails
 
-- **Actions** tab → failed run → read the `build` or `deploy` log.  
-- No workflow listed? `.github/workflows/site.yml` isn’t on `main` yet.  
-- `build` ok, `deploy` pending? Approve the **github-pages** environment.  
-- Pages URL 404? Wait a minute after first green deploy; check **Settings → Pages** for the exact link.
+- **Actions** tab → failed run → `build` or `deploy` log.
+- No workflow listed? `.github/workflows/site.yml` isn’t on `main` yet.
+- `build` ok, `deploy` pending? Approve the **github-pages** environment.
+- Pages URL 404? Wait a minute after first green deploy; check **Settings → Pages**.
+- Site intermittently unreachable / TLS hangs to `185.199.*` while `github.com` works? Often a **VPN** or flaky route to the Pages/Fastly edge — try without VPN before debugging DNS.
 
 ## 6. Local preview
 
-Production builds use `basePath: "/"` (same as `grahammacaree.com`). `npm run preview` also sets `BASE_PATH=/` when serving locally.
-
-**Use the preview script** (builds with `BASE_PATH=/` so links and CSS match localhost):
-
 ```bash
 npm ci
-# Place service-account JSON at ./credentials.json (gitignored), or:
-# export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/credentials.json"
-npm run site          # optional: sync + production-path build
-npm run preview       # build for localhost, then serve
+# credentials.json in repo root (gitignored), or GOOGLE_APPLICATION_CREDENTIALS
+npm run site      # optional: sync + build
+npm run preview   # BASE_PATH=/ build + serve public/
 ```
 
-Sync auto-loads `credentials.json` from the repo root when no credential env vars are set.
+Full command list: [`scripts/BUILD.md`](scripts/BUILD.md). Styles: component CSS under `templates/` ([`scripts/GENERATOR.md`](scripts/GENERATOR.md)) → `public/style.css`.
 
-Open the URL `serve` prints (usually `http://localhost:3000`).
+## 7. Studies PDFs (reMarkable → Drive)
 
-Production deploys use `basePath` from `site.config.json` (`/`) — do not set `BASE_PATH` in the workflow unless you are testing a subpath build.
+Handwritten notebooks convert on the Mac, upload to a **Google Drive folder**, then Actions syncs them into `studies/` at build time (same pattern as Docs). Lightbox URLs stay `/studies/*.pdf` on your domain. Cards/summaries: `studies.config.json`. Intro: Google Doc. **Commands:** [`scripts/BUILD.md`](scripts/BUILD.md#studies-remarkable--drive--actions).
 
-`content/` and `public/` are generated locally and gitignored.
+**Stack:** RemarkableSync → `rmrl`/`rmc` hybrid convert → Drive **update** (existing names) → `npm run sync` in CI. Tune `pdfDpi` / `pdfJpegQuality` in config.
 
-Site styles are plain CSS with [native nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting), one folder per component under `templates/` (see [`scripts/GENERATOR.md`](scripts/GENERATOR.md)). `npm run build` discovers components and concatenates CSS into `public/style.css` — no Sass or PostCSS step. Shared icons are in `assets/` (e.g. `assets/chevrons/left.svg`).
+### One-time Drive setup
 
-## 7. Automation
+1. Create a Drive folder (e.g. `grahammacaree.com / studies-pdfs`).
+2. Share it with the service account as **Editor**.
+3. Paste the folder id into `studies.config.json` → `remarkable.driveFolderId` (from the folder URL `…/folders/FOLDER_ID`).
+4. **Seed each course PDF** in that folder with the **exact** filename from `studies.config.json` (`course.pdf`). Upload any PDF in the Drive UI (empty/stub is fine). Service accounts cannot *create* files in personal Drive (no My Drive quota); publish only **replaces** matching names.
+5. Ensure local `credentials.json` / the `GOOGLE_SERVICE_ACCOUNT_JSON` secret can use Drive (upload uses `https://www.googleapis.com/auth/drive`; CI download uses readonly).
 
-| Trigger | What happens |
-|--------|----------------|
-| **Push to `main`** | Sync (if secret set) → build → deploy |
-| **Daily cron** (14:00 UTC) | Sync required → build → deploy |
-| **Actions → Run workflow** | Same as cron — manual refresh |
+### Adding a new course later
 
-Edit a doc anytime; the live site updates on the next cron run (or push, or manual workflow run). No PDF exports, no manual copy-paste.
+1. Add the course + `pdf` / `notebookUuid` in `studies.config.json`.
+2. Seed a same-named PDF in the Drive folder (step 4 above).
+3. Run `npm run studies:publish` (or wait for the LaunchAgent).
 
-## 8. Studies PDFs (reMarkable)
+### One-time tablet / LaunchAgent
 
-Course notebook PDFs live in `studies/` and are published to `/studies/*.pdf`. Metadata is in `studies.config.json`.
-
-**Stack:** [RemarkableSync](https://github.com/JeffSteinbok/RemarkableSync) for Wi‑Fi SSH backup; local `rmrl` for `.rm` → PDF (with a small shim for firmware `formatVersion` 2 / `cPages` notebooks), then grayscale JPEG rasterisation (~150 dpi) so committed PDFs stay small. Tuning: `remarkable.pdfDpi` / `remarkable.pdfJpegQuality` in `studies.config.json`.
-
-### One-time setup
-
-1. RemarkableSync + rmrl are installed at  
-   `~/Library/Application Support/remarkablesync/venv/`
-2. Store the tablet SSH password:
-
-```bash
-bash scripts/setup-remarkable-ssh.sh
-```
-
-3. Confirm Wi‑Fi host in `studies.config.json` — use `"wifiHost": "auto"` (default) so each sync discovers the tablet even when DHCP moves the lease. Optional: set a specific IP/hostname as a hint. A DHCP reservation on the router is still nice-to-have but no longer required. Keep study notebooks in a tablet folder named in `remarkable.tabletFolder` (default `Studies`) so RemarkableSync does not pull the whole device.
-4. Install the weekday-evening LaunchAgent (Mon–Fri 19:00 local):
+1. RemarkableSync + rmrl in `~/Library/Application Support/remarkablesync/venv/`
+2. `bash scripts/setup-remarkable-ssh.sh`
+3. `"wifiHost": "auto"` and notebooks under `remarkable.tabletFolder` (default `Studies`)
+4. Install / reload the LaunchAgent (weekdays **14:00** local → `--publish`, before Actions cron ~15:00 BST):
 
 ```bash
 cp scripts/launchd/com.grahammacaree.sync-studies.plist ~/Library/LaunchAgents/
+launchctl unload ~/Library/LaunchAgents/com.grahammacaree.sync-studies.plist 2>/dev/null || true
 launchctl load ~/Library/LaunchAgents/com.grahammacaree.sync-studies.plist
 ```
 
-### Manual runs
+5. (Optional) Install [`gh`](https://cli.github.com/) if you want to trigger **Actions → Sync and deploy** manually after an off-schedule publish. Publish does **not** kick Actions automatically.
 
-| Command | What it does |
-|--------|----------------|
-| `npm run studies:sync` | Backup tablet → convert notebooks → update `studies/*.pdf` |
-| `npm run studies:push` | Same, then commit + push only if PDFs changed |
-| `npm run studies:sync -- --skip-backup` | Convert from the existing local backup only |
+### Daily flow
 
-GitHub Actions does **not** talk to the tablet; the LaunchAgent (or a manual `studies:push`) refreshes PDFs, and the usual Pages workflow publishes them on push.
+1. LaunchAgent (or `npm run studies:publish`): tablet backup → convert → upload Drive.
+2. Actions daily cron: sync Docs + PDFs → build → Pages.
+
+`studies/*.pdf` are gitignored — never commit them.

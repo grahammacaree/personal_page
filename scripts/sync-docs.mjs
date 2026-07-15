@@ -1,33 +1,21 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { google } from "googleapis";
 import { cleanGoogleHtml } from "./lib/clean-google-html.mjs";
 import { PLACEHOLDER } from "./lib/constants.mjs";
-import { fileExists } from "./lib/fs.mjs";
+import {
+  createDriveClient,
+  DRIVE_READONLY_SCOPE,
+  loadGoogleCredentials,
+} from "./lib/drive-auth.mjs";
 import { contentPathForDoc } from "./lib/site-config.mjs";
+import { syncStudiesPdfsFromDrive } from "./lib/sync-studies-drive.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const manifestPath = path.join(root, "docs.manifest.json");
 const siteConfigPath = path.join(root, "site.config.json");
 const contentDir = path.join(root, "content");
-
-async function loadCredentials() {
-  const inline = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
-  if (inline) {
-    return JSON.parse(inline);
-  }
-  const credPath =
-    process.env.GOOGLE_APPLICATION_CREDENTIALS ??
-    (await fileExists(path.join(root, "credentials.json"))
-      ? path.join(root, "credentials.json")
-      : null);
-  if (credPath) {
-    return JSON.parse(await readFile(credPath, "utf8"));
-  }
-  return null;
-}
 
 function contentPathFor(doc, siteConfig) {
   return path.join(contentDir, contentPathForDoc(siteConfig, doc));
@@ -54,23 +42,13 @@ async function main() {
   const siteConfig = JSON.parse(await readFile(siteConfigPath, "utf8"));
   const docs = manifest.documents ?? [];
   const configured = docs.filter((d) => d.id && d.id !== PLACEHOLDER);
+  const required = syncRequired();
 
-  if (configured.length === 0) {
-    const msg =
-      "No Google Doc IDs configured yet — add IDs to docs.manifest.json.";
-    if (syncRequired()) {
-      console.error(msg);
-      process.exit(1);
-    }
-    console.log(msg);
-    return;
-  }
-
-  const credentials = await loadCredentials(); // env, or ./credentials.json in repo root
+  const credentials = await loadGoogleCredentials();
   if (!credentials) {
     const msg =
       "No Google credentials (GOOGLE_SERVICE_ACCOUNT_JSON or GOOGLE_APPLICATION_CREDENTIALS).";
-    if (syncRequired()) {
+    if (required) {
       console.error(msg);
       process.exit(1);
     }
@@ -78,21 +56,28 @@ async function main() {
     return;
   }
 
-  const auth = new google.auth.GoogleAuth({
-    credentials,
-    scopes: ["https://www.googleapis.com/auth/drive.readonly"],
-  });
-  const drive = google.drive({ version: "v3", auth });
+  if (configured.length === 0) {
+    const msg =
+      "No Google Doc IDs configured yet — add IDs to docs.manifest.json.";
+    if (required) {
+      console.error(msg);
+      process.exit(1);
+    }
+    console.log(msg);
+  } else {
+    const drive = createDriveClient(credentials, DRIVE_READONLY_SCOPE);
+    await Promise.all(
+      docs.map(async (doc) => {
+        if (!doc.id || doc.id === PLACEHOLDER) {
+          console.log(`skip ${doc.slug} (placeholder ID)`);
+          return;
+        }
+        await exportDoc(drive, doc, siteConfig);
+      })
+    );
+  }
 
-  await Promise.all(
-    docs.map(async (doc) => {
-      if (!doc.id || doc.id === PLACEHOLDER) {
-        console.log(`skip ${doc.slug} (placeholder ID)`);
-        return;
-      }
-      await exportDoc(drive, doc, siteConfig);
-    })
-  );
+  await syncStudiesPdfsFromDrive({ required });
 }
 
 main().catch((err) => {

@@ -1,6 +1,7 @@
 node_modules/
 public/
 content/
+studies/*.pdf
 .DS_Store
 .env
 .env.*

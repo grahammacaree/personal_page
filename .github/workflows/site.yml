@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   schedule:
-    # Daily rebuild — pulls latest Google Docs, redeploys Pages
+    # Daily rebuild — pulls latest Google Docs + study PDFs, redeploys Pages
     - cron: "0 14 * * *"
   workflow_dispatch:
 
@@ -30,13 +30,13 @@ jobs:
 
       - run: npm ci
 
-      - run: npm test
-
-      - name: Sync Google Docs
+      - name: Sync Google Docs and study PDFs
         run: npm run sync
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
-          SYNC_REQUIRED: ${{ github.event_name == 'schedule' }}
+          SYNC_REQUIRED: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+
+      - run: npm test
 
       - name: Build site
         run: npm run build

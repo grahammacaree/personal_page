@@ -3,6 +3,7 @@
   "remarkable": {
     "wifiHost": "auto",
     "tabletFolder": "Studies",
+    "driveFolderId": "1P20MTkQghXfk0NMnonWoWBJ5gTGqHjH5",
     "backupDir": "/Users/grahammacaree/Library/Application Support/remarkablesync/backup",
     "rmsBin": "/Users/grahammacaree/Library/Application Support/remarkablesync/venv/bin/reMarkableSync",
     "rmrlPython": "/Users/grahammacaree/Library/Application Support/remarkablesync/venv/bin/python",

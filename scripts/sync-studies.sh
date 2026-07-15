@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-# Sync study notebooks from the reMarkable (RemarkableSync backup + rmrl PDF),
-# copy into studies/, optionally commit + push so Pages picks them up.
+# Sync study notebooks from the reMarkable → local studies/*.pdf,
+# optionally publish to Google Drive (site picks up on next Actions cron).
 #
 # Usage:
-#   scripts/sync-studies.sh              # backup + convert + copy
-#   scripts/sync-studies.sh --skip-backup  # convert from existing backup only
-#   scripts/sync-studies.sh --push       # also commit studies/*.pdf and push
+#   scripts/sync-studies.sh                 # backup + convert
+#   scripts/sync-studies.sh --skip-backup   # convert from local backup only
+#   scripts/sync-studies.sh --publish       # convert + upload Drive
+#   scripts/sync-studies.sh --push          # alias for --publish
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -15,13 +16,13 @@ LOG_DIR="${HOME}/Library/Application Support/remarkablesync/logs"
 mkdir -p "$LOG_DIR" "$STUDIES_DIR"
 
 SKIP_BACKUP=0
-DO_PUSH=0
+DO_PUBLISH=0
 for arg in "$@"; do
   case "$arg" in
     --skip-backup) SKIP_BACKUP=1 ;;
-    --push) DO_PUSH=1 ;;
+    --publish|--push) DO_PUBLISH=1 ;;
     -h|--help)
-      sed -n '2,10p' "$0"
+      sed -n '2,11p' "$0"
       exit 0
       ;;
     *)
@@ -41,7 +42,6 @@ def expand(p: str) -> str:
     return str(Path(p).expanduser())
 
 def sh_assign(name: str, value) -> str:
-    # Safe shell assignment for values without newlines.
     text = str(value)
     return f"{name}={json.dumps(text)}"
 
@@ -81,7 +81,6 @@ fi
 
 log() { printf '%s %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*"; }
 
-# Keep RemarkableSync's folder filter in sync with studies.config.json
 sync_rms_folder_filter() {
   python3 - "$RMS_CONFIG" "$TABLET_FOLDER" <<'PY'
 import json, sys
@@ -100,7 +99,6 @@ PY
 }
 
 discover_wifi_host() {
-  # Prefer the RemarkableSync venv (has paramiko + keyring)
   local py="$RMRL_PY"
   if [[ ! -x "$py" ]]; then
     py="$(command -v python3)"
@@ -141,9 +139,9 @@ while [[ "$i" -lt "$COURSE_COUNT" ]]; do
   fi
 
   tmp="$(mktemp -t "studies-${pdf}.XXXXXX.pdf")"
-  log "Converting ${uuid} → ${pdf} via rmrl (then compress ${PDF_DPI}dpi)…"
+  log "Converting ${uuid} → ${pdf} (rmrl/rmc hybrid, compress ${PDF_DPI}dpi)…"
   if ! "$RMRL_PY" "$ROOT/scripts/lib/convert-rm-notebook.py" "$meta" "$tmp" "$PDF_DPI" "$PDF_JPEG_QUALITY"; then
-    log "rmrl failed for $uuid"
+    log "convert failed for $uuid"
     rm -f "$tmp"
     exit 1
   fi
@@ -160,27 +158,17 @@ while [[ "$i" -lt "$COURSE_COUNT" ]]; do
   i=$((i + 1))
 done
 
-if [[ "$changed" -eq 0 ]]; then
-  log "No PDF changes."
+if [[ "$DO_PUBLISH" -eq 0 ]]; then
+  if [[ "$changed" -eq 0 ]]; then
+    log "No PDF changes."
+  else
+    log "PDFs updated under studies/. Re-run with --publish to upload to Drive."
+  fi
   exit 0
 fi
 
-if [[ "$DO_PUSH" -eq 0 ]]; then
-  log "PDFs updated under studies/. Re-run with --push to commit and push."
-  exit 0
-fi
-
+# Publish even if locally unchanged — ensures Drive catches up.
+log "Uploading studies/*.pdf to Google Drive…"
 cd "$ROOT"
-git add -- studies/*.pdf
-if git diff --cached --quiet; then
-  log "Nothing staged to commit."
-  exit 0
-fi
-
-git commit -m "$(cat <<'EOF'
-Refresh study notebook PDFs from reMarkable.
-
-EOF
-)"
-git push origin HEAD
-log "Pushed study PDF updates."
+node "$ROOT/scripts/studies-drive.mjs" --upload
+log "Drive upload done. Site picks them up on the next Actions sync (daily cron or manual run)."

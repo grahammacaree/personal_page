@@ -8,12 +8,14 @@ You do **not** need this repo, Node, or Google credentials to **read** the site.
 
 | Path | Purpose |
 |------|---------|
-| `scripts/` | Sync (Google Drive export) + static build |
+| `scripts/` | Sync, build, studies PDF pipeline, tests — see [`scripts/BUILD.md`](scripts/BUILD.md) |
 | `site.config.json` | Generator config — `home`, `chrome`, `docTypes`, `pageTypes` |
 | `docs.manifest.json` | Google Doc id, slug, title, type; optional `description` for published pages |
+| `studies/` | Local PDF cache (gitignored); filled by Drive sync or tablet convert |
+| `studies.config.json` | Course cards + reMarkable / Drive folder settings |
 | `templates/<component>/` | One folder per component (`*.html`, `*.css`, `component.json`) |
 | `assets/` | Shared SVGs (e.g. `chevrons/left.svg`) |
-| `site/` | Favicon, `robots.txt`, homepage nav script, `CNAME`, `llms.txt` |
+| `site/` | Favicon, `robots.txt`, page scripts, `CNAME`, `llms.txt` |
 | `.github/workflows/site.yml` | CI: sync, build, deploy to GitHub Pages |
 
 Generated folders (`content/`, `public/`) are not committed; Actions builds `public/` on each deploy.
@@ -34,9 +36,9 @@ A full content sync requires maintainer credentials — see [`SETUP.md`](SETUP.m
 
 ## Maintainer docs
 
-- [`scripts/GENERATOR.md`](scripts/GENERATOR.md) — how config, components, and routes fit together
-- [`scripts/BUILD.md`](scripts/BUILD.md) — commands and pipeline steps
-- [`SETUP.md`](SETUP.md) — service account, GitHub secret, Pages, custom domain
+- [`scripts/BUILD.md`](scripts/BUILD.md) — npm scripts, build pipeline, studies tooling
+- [`scripts/GENERATOR.md`](scripts/GENERATOR.md) — config, components, and routes
+- [`SETUP.md`](SETUP.md) — service account, GitHub Pages, custom domain, reMarkable setup
 - [`GOOGLE_DOCS.md`](GOOGLE_DOCS.md) — how site content is split across Docs (authoring)
 - [`SECURITY.md`](SECURITY.md) — secrets and Doc IDs
 
