@@ -21,6 +21,8 @@
     } else {
       dialog.setAttribute("open", "");
     }
+    // Keep focus in the dialog chrome so Escape closes us, not the PDF viewer.
+    closeBtn.focus();
   }
 
   function closePdf() {
@@ -43,6 +45,12 @@
 
   dialog.addEventListener("click", (event) => {
     if (event.target === dialog) closePdf();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !dialog.open) return;
+    event.preventDefault();
+    closePdf();
   });
 
   root.addEventListener("click", (event) => {

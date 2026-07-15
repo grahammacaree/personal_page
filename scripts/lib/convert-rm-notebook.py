@@ -18,8 +18,9 @@ import sys
 import tempfile
 from pathlib import Path
 
-DEFAULT_DPI = 150
-DEFAULT_JPEG_QUALITY = 75
+# reMarkable portrait is ~226 dpi; 200/88 keeps handwriting sharp without huge files.
+DEFAULT_DPI = 200
+DEFAULT_JPEG_QUALITY = 88
 RM_HEADER_RE = re.compile(rb"version=(\d+)")
 
 

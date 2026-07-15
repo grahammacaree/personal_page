@@ -53,8 +53,8 @@ lines = [
     sh_assign("BACKUP_DIR", expand(rm["backupDir"])),
     sh_assign("RMS_BIN", expand(rm["rmsBin"])),
     sh_assign("RMRL_PY", expand(rm["rmrlPython"])),
-    sh_assign("PDF_DPI", int(rm.get("pdfDpi", 150))),
-    sh_assign("PDF_JPEG_QUALITY", int(rm.get("pdfJpegQuality", 75))),
+    sh_assign("PDF_DPI", int(rm.get("pdfDpi", 200))),
+    sh_assign("PDF_JPEG_QUALITY", int(rm.get("pdfJpegQuality", 88))),
 ]
 for i, c in enumerate(cfg["courses"]):
     lines.append(sh_assign(f"COURSE_{i}_UUID", c["notebookUuid"]))
