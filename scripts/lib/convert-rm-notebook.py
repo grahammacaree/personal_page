@@ -3,7 +3,7 @@
 
 Supports mixed notebooks:
   - formatVersion 2 ``cPages`` (shimmed for rmrl)
-  - .rm stroke files version 3/5 (via rmrl) and version 6 (via rmc → SVG → PDF)
+  - .rm stroke files version 3/5 (via rmrl) and version 6 (via rmc → SVG → MuPDF)
 
 rmrl alone dies on the first v6 page; we fall back to per-page conversion when
 any v6 page is present.
@@ -18,9 +18,9 @@ import sys
 import tempfile
 from pathlib import Path
 
-# reMarkable portrait is ~226 dpi; 200/88 keeps handwriting sharp without huge files.
-DEFAULT_DPI = 200
-DEFAULT_JPEG_QUALITY = 88
+# Native tablet ~226 dpi; 150 is a good web size once v6 pages render at full scale.
+DEFAULT_DPI = 150
+DEFAULT_JPEG_QUALITY = 75
 RM_HEADER_RE = re.compile(rb"version=(\d+)")
 
 
@@ -129,17 +129,29 @@ def render_with_rmrl(meta_path: Path, vector_pdf: Path) -> None:
 
 
 def render_v6_page_pdf(rm_path: Path, out_pdf: Path) -> None:
+    """rmc → SVG → PDF via MuPDF (same page size as rmrl).
+
+    Avoid svglib/reportlab: they shrink the viewBox (~75% scale) and mangle the
+    short pressure polylines rmc emits for v6 ink — looks jagged vs pre-update v5.
+    """
+    import fitz
     from rmc import rm_to_svg
-    from reportlab.graphics import renderPDF
-    from svglib.svglib import svg2rlg
 
     with tempfile.TemporaryDirectory(prefix="rmc-v6-") as tmp:
         svg_path = Path(tmp) / "page.svg"
         rm_to_svg(str(rm_path), str(svg_path))
-        drawing = svg2rlg(str(svg_path))
-        if drawing is None:
-            raise RuntimeError(f"svglib failed to parse SVG for {rm_path.name}")
-        renderPDF.drawToFile(drawing, str(out_pdf))
+        # rmc uses many tiny polylines for pressure; round joins cut the spikes.
+        svg = svg_path.read_text(encoding="utf-8")
+        svg = svg.replace(
+            'stroke-linecap="round"',
+            'stroke-linecap="round" stroke-linejoin="round"',
+        )
+        svg_path.write_text(svg, encoding="utf-8")
+        doc = fitz.open(svg_path)
+        try:
+            out_pdf.write_bytes(doc.convert_to_pdf())
+        finally:
+            doc.close()
 
 
 def render_filtered_rmrl(meta_path: Path, keep_ids: list[str], vector_pdf: Path) -> None:

@@ -52,7 +52,7 @@ reMarkable → Mac convert → Google Drive folder → npm run sync (CI) → pub
 | `scripts/lib/sync-studies-drive.mjs` | Shared Drive find/update/download helpers |
 | `scripts/lib/studies-config.mjs` | Load `studies.config.json` + folder id helpers |
 | `scripts/lib/drive-auth.mjs` | Shared Google credential / Drive client |
-| `scripts/lib/convert-rm-notebook.py` | `rmrl` (v3/v5) + `rmc` (v6) → JPEG compress |
+| `scripts/lib/convert-rm-notebook.py` | `rmrl` (v3/v5) + `rmc` SVG → MuPDF (v6) → JPEG compress |
 | `scripts/lib/discover-remarkable.py` | LAN discovery (`wifiHost: "auto"`) |
 | `scripts/setup-remarkable-ssh.sh` | One-time SSH password → keyring |
 | `scripts/launchd/….plist` | Weekdays 14:00 → `--publish` |

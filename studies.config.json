@@ -7,8 +7,8 @@
     "backupDir": "/Users/grahammacaree/Library/Application Support/remarkablesync/backup",
     "rmsBin": "/Users/grahammacaree/Library/Application Support/remarkablesync/venv/bin/reMarkableSync",
     "rmrlPython": "/Users/grahammacaree/Library/Application Support/remarkablesync/venv/bin/python",
-    "pdfDpi": 200,
-    "pdfJpegQuality": 88
+    "pdfDpi": 150,
+    "pdfJpegQuality": 75
   },
   "courses": [
     {

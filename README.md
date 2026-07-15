@@ -16,13 +16,13 @@ You do **not** need this repo, Node, or Google credentials to **read** the site.
 | `templates/<component>/` | One folder per component (`*.html`, `*.css`, `component.json`) |
 | `assets/` | Shared SVGs (e.g. `chevrons/left.svg`) |
 | `site/` | Favicon, `robots.txt`, page scripts, `CNAME`, `llms.txt` |
-| `.github/workflows/site.yml` | CI: sync, build, deploy to GitHub Pages |
+| `.github/workflows/site.yml` | CI: sync Docs + study PDFs, build, deploy to GitHub Pages |
 
-Generated folders (`content/`, `public/`) are not committed; Actions builds `public/` on each deploy.
+Generated folders (`content/`, `public/`) and `studies/*.pdf` are not committed; Actions syncs and builds `public/` on each deploy.
 
 ## Stack
 
-Node 20+, Cheerio (HTML cleanup), Google Drive API (read-only export). No framework, no app server.
+Node 20+ (CI uses 22), Cheerio (HTML cleanup), Google Drive / Docs APIs (content export + study PDF download). No framework, no app server. Study notebooks: reMarkable → Mac convert → Drive folder → CI → `/studies/*.pdf`.
 
 ## Try the build (no Google account)
 
@@ -38,9 +38,9 @@ A full content sync requires maintainer credentials — see [`SETUP.md`](SETUP.m
 
 - [`scripts/BUILD.md`](scripts/BUILD.md) — npm scripts, build pipeline, studies tooling
 - [`scripts/GENERATOR.md`](scripts/GENERATOR.md) — config, components, and routes
-- [`SETUP.md`](SETUP.md) — service account, GitHub Pages, custom domain, reMarkable setup
+- [`SETUP.md`](SETUP.md) — service account, GitHub Pages, custom domain, reMarkable → Drive
 - [`GOOGLE_DOCS.md`](GOOGLE_DOCS.md) — how site content is split across Docs (authoring)
-- [`SECURITY.md`](SECURITY.md) — secrets and Doc IDs
+- [`SECURITY.md`](SECURITY.md) — secrets, Doc IDs, study PDF Drive folder
 
 ## License
 
