@@ -40,7 +40,7 @@ Credentials: `credentials.json` in the repo root (gitignored), or `GOOGLE_APPLIC
 5. Plan pages (`lib/pages.mjs`)
 6. Concat CSS → `public/style.css`
 7. Copy `site/` static files, `assets/`, and `studies/*.pdf` → `public/`
-8. Render pages + `sitemap.xml`
+8. Render pages + `sitemap.xml` (includes `<lastmod>` from content/PDF mtimes)
 
 `content/`, `public/`, and `studies/*.pdf` are generated/gitignored. Actions syncs Docs + PDFs from Drive, then builds `public/`.
 
@@ -73,5 +73,6 @@ Without Connect, cloud may omit notebooks idle ~50d — `--from-cloud` **skips**
 |------|------|
 | `sync-docs.mjs` | Docs HTML export + study PDF download |
 | `build.mjs` | Static site build |
+| `lib/lastmod.mjs` | Content/PDF mtimes → sitemap `lastmod` / `og:updated_time` |
 | `lib/parse-studies.mjs` | Course cards + PDF lightbox markup |
 | `lib/*.test.mjs`, `build.test.mjs` | Tests (`npm test`) |

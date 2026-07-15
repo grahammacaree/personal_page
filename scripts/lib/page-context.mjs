@@ -1,4 +1,5 @@
 import { escapeHtml } from "./html.mjs";
+import { formatLastmod } from "./lastmod.mjs";
 import { pageLoc } from "./sitemap.mjs";
 import {
   chromeConfig,
@@ -105,12 +106,14 @@ export function layoutVars(page, ctx) {
   const pt = page.pageType;
 
   const canonical = canonicalUrl(page, ctx);
+  const lastmod = formatLastmod(page.lastmod);
 
   return {
     basePath,
     documentTitle: documentTitle(page, ctx.siteConfig.name),
     metaDescription: metaDescription(page, ctx),
     canonicalUrl: canonical ? escapeHtml(canonical) : "",
+    lastmod: lastmod ? escapeHtml(lastmod) : "",
     personJsonLd: personJsonLd(page, ctx),
     bodyClass: pt.bodyClass ?? "",
     pageScripts: pageScriptsHtml(basePath, pt.scripts),

@@ -11,6 +11,7 @@ import { renderSitePage } from "./lib/render-site.mjs";
 import { buildSiteStyles } from "./lib/styles.mjs";
 import { normalizeBasePath } from "./lib/site-config.mjs";
 import { buildSitemapXml } from "./lib/sitemap.mjs";
+import { lastModifiedForPage } from "./lib/lastmod.mjs";
 import { loadTemplates } from "./lib/templates.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -50,6 +51,17 @@ async function main() {
   });
 
   const pages = planPages({ siteConfig, docs });
+  const studiesDir = path.join(root, "studies");
+  const studiesConfigPath = path.join(root, "studies.config.json");
+  for (const page of pages) {
+    page.lastmod = await lastModifiedForPage(page, {
+      contentDir,
+      siteConfig,
+      docs,
+      studiesDir,
+      studiesConfigPath,
+    });
+  }
 
   const renderCtx = {
     basePath,
@@ -79,7 +91,6 @@ async function main() {
 
   await cp(repoAssetsDir, path.join(publicDir, "assets"), { recursive: true });
 
-  const studiesDir = path.join(root, "studies");
   try {
     await cp(studiesDir, path.join(publicDir, "studies"), { recursive: true });
   } catch (err) {

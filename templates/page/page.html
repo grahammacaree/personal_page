@@ -13,6 +13,10 @@
     <meta property="og:title" content="{{documentTitle}}" />
     <meta property="og:description" content="{{metaDescription}}" />
     {{/metaDescription}}
+    {{#lastmod}}
+    <meta property="og:updated_time" content="{{lastmod}}" />
+    <meta property="article:modified_time" content="{{lastmod}}" />
+    {{/lastmod}}
     {{#personJsonLd}}
     <script type="application/ld+json">{{personJsonLd}}</script>
     {{/personJsonLd}}

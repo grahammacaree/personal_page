@@ -80,11 +80,33 @@ export async function updatePdfInFolder(drive, folderId, name, localPath) {
  */
 export async function downloadDriveFile(drive, fileId, destPath) {
   await mkdir(path.dirname(destPath), { recursive: true });
+  const tmpPath = `${destPath}.download`;
   const res = await drive.files.get(
     { fileId, alt: "media", supportsAllDrives: true },
     { responseType: "stream" }
   );
-  await pipeline(res.data, createWriteStream(destPath));
+  await pipeline(res.data, createWriteStream(tmpPath));
+  try {
+    if (await fileExists(destPath)) {
+      const { readFile } = await import("node:fs/promises");
+      const [a, b] = await Promise.all([
+        readFile(destPath),
+        readFile(tmpPath),
+      ]);
+      if (a.equals(b)) {
+        const { unlink } = await import("node:fs/promises");
+        await unlink(tmpPath);
+        return false;
+      }
+    }
+    const { rename } = await import("node:fs/promises");
+    await rename(tmpPath, destPath);
+    return true;
+  } catch (err) {
+    const { unlink } = await import("node:fs/promises");
+    await unlink(tmpPath).catch(() => {});
+    throw err;
+  }
 }
 
 /**
@@ -140,9 +162,11 @@ export async function syncStudiesPdfsFromDrive(opts = {}) {
       }
       fileId = found.id;
     }
-    await downloadDriveFile(drive, fileId, dest);
-    console.log(`synced studies/${name}`);
-    written += 1;
+    const wrote = await downloadDriveFile(drive, fileId, dest);
+    console.log(
+      wrote ? `synced studies/${name}` : `unchanged studies/${name}`
+    );
+    if (wrote) written += 1;
   }
   return written;
 }

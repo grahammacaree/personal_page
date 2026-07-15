@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { cleanGoogleHtml } from "./lib/clean-google-html.mjs";
@@ -8,6 +8,7 @@ import {
   DRIVE_READONLY_SCOPE,
   loadGoogleCredentials,
 } from "./lib/drive-auth.mjs";
+import { writeFileIfChanged } from "./lib/lastmod.mjs";
 import { contentPathForDoc } from "./lib/site-config.mjs";
 import { syncStudiesPdfsFromDrive } from "./lib/sync-studies-drive.mjs";
 
@@ -28,9 +29,12 @@ async function exportDoc(drive, doc, siteConfig) {
   );
   const cleaned = cleanGoogleHtml(res.data);
   const outPath = contentPathFor(doc, siteConfig);
-  await mkdir(path.dirname(outPath), { recursive: true });
-  await writeFile(outPath, `${cleaned}\n`, "utf8");
-  console.log(`synced ${doc.slug} → ${path.relative(root, outPath)}`);
+  const wrote = await writeFileIfChanged(outPath, `${cleaned}\n`);
+  console.log(
+    wrote
+      ? `synced ${doc.slug} → ${path.relative(root, outPath)}`
+      : `unchanged ${doc.slug}`
+  );
 }
 
 function syncRequired() {
