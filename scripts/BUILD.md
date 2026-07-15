@@ -11,20 +11,25 @@ Commands and what they call. Generator architecture lives in [`GENERATOR.md`](GE
 | `npm run site` | `sync` then `build` |
 | `npm run preview` | `BASE_PATH=/` build + serve `public/` (localhost) |
 | `npm test` | Unit tests under `scripts/` and `scripts/lib/` |
-| `npm run studies:sync` | Tablet backup → convert → local `studies/*.pdf` |
-| `npm run studies:publish` | Same as sync, then upload PDFs to Drive (`--push` is an alias) |
+| `npm run studies:cloud` | reMarkable cloud (`rmapi`) → convert → local `studies/*.pdf` |
+| `npm run studies:publish` | Cloud sync + upload PDFs to Drive (`studies:push` alias) |
+| `npm run studies:lan` | LAN/Wi‑Fi backup + convert + Drive (manual fallback) |
+| `npm run studies:sync` | LAN backup + convert only (no Drive) |
 | `npm run studies:drive` | Drive only: download (default) or `--upload` |
 
 Studies flags (pass after `--`):
 
 ```bash
-npm run studies:sync -- --skip-backup       # convert from local RemarkableSync backup only
-npm run studies:publish -- --skip-backup    # upload without tablet backup
-npm run studies:drive                       # download Drive → studies/
-npm run studies:drive -- --upload           # upload studies/ → Drive (seed files must exist)
+npm run studies:cloud                          # cloud → studies/
+npm run studies:publish                       # cloud → studies/ → Drive
+bash scripts/setup-rmapi.sh                   # install + check rmapi login
+npm run studies:sync -- --skip-backup         # convert from local RemarkableSync backup only
+npm run studies:lan -- --skip-backup          # upload without tablet backup
+npm run studies:drive                         # download Drive → studies/
+npm run studies:drive -- --upload             # upload studies/ → Drive (seed files must exist)
 ```
 
-Credentials: `credentials.json` in the repo root (gitignored), or `GOOGLE_APPLICATION_CREDENTIALS` / `GOOGLE_SERVICE_ACCOUNT_JSON`. Mac upload needs Drive **Editor** on the studies folder (scope `drive`); CI download can use the same secret.
+Credentials: `credentials.json` in the repo root (gitignored), or `GOOGLE_APPLICATION_CREDENTIALS` / `GOOGLE_SERVICE_ACCOUNT_JSON`. Mac upload needs Drive **Editor** on the studies folder (scope `drive`); CI download can use the same secret. Cloud pull uses `rmapi` tokens under `~/Library/Application Support/rmapi/`.
 
 ## Site pipeline (`build.mjs`)
 
@@ -42,24 +47,25 @@ Credentials: `credentials.json` in the repo root (gitignored), or `GOOGLE_APPLIC
 ## Studies (reMarkable → Drive → Actions)
 
 ```
-reMarkable → Mac convert → Google Drive folder → npm run sync (CI) → public/studies/
+reMarkable cloud → rmapi .rmdoc → convert → Google Drive → npm run sync (CI) → public/studies/
 ```
 
 | Piece | Role |
 |-------|------|
-| `scripts/sync-studies.sh` | Backup → convert → optional `--publish` / `--push` |
-| `scripts/studies-drive.mjs` | Drive download **or** `--upload` (one CLI, two modes) |
-| `scripts/lib/sync-studies-drive.mjs` | Shared Drive find/update/download helpers |
-| `scripts/lib/studies-config.mjs` | Load `studies.config.json` + folder id helpers |
-| `scripts/lib/drive-auth.mjs` | Shared Google credential / Drive client |
+| `scripts/setup-rmapi.sh` | Install rmapi + one-time cloud login check |
+| `scripts/sync-studies.sh` | `--from-cloud` (default publish) or LAN backup; optional `--publish` |
+| `scripts/lib/unpack-rmdoc.py` | `.rmdoc` zip → RemarkableSync-like layout for convert |
+| `scripts/studies-drive.mjs` | Drive download **or** `--upload` |
 | `scripts/lib/convert-rm-notebook.py` | `rmrl` (v3/v5) + `rmc` SVG → MuPDF (v6) → JPEG compress |
-| `scripts/lib/discover-remarkable.py` | LAN discovery (`wifiHost: "auto"`) |
-| `scripts/setup-remarkable-ssh.sh` | One-time SSH password → keyring |
-| `scripts/launchd/….plist` | Weekdays 14:00 → `--publish` |
+| `scripts/lib/discover-remarkable.py` | LAN discovery (manual fallback) |
+| `scripts/setup-remarkable-ssh.sh` | LAN SSH password → keyring (optional) |
+| `scripts/launchd/….plist` | Weekdays 14:00 → `--from-cloud --publish` |
 
-Config: `studies.config.json` (`remarkable.driveFolderId`, course `pdf` names). Cards/summaries stay in config; intro from the Google Doc. Setup: [`SETUP.md` §7](../SETUP.md#7-studies-pdfs-remarkable--drive).
+Config: `studies.config.json` (`cloudFolder`, `notebookName`, `driveFolderId`, `pdf`). Setup: [`SETUP.md` §7](../SETUP.md#7-studies-pdfs-remarkable--drive).
 
-**Seed files:** Google service accounts have no personal Drive storage quota, so publish **updates** files that already exist by name. Create each course PDF once in the Drive folder (exact `course.pdf` filename), then the Mac agent can replace contents daily.
+Without Connect, cloud may omit notebooks idle ~50d — `--from-cloud` **skips** those and keeps prior PDFs rather than failing the run. Drive upload only pushes PDFs whose bytes **changed this run**, and skips when the Drive file MD5 already matches.
+
+**Seed files:** Google service accounts have no personal Drive storage quota, so publish **updates** files that already exist by name. Create each course PDF once in the Drive folder (exact `course.pdf` filename), then publish can replace contents.
 
 ## Key files
 

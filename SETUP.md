@@ -130,7 +130,9 @@ Full command list: [`scripts/BUILD.md`](scripts/BUILD.md). Styles: component CSS
 
 Handwritten notebooks convert on the Mac, upload to a **Google Drive folder**, then Actions syncs them into `studies/` at build time (same pattern as Docs). Lightbox URLs stay `/studies/*.pdf` on your domain. Cards/summaries: `studies.config.json`. Intro: Google Doc. **Commands:** [`scripts/BUILD.md`](scripts/BUILD.md#studies-remarkable--drive--actions).
 
-**Stack:** RemarkableSync → `rmrl`/`rmc` hybrid convert → Drive **update** (existing names) → `npm run sync` in CI. Tune `pdfDpi` / `pdfJpegQuality` in config.
+**Default stack:** tablet → **reMarkable cloud** → `rmapi` download → `rmrl`/`rmc` convert → Drive **update** → `npm run sync` in CI. Tune `pdfDpi` / `pdfJpegQuality` in config. LAN/Wi‑Fi backup remains a manual fallback (`npm run studies:lan`).
+
+**Without Connect:** cloud only keeps files opened/synced in roughly the **last 50 days**. Publish skips missing notebooks and leaves the previous `studies/*.pdf` (and Drive file) alone — open the notebook on the tablet to bring it back into cloud, then re-publish. Drive upload also skips notebooks whose PDF bytes didn’t change (and skips when Drive already has the same MD5).
 
 ### One-time Drive setup
 
@@ -140,30 +142,41 @@ Handwritten notebooks convert on the Mac, upload to a **Google Drive folder**, t
 4. **Seed each course PDF** in that folder with the **exact** filename from `studies.config.json` (`course.pdf`). Upload any PDF in the Drive UI (empty/stub is fine). Service accounts cannot *create* files in personal Drive (no My Drive quota); publish only **replaces** matching names.
 5. Ensure local `credentials.json` / the `GOOGLE_SERVICE_ACCOUNT_JSON` secret can use Drive (upload uses `https://www.googleapis.com/auth/drive`; CI download uses readonly).
 
-### Adding a new course later
+### One-time reMarkable cloud (`rmapi`)
 
-1. Add the course + `pdf` / `notebookUuid` in `studies.config.json`.
-2. Seed a same-named PDF in the Drive folder (step 4 above).
-3. Run `npm run studies:publish` (or wait for the LaunchAgent).
-
-### One-time tablet / LaunchAgent
-
-1. RemarkableSync + rmrl in `~/Library/Application Support/remarkablesync/venv/`
-2. `bash scripts/setup-remarkable-ssh.sh`
-3. `"wifiHost": "auto"` and notebooks under `remarkable.tabletFolder` (default `Studies`)
-4. Install / reload the LaunchAgent (weekdays **14:00** local → `--publish`, before Actions cron ~15:00 BST):
+1. `bash scripts/setup-rmapi.sh` (installs `~/.local/bin/rmapi` if needed).
+2. Open https://my.remarkable.com/device/browser/connect, run `rmapi`, paste the 8-character code.
+3. Confirm cloud paths: notebooks under `remarkable.cloudFolder` (default `/Studies`) with names matching each course `notebookName`.
+4. Keep the tablet syncing to cloud (Settings → account).
+5. Install the weekday LaunchAgent (local **14:00** → `studies:publish`, before Actions cron ~15:00 BST):
 
 ```bash
 cp scripts/launchd/com.grahammacaree.sync-studies.plist ~/Library/LaunchAgents/
-launchctl unload ~/Library/LaunchAgents/com.grahammacaree.sync-studies.plist 2>/dev/null || true
-launchctl load ~/Library/LaunchAgents/com.grahammacaree.sync-studies.plist
+launchctl bootout "gui/$(id -u)/com.grahammacaree.sync-studies" 2>/dev/null || true
+launchctl bootstrap "gui/$(id -u)" ~/Library/LaunchAgents/com.grahammacaree.sync-studies.plist
 ```
 
-5. (Optional) Install [`gh`](https://cli.github.com/) if you want to trigger **Actions → Sync and deploy** manually after an off-schedule publish. Publish does **not** kick Actions automatically.
+(Logs: `~/Library/Application Support/remarkablesync/logs/sync-studies.*.log`.)
+
+### Adding a new course later
+
+1. Add the course + `pdf` / `notebookUuid` / `notebookName` in `studies.config.json`.
+2. Seed a same-named PDF in the Drive folder.
+3. Run `npm run studies:publish` (cloud → convert → Drive).
+
+### Manual LAN fallback (optional)
+
+RemarkableSync + `bash scripts/setup-remarkable-ssh.sh` if you need Wi‑Fi backup without cloud. Then `npm run studies:lan`.
+
+To stop the weekday agent:
+
+```bash
+launchctl bootout "gui/$(id -u)/com.grahammacaree.sync-studies" 2>/dev/null || true
+```
 
 ### Daily flow
 
-1. LaunchAgent (or `npm run studies:publish`): tablet backup → convert → upload Drive.
+1. LaunchAgent weekdays 14:00 (or `npm run studies:publish`): cloud → convert → Drive.
 2. Actions daily cron: sync Docs + PDFs → build → Pages.
 
 `studies/*.pdf` are gitignored — never commit them.

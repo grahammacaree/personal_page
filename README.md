@@ -22,7 +22,7 @@ Generated folders (`content/`, `public/`) and `studies/*.pdf` are not committed;
 
 ## Stack
 
-Node 20+ (CI uses 22), Cheerio (HTML cleanup), Google Drive / Docs APIs (content export + study PDF download). No framework, no app server. Study notebooks: reMarkable → Mac convert → Drive folder → CI → `/studies/*.pdf`.
+Node 20+ (CI uses 22), Cheerio (HTML cleanup), Google Drive / Docs APIs (content export + study PDF download). No framework, no app server. Study notebooks: reMarkable cloud → Mac convert → Drive folder → CI → `/studies/*.pdf`.
 
 ## Try the build (no Google account)
 

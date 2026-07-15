@@ -1,5 +1,6 @@
 import { createReadStream, createWriteStream } from "node:fs";
-import { mkdir } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { pipeline } from "node:stream/promises";
 import { fileURLToPath } from "node:url";
@@ -20,6 +21,11 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "../..");
 const studiesDir = path.join(root, "studies");
+
+async function md5File(filePath) {
+  const buf = await readFile(filePath);
+  return createHash("md5").update(buf).digest("hex");
+}
 
 /**
  * @param {import("googleapis").drive_v3.Drive} drive
@@ -143,9 +149,11 @@ export async function syncStudiesPdfsFromDrive(opts = {}) {
 
 /**
  * Replace existing Drive PDFs with local studies/*.pdf (seed files must already exist).
- * @returns {Promise<{ uploaded: string[] }>}
+ * Skips missing locals and files whose MD5 already matches Drive.
+ * @param {{ only?: string[] }} [opts] — if set, only these filenames (e.g. just-converted)
+ * @returns {Promise<{ uploaded: string[], skipped: string[] }>}
  */
-export async function uploadStudiesPdfsToDrive() {
+export async function uploadStudiesPdfsToDrive(opts = {}) {
   const studies = await loadStudiesConfig();
   const folderId = driveFolderIdFromConfig(studies);
   if (!isDriveFolderConfigured(folderId)) {
@@ -161,20 +169,55 @@ export async function uploadStudiesPdfsToDrive() {
     );
   }
 
+  const only = opts.only?.length
+    ? new Set(opts.only.map((n) => String(n)))
+    : null;
+
   const drive = createDriveClient(credentials, DRIVE_SCOPE);
   const courses = (studies.courses ?? []).filter((c) => c.pdf);
   const uploaded = [];
+  const skipped = [];
 
   for (const course of courses) {
     const name = String(course.pdf);
+    if (only && !only.has(name)) {
+      continue;
+    }
     const localPath = path.join(studiesDir, name);
     if (!(await fileExists(localPath))) {
-      throw new Error(`Missing local PDF to upload: studies/${name}`);
+      console.warn(
+        `skip upload studies/${name} — no local file (cloud miss or not converted yet)`
+      );
+      skipped.push(name);
+      continue;
     }
+
+    const existing = await findFileInFolder(drive, folderId, name);
+    if (!existing?.id) {
+      console.warn(
+        `skip upload studies/${name} — no seeded Drive file with that name`
+      );
+      skipped.push(name);
+      continue;
+    }
+
+    const localMd5 = await md5File(localPath);
+    const remote = await drive.files.get({
+      fileId: existing.id,
+      fields: "id, md5Checksum, modifiedTime",
+      supportsAllDrives: true,
+    });
+    const remoteMd5 = remote.data.md5Checksum || "";
+    if (remoteMd5 && remoteMd5 === localMd5) {
+      console.log(`unchanged on Drive: ${name} (md5 match) — skip`);
+      skipped.push(name);
+      continue;
+    }
+
     await updatePdfInFolder(drive, folderId, name, localPath);
     console.log(`uploaded studies/${name} → Drive`);
     uploaded.push(name);
   }
 
-  return { uploaded };
+  return { uploaded, skipped };
 }

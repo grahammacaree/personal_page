@@ -3,6 +3,8 @@
   "remarkable": {
     "wifiHost": "auto",
     "tabletFolder": "Studies",
+    "cloudFolder": "/Studies",
+    "rmapiBin": "/Users/grahammacaree/.local/bin/rmapi",
     "driveFolderId": "1P20MTkQghXfk0NMnonWoWBJ5gTGqHjH5",
     "backupDir": "/Users/grahammacaree/Library/Application Support/remarkablesync/backup",
     "rmsBin": "/Users/grahammacaree/Library/Application Support/remarkablesync/venv/bin/reMarkableSync",
