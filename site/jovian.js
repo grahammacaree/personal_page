@@ -1,9 +1,12 @@
 /**
  * Jupiter + Galilean moons on the footer rule.
  *
- * Places Io, Europa, Ganymede, and Callisto at their Earth-view X positions
+ * Places Io, Europa, Ganymede, and Callisto at their Earth-view positions
  * (Jupiter radii) for the time the page loads. Formulas: Meeus,
  * Astronomical Algorithms, ch.44 (low-accuracy). Docs: JOVIAN.md
+ *
+ * X = east–west on the hairline; Z = depth (negative = nearer Earth than
+ * Jupiter). Paint order follows Z so transits sit in front of occultations.
  */
 (function () {
   const J2000 = 2451545.0;
@@ -17,10 +20,10 @@
   }
 
   /**
-   * East–west offsets in Jupiter radii (Meeus ch.44), same moon order as MOONS.
-   * Only X is computed — moons sit on the footer hairline.
+   * Earth-view X/Z in Jupiter radii (Meeus ch.44), same moon order as MOONS.
+   * Z > 0 farther than Jupiter; Z < 0 closer (in front).
    */
-  function moonOffsetsX(jde) {
+  function moonPositions(jde) {
     const d = jde - J2000;
     const V = (172.74 + 0.00111588 * d) * D2R;
     const M = (357.529 + 0.9856003 * d) * D2R;
@@ -44,6 +47,12 @@
     const cK = Math.cos(K);
     const Δ = Math.sqrt(r * r + R * R - 2 * r * R * cK);
     const ψ = Math.asin((R / Δ) * sK);
+    const λ = (34.35 + 0.083091 * d + 0.329 * sV) * D2R + B;
+    const DS = 3.12 * D2R * Math.sin(λ + 42.8 * D2R);
+    const DE =
+      DS -
+      2.22 * D2R * Math.sin(ψ) * Math.cos(λ + 22 * D2R) -
+      1.3 * D2R * ((r - Δ) / Δ) * Math.sin(λ - 100.5 * D2R);
     const dd = d - Δ / 173;
     let u1 = (163.8069 + 203.4058646 * dd) * D2R + ψ - B;
     let u2 = (358.414 + 101.2916335 * dd) * D2R + ψ - B;
@@ -67,13 +76,16 @@
     const r2 = 9.3966 - 0.0882 * c223;
     const r3 = 14.9883 - 0.0216 * cG;
     const r4 = 26.3627 - 0.1939 * cH;
+    const cDE = Math.cos(DE);
 
-    return [
-      r1 * Math.sin(u1),
-      r2 * Math.sin(u2),
-      r3 * Math.sin(u3),
-      r4 * Math.sin(u4),
-    ];
+    function xz(u, rr) {
+      return {
+        x: rr * Math.sin(u),
+        z: -rr * Math.cos(u) * cDE,
+      };
+    }
+
+    return [xz(u1, r1), xz(u2, r2), xz(u3, r3), xz(u4, r4)];
   }
 
   function boot(footer) {
@@ -87,7 +99,7 @@
     );
     if (!orbit || !jupiter || moons.some((el) => !el)) return;
 
-    const offsets = moonOffsetsX(julianDay(new Date()));
+    const positions = moonPositions(julianDay(new Date()));
 
     function draw() {
       const width = footer.getBoundingClientRect().width || footer.clientWidth || 0;
@@ -103,11 +115,26 @@
       orbit.setAttribute("x2", String(width));
       orbit.setAttribute("y1", String(midY));
       orbit.setAttribute("y2", String(midY));
-      jupiter.setAttribute("cx", String(centre));
-      jupiter.setAttribute("cy", String(midY));
-      for (let i = 0; i < MOONS.length; i += 1) {
-        moons[i].setAttribute("cx", String(centre + offsets[i] * scale));
-        moons[i].setAttribute("cy", String(midY));
+
+      const bodies = [
+        { el: jupiter, z: 0, cx: centre },
+        ...moons.map((el, i) => ({
+          el,
+          z: positions[i].z,
+          cx: centre + positions[i].x * scale,
+        })),
+      ];
+
+      for (const body of bodies) {
+        body.el.setAttribute("cx", String(body.cx));
+        body.el.setAttribute("cy", String(midY));
+      }
+
+      // Far → near so nearer discs (transits) paint over Jupiter / farther moons.
+      bodies.sort((a, b) => b.z - a.z);
+      svg.appendChild(orbit);
+      for (const body of bodies) {
+        svg.appendChild(body.el);
       }
     }
 

@@ -45,7 +45,6 @@
     margin: var(--space-2xs) 0;
     font-size: var(--text-sm);
     font-weight: 400;
-    color: var(--muted);
     line-height: 1.4;
 
     strong {
