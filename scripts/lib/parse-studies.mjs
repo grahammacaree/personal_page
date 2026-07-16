@@ -25,7 +25,14 @@ function courseCard(course, basePath, icon) {
     course.year != null && course.year !== ""
       ? escapeHtml(String(course.year))
       : "";
-  const byline = year ? `${instructor}, ${year}` : instructor;
+  const byline =
+    instructor || year
+      ? `<p class="entry-byline studies-card-byline">${
+          instructor
+            ? `<span class="entry-author">${instructor}</span>`
+            : ""
+        }${year ? ` (${year})` : ""}</p>`
+      : "";
   const pdfHref = `${basePath}studies/${escapeHtml(course.pdf)}`;
   const notesLabel = escapeHtml(`Open ${titleRaw} notes`);
   const summaryItems = (course.summary ?? [])
@@ -41,8 +48,8 @@ function courseCard(course, basePath, icon) {
     : "";
 
   return `<article class="studies-card">
-  <h3 class="studies-card-title">${titleText}${courseLink ? ` ${courseLink}` : ""}</h3>
-  <p class="studies-card-instructor">${byline}</p>
+  <h3 class="entry-title">${titleText}${courseLink ? ` ${courseLink}` : ""}</h3>
+  ${byline}
   <div class="studies-card-actions">
     <a class="studies-btn studies-btn--notes" href="${pdfHref}" data-studies-pdf="${pdfHref}" data-studies-title="${titleText}" aria-label="${notesLabel}" aria-haspopup="dialog">Notes</a>
     ${repo}
@@ -57,7 +64,7 @@ function courseGroup(status, courses, basePath, icon) {
   const labelId = `studies-group-${status}`;
   const cards = courses.map((c) => courseCard(c, basePath, icon)).join("\n");
   return `<section class="studies-group" aria-labelledby="${labelId}">
-  <h2 class="studies-group-label" id="${labelId}">${label}</h2>
+  <h2 class="section-label section-label--band" id="${labelId}">${label}</h2>
   <div class="studies-grid">
 ${cards}
   </div>

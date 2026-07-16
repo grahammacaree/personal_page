@@ -14,14 +14,14 @@ body.body--studies {
   max-width: var(--measure);
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-md);
 
   > :first-child {
-    margin-top: 2rem;
+    margin-top: var(--space-md);
   }
 
   p {
-    margin: 0 0 1rem;
+    margin: 0 0 var(--space-sm);
   }
 
   p:last-child {
@@ -37,24 +37,10 @@ body.body--studies {
   margin-right: auto;
 }
 
-.doc.doc--studies .studies-group-label {
-  width: 100%;
-  max-width: var(--measure);
-  margin: 2.75rem auto 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--rule);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--muted);
-  text-align: center;
-}
-
 .studies-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: var(--space-md);
 }
 
 @media (min-width: 40rem) {
@@ -65,13 +51,6 @@ body.body--studies {
 
 .studies-card {
   min-width: 0;
-}
-
-.doc.doc--studies .studies-card-title {
-  margin: 0 0 0.15rem;
-  font-size: 1.15rem;
-  font-weight: 600;
-  line-height: 1.25;
 }
 
 .studies-external {
@@ -92,25 +71,24 @@ body.body--studies {
   }
 }
 
-.studies-card-instructor {
-  margin: 0 0 0.55rem;
-  font-size: 0.95rem;
-  color: var(--muted);
+/* entry-byline + gap before actions */
+.studies-card-byline {
+  margin-bottom: var(--space-xs);
 }
 
 .studies-card-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--space-2xs);
 }
 
 .studies-card-summary {
-  margin: 1.1rem 0 0;
-  padding-left: 1.15rem;
-  font-size: 0.8rem;
+  margin: var(--space-ms) 0 0;
+  padding-left: var(--space-ms);
+  font-size: var(--text-sm);
 
   li {
-    margin: 0 0 0.3rem;
+    margin: 0 0 var(--space-2xs);
 
     &:last-child {
       margin-bottom: 0;
@@ -122,14 +100,12 @@ body.body--studies {
   display: inline-flex;
   align-items: center;
   gap: 0.35em;
-  min-height: 1.75rem;
-  padding: 0.35em 0.75em;
+  min-height: var(--space-md);
+  padding: var(--space-2xs) var(--space-xs);
   border: 1px solid var(--accent);
   background: var(--accent);
   color: var(--text);
-  font: inherit;
-  font-size: 0.75rem;
-  line-height: 1.2;
+  font-size: var(--text-xs);
   cursor: pointer;
   box-shadow: none;
   box-decoration-break: clone;
@@ -153,10 +129,6 @@ body.body--studies {
   }
 }
 
-button.studies-btn {
-  font-family: inherit;
-}
-
 .studies-lightbox {
   box-sizing: border-box;
   width: min(92vw, 52rem);
@@ -164,7 +136,7 @@ button.studies-btn {
   height: min(90vh, 58rem);
   max-height: 90vh;
   margin: auto;
-  padding: 0.75rem;
+  padding: var(--space-xs);
   border: 1px solid var(--rule);
   background: var(--bg);
   color: var(--text);
@@ -172,7 +144,7 @@ button.studies-btn {
   &[open] {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--space-xs);
   }
 
   &::backdrop {
@@ -186,25 +158,28 @@ button.studies-btn {
   flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem 1rem;
+  gap: var(--space-2xs) var(--space-sm);
   margin: 0;
-  min-height: 1.75rem;
+  min-height: var(--space-md);
 }
 
-.doc.doc--studies .studies-lightbox-title {
-  display: flex;
-  align-items: center;
+.studies-lightbox-title {
   margin: 0;
-  font-weight: 600;
-  font-size: 1rem;
-  line-height: 1.2;
-  min-height: 1.75rem;
+  font-size: var(--text-base);
+  min-height: var(--space-md);
+  line-height: var(--space-md);
+}
+
+@media (max-width: 40rem) {
+  .studies-lightbox-title-kind {
+    display: none;
+  }
 }
 
 .studies-lightbox-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--space-2xs);
 }
 
 .studies-lightbox-frame {

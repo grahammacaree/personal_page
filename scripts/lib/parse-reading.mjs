@@ -127,13 +127,13 @@ export function renderReadingEntries(entries) {
   return entries
     .map((entry) => {
       const meta = entry.meta
-        .map((line) => `<span class="reading-meta">${escapeHtml(line)}</span>`)
+        .map((line) => `<span class="entry-meta">${escapeHtml(line)}</span>`)
         .join("");
       const byline =
         entry.author || meta
-          ? `<p class="reading-byline">${
+          ? `<p class="entry-byline">${
               entry.author
-                ? `<span class="reading-author">${escapeHtml(entry.author)}</span>`
+                ? `<span class="entry-author">${escapeHtml(entry.author)}</span>`
                 : ""
             }${meta}</p>`
           : "";
@@ -142,8 +142,8 @@ export function renderReadingEntries(entries) {
         : "";
 
       return `<div class="reading-entry">
-  <h2 class="reading-label">${escapeHtml(entry.label)}</h2>
-  ${entry.title ? `<p class="reading-title">${escapeHtml(entry.title)}</p>` : ""}
+  <h2 class="section-label section-label--inline">${escapeHtml(entry.label)}</h2>
+  ${entry.title ? `<p class="entry-title">${escapeHtml(entry.title)}</p>` : ""}
   ${byline}
   ${notes}
 </div>`;

@@ -71,4 +71,5 @@ test("build writes core public artifacts", async () => {
   assert.match(indexHtml, /<link rel="canonical" href="https:\/\/grahammacaree\.com\/"/);
   assert.match(indexHtml, /"@type":"Person"/);
   assert.match(indexHtml, /favicon-48\.png" type="image\/png" sizes="48x48"/);
+  assert.match(indexHtml, /fonts\.googleapis\.com\/css2\?family=Lato/);
 });

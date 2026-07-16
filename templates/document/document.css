@@ -1,36 +1,37 @@
-.doc {
+/* Soft defaults — :where keeps specificity low so entry/UI primitives win */
+:where(.doc) {
   h2,
   h3 {
-    margin: 0 0 1rem;
+    margin: 0 0 var(--space-sm);
     font-weight: 600;
-    line-height: 1.2;
+    line-height: var(--leading-tight);
   }
 
   h1 {
-    margin: 3rem 0 1.75rem;
-    font-size: 1.5rem;
+    margin: var(--space-lg) 0 var(--space-md);
+    font-size: var(--text-lg);
     font-weight: 600;
-    line-height: 1.2;
+    line-height: var(--leading-tight);
   }
 
   h2 {
-    font-size: 1.2rem;
+    font-size: var(--text-md);
   }
 
   h3 {
-    font-size: 1.05rem;
-    margin-top: 1.75rem;
+    font-size: var(--text-base);
+    margin-top: var(--space-md);
   }
 
   p {
-    margin: 0 0 1rem;
-    font-size: 1rem;
+    margin: 0 0 var(--space-sm);
+    font-size: var(--text-base);
   }
 
   hr {
     border: none;
     border-top: 1px solid var(--rule);
-    margin: 3rem 0;
+    margin: var(--space-lg) 0;
   }
 }
 

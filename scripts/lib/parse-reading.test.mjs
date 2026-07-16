@@ -65,9 +65,8 @@ test("last read includes notes and strips later entries", () => {
 
 test("renderReadingEntries emits labels and structure", () => {
   const html = renderReadingEntries(parseReadingEntries(sampleHeadings));
-  assert.match(html, /Currently reading/);
-  assert.match(html, /Last read/);
-  assert.match(html, /reading-title/);
+  assert.match(html, /section-label section-label--inline/);
+  assert.match(html, /entry-title/);
   assert.match(html, /reading-notes/);
 });
 

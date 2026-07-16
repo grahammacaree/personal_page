@@ -14,7 +14,7 @@ body {
   color: var(--text);
   background: var(--bg);
   font-family: var(--font-serif);
-  line-height: 1.55;
+  line-height: var(--leading);
 }
 
 a {
@@ -43,5 +43,64 @@ a {
 }
 
 .site-main {
-  padding-bottom: 3rem;
+  padding-bottom: var(--space-lg);
+}
+
+/* Sans chrome — family shared; weight only where UI is emphatic */
+.site-top-nav,
+.studies-btn,
+.studies-lightbox-title {
+  font-family: var(--font-sans);
+  line-height: var(--leading-tight);
+}
+
+.ui-sans,
+.studies-btn,
+.studies-lightbox-title {
+  font-weight: 600;
+}
+
+/* Entry stack — books + courses (beats :where(.doc) defaults) */
+.entry-title {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+.entry-byline {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.entry-meta {
+  margin-left: 0.65em;
+  font-style: italic;
+}
+
+/* Section labels — type shared; layout via --inline / --band */
+.section-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--muted);
+  line-height: var(--leading-tight);
+}
+
+.section-label--inline {
+  margin: 0 0 var(--space-xs);
+  text-align: left;
+}
+
+.section-label--band {
+  width: 100%;
+  max-width: var(--measure);
+  margin: var(--space-lg) auto var(--space-md);
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--rule);
+  text-align: center;
 }

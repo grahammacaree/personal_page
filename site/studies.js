@@ -10,11 +10,18 @@
   const closeBtn = root.querySelector(".studies-lightbox-close");
   if (!dialog || !frame || !titleEl || !openLink || !closeBtn) return;
 
+  function setTitle(label) {
+    const kind = document.createElement("span");
+    kind.className = "studies-lightbox-title-kind";
+    kind.textContent = " lecture notes";
+    titleEl.replaceChildren(label, kind);
+  }
+
   function openPdf(src, title) {
     const label = title || "Course notes";
     frame.src = src;
-    frame.title = `${label} PDF`;
-    titleEl.textContent = label;
+    frame.title = `${label} lecture notes PDF`;
+    setTitle(label);
     openLink.href = src;
     if (typeof dialog.showModal === "function") {
       dialog.showModal();

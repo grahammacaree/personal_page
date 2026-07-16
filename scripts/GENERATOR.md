@@ -98,6 +98,8 @@ Booleans are for conditionals only — they are not emitted as text. Nested bloc
 
 **Layers** (CSS concat order): `foundation` → `layout` → `chrome` → `section`.
 
+`tokens/tokens.css` defines a φ-based type/spacing scale (`--text-*`, `--space-*`). Prefer those over one-off rem values for rhythm. Shared type primitives live in `base/base.css`: `.section-label` (+ `--inline` / `--band`), `.entry-title` / `.entry-byline` / `.entry-meta`, and `.ui-sans` (also applied to nav / studies buttons / lightbox title). Document defaults use `:where(.doc)` so those primitives win without specificity wars.
+
 Discovery: `lib/discover-components.mjs` — no manual path registry.
 
 ### Asset vars (intro example)

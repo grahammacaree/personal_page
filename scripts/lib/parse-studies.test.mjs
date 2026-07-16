@@ -43,7 +43,8 @@ test("renderStudiesSection groups currently then previously with one label each"
 
   assert.match(html, /studies-intro/);
   assert.match(html, /Intro\./);
-  assert.match(html, /B, 2012/);
+  assert.match(html, /entry-byline studies-card-byline/);
+  assert.match(html, /entry-author">B<\/span> \(2012\)/);
   assert.match(html, /studies-card-summary/);
   assert.match(html, /<li>First theme<\/li>/);
   assert.match(html, /data-studies-pdf="\/studies\/now\.pdf"/);
@@ -53,12 +54,13 @@ test("renderStudiesSection groups currently then previously with one label each"
   );
   assert.match(html, /aria-label="Open Now notes"/);
   assert.match(html, /aria-haspopup="dialog"/);
+  assert.match(html, /section-label section-label--band/);
   assert.match(html, /aria-labelledby="studies-group-currently"/);
   assert.match(html, /GitHub repo/);
   assert.match(html, /studies-lightbox/);
   assert.match(html, /studies-external/);
   assert.match(html, /aria-label="Open course page for Now"/);
-  assert.doesNotMatch(html, /<h3 class="studies-card-title"><a href=/);
+  assert.match(html, /<h3 class="entry-title">/);
   assert.match(html, /GitHub repo <svg class="test-ext"/);
   assert.doesNotMatch(html, /studies-btn--notes[^>]*<\/button>/);
 

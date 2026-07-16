@@ -6,8 +6,31 @@
   --accent-bar: var(--accent);
   --rule: var(--accent);
   --measure: 30rem;
-  --top-bar-height: 2.75rem;
-  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+
+  /* Modular scale — golden ratio (φ) around a 1rem body unit */
+  --phi: 1.618;
+
+  --space-3xs: calc(1rem / var(--phi) / var(--phi) / var(--phi)); /* ≈0.236rem */
+  --space-2xs: calc(1rem / var(--phi) / var(--phi)); /* ≈0.382rem */
+  --space-xs: calc(1rem / var(--phi)); /* ≈0.618rem */
+  --space-sm: 1rem;
+  --space-ms: calc(1rem * sqrt(var(--phi))); /* ≈1.272rem */
+  --space-md: calc(1rem * var(--phi)); /* ≈1.618rem */
+  --space-lg: calc(1rem * var(--phi) * var(--phi)); /* ≈2.618rem */
+  --space-xl: calc(1rem * var(--phi) * var(--phi) * var(--phi)); /* ≈4.236rem */
+
+  --text-xs: calc(1rem / var(--phi)); /* ≈0.618rem — compact UI */
+  --text-sm: calc(1rem / sqrt(var(--phi))); /* ≈0.786rem — labels, nav, footer */
+  --text-base: 1rem;
+  --text-md: calc(1rem * sqrt(var(--phi))); /* ≈1.272rem — section titles */
+  --text-lg: calc(1rem * var(--phi)); /* ≈1.618rem — page titles */
+
+  --leading: 1.55;
+  --leading-tight: 1.2;
+
+  --top-bar-height: var(--space-lg);
+  --font-serif: Palatino, "Palatino Linotype", "Iowan Old Style", Georgia, serif;
+  --font-sans: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
   --link-shadow: inset 0 -0.08em 0 currentColor;
   --link-shadow-hover: inset 0 -0.42em 0 var(--accent-bar);
 }
