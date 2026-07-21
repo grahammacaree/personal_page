@@ -59,7 +59,8 @@
       "contentPath": "{slug}.html",
       "publishPath": "{slug}.html",
       "publish": true,
-      "pageType": "cv"
+      "pageType": "cv",
+      "endmark": "before-hr"
     },
     "about": {
       "section": "document",

@@ -104,6 +104,8 @@ On the editorial page, end with:
 
 The build links only the word **here** to `/cv.pdf`. (If you hyperlink “here” to the printable Doc in Google Docs, that also resolves to `/cv.pdf`.)
 
+Put a horizontal rule above that closer. The build places the essay **endmark** on the paragraph immediately before the rule (not on the PDF line).
+
 ## 6. About this site
 
 Optional meta page: how the site is built (Google Docs → sync → static HTML). Linked from the footer. Not part of the homepage.

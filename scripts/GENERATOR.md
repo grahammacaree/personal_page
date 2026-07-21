@@ -56,7 +56,7 @@ Each manifest `type` must have a `docTypes` entry:
 | `publish` | If `false`, doc is only used on composed pages (e.g. homepage) |
 | `publishPath` | Output path under `public/` when `publish: true` |
 | `pageType` | Key into `pageTypes` for chrome when published |
-| `endmark` | Append endmark to last paragraph |
+| `endmark` | `true` = last paragraph; `"before-hr"` = paragraph above the first `<hr>` (CV) |
 | `sectionId` | Optional `id` on `<section>` |
 | `parse` | Optional post-clean transform (e.g. `reading` — keep top two log entries) |
 

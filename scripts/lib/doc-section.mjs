@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { cleanGoogleHtml } from "./clean-google-html.mjs";
-import { applyEndmarkToLastParagraph } from "./endmark.mjs";
+import { applyEndmark } from "./endmark.mjs";
 import { renderTemplate } from "./html.mjs";
 import {
   parseReadingEntries,
@@ -77,7 +77,7 @@ export async function buildDocSection(
   }
 
   if (docTypeCfg.endmark) {
-    html = applyEndmarkToLastParagraph(html);
+    html = applyEndmark(html, docTypeCfg.endmark);
   }
 
   const vars = {

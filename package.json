@@ -14,7 +14,7 @@
     "studies:lan": "bash scripts/sync-studies.sh --publish",
     "studies:drive": "node scripts/studies-drive.mjs",
     "preview": "BASE_PATH=/ npm run build && npx --yes serve public",
-    "test": "node --test scripts/lib/html.test.mjs scripts/lib/page-context.test.mjs scripts/lib/site-config.test.mjs scripts/lib/sitemap.test.mjs scripts/lib/parse-reading.test.mjs scripts/lib/parse-studies.test.mjs scripts/lib/export-pdfs.test.mjs scripts/lib/rewrite-doc-links.test.mjs scripts/build.test.mjs"
+    "test": "node --test scripts/lib/html.test.mjs scripts/lib/page-context.test.mjs scripts/lib/site-config.test.mjs scripts/lib/sitemap.test.mjs scripts/lib/parse-reading.test.mjs scripts/lib/parse-studies.test.mjs scripts/lib/export-pdfs.test.mjs scripts/lib/rewrite-doc-links.test.mjs scripts/lib/endmark.test.mjs scripts/build.test.mjs"
   },
   "engines": {
     "node": ">=20"
