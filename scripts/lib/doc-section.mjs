@@ -11,7 +11,7 @@ import {
   loadStudiesConfig,
   renderStudiesSection,
 } from "./parse-studies.mjs";
-import { rewriteDocLinks } from "./rewrite-doc-links.mjs";
+import { rewriteDocLinks, linkSeeHereToPdf, cvPdfHref } from "./rewrite-doc-links.mjs";
 import {
   contentPathForDoc,
   docTypeConfig,
@@ -58,6 +58,11 @@ export async function buildDocSection(
   const raw = await readContent(contentDir, contentPathForDoc(siteConfig, doc));
   const cleaned = raw ? cleanGoogleHtml(raw) : "";
   let html = rewriteDocLinks(cleaned, docUrlById);
+
+  if (doc.type === "cv") {
+    const basePath = normalizeBasePath(siteConfig.basePath ?? "/");
+    html = linkSeeHereToPdf(html, cvPdfHref(siteConfig, basePath));
+  }
 
   if (docTypeCfg.parse === "reading") {
     html = renderReadingEntries(parseReadingEntries(html));

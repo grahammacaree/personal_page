@@ -1,4 +1,8 @@
-/** Studies page: open course note PDFs in a modal lightbox. */
+/** Studies page: open course note PDFs in a modal lightbox.
+ *
+ * Shareable deep links: /studies.html?notes=<pdf-slug>&page=<n>
+ * e.g. ?notes=learning-from-data&page=25
+ */
 (function () {
   const root = document.querySelector(".doc--studies");
   if (!root) return;
@@ -10,6 +14,60 @@
   const closeBtn = root.querySelector(".studies-lightbox-close");
   if (!dialog || !frame || !titleEl || !openLink || !closeBtn) return;
 
+  /** @type {string | null} */
+  let activeSlug = null;
+  /** @type {number | null} */
+  let activePage = null;
+
+  function pdfSlug(href) {
+    if (!href) return "";
+    try {
+      const path = new URL(href, location.href).pathname;
+      const base = path.split("/").pop() || "";
+      return base.replace(/\.pdf$/i, "");
+    } catch {
+      return "";
+    }
+  }
+
+  function parsePage(raw) {
+    if (raw == null || raw === "") return null;
+    const n = Number.parseInt(String(raw), 10);
+    if (!Number.isFinite(n) || n < 1) return null;
+    return n;
+  }
+
+  function withPage(href, page) {
+    const base = String(href || "").split("#")[0];
+    if (!base) return "";
+    return page ? `${base}#page=${page}` : base;
+  }
+
+  function findNotesLink(slug) {
+    if (!slug) return null;
+    const links = root.querySelectorAll("[data-studies-pdf]");
+    for (let i = 0; i < links.length; i += 1) {
+      const link = links[i];
+      if (pdfSlug(link.getAttribute("data-studies-pdf")) === slug) {
+        return link;
+      }
+    }
+    return null;
+  }
+
+  function syncUrl(slug, page) {
+    const url = new URL(location.href);
+    if (slug) {
+      url.searchParams.set("notes", slug);
+      if (page) url.searchParams.set("page", String(page));
+      else url.searchParams.delete("page");
+    } else {
+      url.searchParams.delete("notes");
+      url.searchParams.delete("page");
+    }
+    history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  }
+
   function setTitle(label) {
     const kind = document.createElement("span");
     kind.className = "studies-lightbox-title-kind";
@@ -17,16 +75,26 @@
     titleEl.replaceChildren(label, kind);
   }
 
-  function openPdf(src, title) {
+  function openPdf(src, title, opts = {}) {
+    const slug = opts.slug || pdfSlug(src);
+    const page = opts.page != null ? opts.page : null;
+    const href = withPage(src, page);
     const label = title || "Course notes";
-    frame.src = src;
+
+    activeSlug = slug || null;
+    activePage = page;
+
+    frame.src = href;
     frame.title = `${label} lecture notes PDF`;
     setTitle(label);
-    openLink.href = src;
+    openLink.href = href;
     if (typeof dialog.showModal === "function") {
       dialog.showModal();
     } else {
       dialog.setAttribute("open", "");
+    }
+    if (opts.updateUrl !== false) {
+      syncUrl(activeSlug, activePage);
     }
     // Keep focus in the dialog chrome so Escape closes us, not the PDF viewer.
     closeBtn.focus();
@@ -46,6 +114,9 @@
     frame.title = "Course notes PDF";
     titleEl.textContent = "";
     openLink.removeAttribute("href");
+    activeSlug = null;
+    activePage = null;
+    syncUrl(null, null);
   }
 
   dialog.addEventListener("close", resetViewer);
@@ -77,9 +148,25 @@
     event.preventDefault();
     openPdf(
       link.getAttribute("data-studies-pdf"),
-      link.getAttribute("data-studies-title") || "Notes"
+      link.getAttribute("data-studies-title") || "Notes",
+      { slug: pdfSlug(link.getAttribute("data-studies-pdf")), page: null }
     );
   });
 
   closeBtn.addEventListener("click", closePdf);
+
+  // Deep link: ?notes=<slug>&page=<n>
+  const params = new URLSearchParams(location.search);
+  const notesSlug = (params.get("notes") || "").trim();
+  const page = parsePage(params.get("page"));
+  if (notesSlug) {
+    const link = findNotesLink(notesSlug);
+    if (link) {
+      openPdf(
+        link.getAttribute("data-studies-pdf"),
+        link.getAttribute("data-studies-title") || "Notes",
+        { slug: notesSlug, page, updateUrl: true }
+      );
+    }
+  }
 })();

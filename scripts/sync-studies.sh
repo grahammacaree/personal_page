@@ -80,7 +80,10 @@ rm -f "$CONFIG_ENV"
 
 NOTEBOOKS="${BACKUP_DIR}/Notebooks"
 DISCOVER_PY="$ROOT/scripts/lib/discover-remarkable.py"
+FINGERPRINT_PY="$ROOT/scripts/lib/notebook-fingerprint.py"
+STAMP_DIR="${HOME}/Library/Application Support/remarkablesync/convert-stamps"
 RMS_CONFIG="${HOME}/Library/Application Support/remarkablesync/config.json"
+mkdir -p "$STAMP_DIR"
 
 if [[ ! -x "$RMRL_PY" ]]; then
   echo "rmrl python not found: $RMRL_PY" >&2
@@ -88,6 +91,26 @@ if [[ ! -x "$RMRL_PY" ]]; then
 fi
 
 log() { printf '%s %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*"; }
+
+sha256_file() {
+  shasum -a 256 "$1" | awk '{print $1}'
+}
+
+# Stamp: line 1 = notebook input fingerprint, line 2 = output PDF sha256.
+# Skip only when both match — input fp alone is not enough (Drive sync can
+# overwrite studies/*.pdf with an older copy while cloud ink is unchanged).
+read_stamp() {
+  STAMP_INPUT=""
+  STAMP_OUTPUT=""
+  [[ -f "$1" ]] || return 1
+  STAMP_INPUT="$(sed -n '1p' "$1")"
+  STAMP_OUTPUT="$(sed -n '2p' "$1")"
+  [[ -n "$STAMP_INPUT" ]]
+}
+
+write_stamp() {
+  printf '%s\n%s\n' "$1" "$2" >"$3"
+}
 
 sync_rms_folder_filter() {
   python3 - "$RMS_CONFIG" "$TABLET_FOLDER" <<'PY'
@@ -237,6 +260,21 @@ while [[ "$i" -lt "$COURSE_COUNT" ]]; do
     continue
   fi
 
+  dest="${STUDIES_DIR}/${pdf}"
+  stamp="${STAMP_DIR}/${pdf}.stamp"
+  fp="$("$RMRL_PY" "$FINGERPRINT_PY" "$meta" "$PDF_DPI" "$PDF_JPEG_QUALITY")"
+  if [[ -f "$dest" ]] && read_stamp "$stamp"; then
+    dest_sha="$(sha256_file "$dest")"
+    if [[ "$STAMP_INPUT" == "$fp" && "$STAMP_OUTPUT" == "$dest_sha" ]]; then
+      log "Unchanged notebook: $pdf — skip convert"
+      i=$((i + 1))
+      continue
+    fi
+    if [[ "$STAMP_INPUT" == "$fp" && "$STAMP_OUTPUT" != "$dest_sha" ]]; then
+      log "Notebook unchanged but local PDF differs: $pdf — reconvert"
+    fi
+  fi
+
   # BSD mktemp: Xs must be last; avoid nesting quotes with ${pdf} in the template.
   tmp="$(mktemp "${TMPDIR:-/tmp}/rm-studies.XXXXXXXX")" || exit 1
   log "Converting ${uuid} -> ${pdf} at ${PDF_DPI}dpi via rmrl/rmc hybrid"
@@ -246,7 +284,6 @@ while [[ "$i" -lt "$COURSE_COUNT" ]]; do
     exit 1
   fi
 
-  dest="${STUDIES_DIR}/${pdf}"
   if [[ -f "$dest" ]] && cmp -s "$tmp" "$dest"; then
     log "Unchanged: $pdf"
     rm -f "$tmp"
@@ -256,6 +293,7 @@ while [[ "$i" -lt "$COURSE_COUNT" ]]; do
     changed=1
     UPDATED_PDFS+=("$pdf")
   fi
+  write_stamp "$fp" "$(sha256_file "$dest")" "$stamp"
   i=$((i + 1))
 done
 
@@ -268,13 +306,12 @@ if [[ "$DO_PUBLISH" -eq 0 ]]; then
   exit 0
 fi
 
+# Upload all local PDFs; sync-studies-drive skips when Drive md5 already matches.
 if [[ "${#UPDATED_PDFS[@]}" -eq 0 ]]; then
-  log "No PDF bytes changed — skipping Drive upload."
-  exit 0
+  log "No local PDF changes this run — checking Drive for uploads…"
+else
+  log "Uploading ${#UPDATED_PDFS[@]} updated PDF(s) to Google Drive…"
 fi
-
-# Only push notebooks whose local PDF changed this run (md5 check is a second gate).
-log "Uploading ${#UPDATED_PDFS[@]} updated PDF(s) to Google Drive…"
 cd "$ROOT"
-node "$ROOT/scripts/studies-drive.mjs" --upload -- "${UPDATED_PDFS[@]}"
+node "$ROOT/scripts/studies-drive.mjs" --upload
 log "Drive upload done. Site picks them up on the next Actions sync (daily cron or manual run)."

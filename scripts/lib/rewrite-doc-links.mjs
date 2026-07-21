@@ -1,5 +1,7 @@
 import * as cheerio from "cheerio";
 import { PLACEHOLDER } from "./constants.mjs";
+import { pdfExportsFromConfig } from "./export-pdfs.mjs";
+import { escapeHtml } from "./html.mjs";
 import { publishPathForDoc } from "./site-config.mjs";
 
 /** Google doc id in /document/d/ID or /document/u/0/d/ID paths */
@@ -24,13 +26,16 @@ function extractDocId(href) {
   return match?.[1] ?? null;
 }
 
-/** Map manifest doc ids → site paths; rewrite <a href> from Google Docs URLs. */
+/** Map manifest doc ids (+ pdfExports) → site paths; rewrite <a href> from Google Docs URLs. */
 export function buildDocUrlMap(docs, basePath, siteConfig) {
   const map = new Map();
   for (const doc of docs) {
     if (!doc.id || doc.id === PLACEHOLDER) continue;
     const rel = publishPathForDoc(siteConfig, doc);
     map.set(doc.id, rel == null ? basePath : `${basePath}${rel}`);
+  }
+  for (const entry of pdfExportsFromConfig(siteConfig)) {
+    map.set(entry.id, `${basePath}${entry.path}`);
   }
   return map;
 }
@@ -54,4 +59,25 @@ export function rewriteDocLinks(html, docUrlById) {
   });
 
   return $("#rewrite-root").html() ?? html;
+}
+
+/**
+ * Link bare "here" in the CV closer to the printable PDF.
+ * Matches: …require a more traditional CV (…) please see here.
+ */
+export function linkSeeHereToPdf(html, pdfHref) {
+  if (!html || !pdfHref) return html;
+  const href = escapeHtml(pdfHref);
+  return html.replace(
+    /(Should you for any reason require a more traditional CV \(dates, titles, skills etc\.\) please see )(?!<a\b)here(?!<\/a>)(\.?)/g,
+    `$1<a href="${href}">here</a>$2`
+  );
+}
+
+/** Prefer cv.pdf from pdfExports; else first export. */
+export function cvPdfHref(siteConfig, basePath) {
+  const exports = pdfExportsFromConfig(siteConfig);
+  const cv =
+    exports.find((e) => e.path === "cv.pdf") ?? exports[0] ?? null;
+  return cv ? `${basePath}${cv.path}` : "";
 }

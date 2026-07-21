@@ -47,6 +47,17 @@ body.body--studies {
   .studies-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  /* One course: same column width as a two-up card, centered */
+  .studies-grid--solo {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .studies-grid--solo > .studies-card {
+    width: 100%;
+    max-width: calc((100% - var(--space-md)) / 2);
+  }
 }
 
 .studies-card {

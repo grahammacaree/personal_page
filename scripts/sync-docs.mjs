@@ -8,6 +8,7 @@ import {
   DRIVE_READONLY_SCOPE,
   loadGoogleCredentials,
 } from "./lib/drive-auth.mjs";
+import { syncPdfExports } from "./lib/export-pdfs.mjs";
 import { writeFileIfChanged } from "./lib/lastmod.mjs";
 import { contentPathForDoc } from "./lib/site-config.mjs";
 import { syncStudiesPdfsFromDrive } from "./lib/sync-studies-drive.mjs";
@@ -60,6 +61,8 @@ async function main() {
     return;
   }
 
+  const drive = createDriveClient(credentials, DRIVE_READONLY_SCOPE);
+
   if (configured.length === 0) {
     const msg =
       "No Google Doc IDs configured yet — add IDs to docs.manifest.json.";
@@ -69,7 +72,6 @@ async function main() {
     }
     console.log(msg);
   } else {
-    const drive = createDriveClient(credentials, DRIVE_READONLY_SCOPE);
     await Promise.all(
       docs.map(async (doc) => {
         if (!doc.id || doc.id === PLACEHOLDER) {
@@ -81,6 +83,7 @@ async function main() {
     );
   }
 
+  await syncPdfExports(drive, siteConfig, { required });
   await syncStudiesPdfsFromDrive({ required });
 }
 

@@ -22,7 +22,14 @@ async function mtimeMs(filePath) {
  * @returns {Promise<Date|null>}
  */
 export async function lastModifiedForPage(page, opts) {
-  const { contentDir, siteConfig, docs, studiesDir, studiesConfigPath } = opts;
+  const {
+    contentDir,
+    siteConfig,
+    docs,
+    studiesDir,
+    studiesConfigPath,
+    exportsDir,
+  } = opts;
   const times = [];
 
   for (const slug of page.sectionSlugs ?? []) {
@@ -47,6 +54,15 @@ export async function lastModifiedForPage(page, opts) {
         } catch {
           /* no studies dir yet */
         }
+      }
+    }
+
+    if (doc.type === "cv" && exportsDir) {
+      for (const entry of siteConfig?.pdfExports ?? []) {
+        const pdfRel = String(entry?.path ?? "").trim().replace(/^\/+/, "");
+        if (!pdfRel.endsWith(".pdf") || pdfRel.includes("..")) continue;
+        const pdfMs = await mtimeMs(path.join(exportsDir, pdfRel));
+        if (pdfMs != null) times.push(pdfMs);
       }
     }
   }

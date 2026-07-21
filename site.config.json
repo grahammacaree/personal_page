@@ -7,6 +7,12 @@
   "person": {
     "jobTitle": "Editorial/Engineering Leader"
   },
+  "pdfExports": [
+    {
+      "id": "1BwkOgdqOQAKj22LmRZDDgb2MZsRM7DGXnffhreBQReY",
+      "path": "cv.pdf"
+    }
+  ],
   "home": {
     "output": "index.html",
     "pageType": "home",
@@ -50,7 +56,6 @@
     },
     "cv": {
       "section": "document",
-      "sectionStyles": ["cv"],
       "contentPath": "{slug}.html",
       "publishPath": "{slug}.html",
       "publish": true,

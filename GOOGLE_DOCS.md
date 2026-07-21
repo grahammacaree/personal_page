@@ -84,22 +84,25 @@ The build adds a square **endmark** after the last word of the final paragraph o
 
 ## 5. CV
 
+The `/cv.html` Doc is the **editorial** page (essay-style headings and narrative). A separate printable Google Doc is exported as PDF during sync (`site.config.json` → `pdfExports`) and published at `/cv.pdf` — share that Doc with the service account as Viewer.
+
+Editorial Doc (site page) can follow a looser shape, e.g.:
+
 ```
-# Name
-One-line positioning statement.
+# Name / opening
+Short framing paragraphs…
 
-## Experience
-Role — Organisation — dates
-Impact in one line per role.
-
-## Selected work
-Bullets with outcomes where possible.
-
-## Skills / interests
-Short; only what you’d stand behind in conversation.
+## Section
+…
 ```
 
-Use Google heading styles so the build maps sections to `<h2>` (sections), `<h4>` (employer), `<h5>` (role). See formatting rules below.
+The printable Doc can keep a conventional résumé layout; Google’s PDF export is what recruiters download. Share both Docs with the service account as Viewer.
+
+On the editorial page, end with:
+
+> Should you for any reason require a more traditional CV (dates, titles, skills etc.) please see here.
+
+The build links only the word **here** to `/cv.pdf`. (If you hyperlink “here” to the printable Doc in Google Docs, that also resolves to `/cv.pdf`.)
 
 ## 6. About this site
 

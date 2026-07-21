@@ -148,7 +148,7 @@ Handwritten notebooks convert on the Mac, upload to a **Google Drive folder**, t
 2. Open https://my.remarkable.com/device/browser/connect, run `rmapi`, paste the 8-character code.
 3. Confirm cloud paths: notebooks under `remarkable.cloudFolder` (default `/Studies`) with names matching each course `notebookName`.
 4. Keep the tablet syncing to cloud (Settings → account).
-5. Install the weekday LaunchAgent (local **14:00** → `studies:publish`, before Actions cron ~15:00 BST):
+5. Install the weekday LaunchAgent (local **14:00** → `studies:publish`, before Actions cron ~15:00 BST). The plist sets `PATH` with Homebrew first (so `python3` is not the Xcode stub) and uses `bash -c` (not `-lc`) to skip a login shell:
 
 ```bash
 cp scripts/launchd/com.grahammacaree.sync-studies.plist ~/Library/LaunchAgents/

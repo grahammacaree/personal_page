@@ -2,10 +2,16 @@ import { escapeHtml } from "./html.mjs";
 
 export { loadStudiesConfig } from "./studies-config.mjs";
 
-const STATUS_LABEL = {
-  currently: "Current courses",
-  previously: "Previous courses",
+const STATUS_HEAD = {
+  currently: "Current",
+  previously: "Completed",
 };
+
+function groupLabel(status, count) {
+  const head = STATUS_HEAD[status];
+  if (!head) return escapeHtml(status);
+  return `${head} ${count === 1 ? "course" : "courses"}`;
+}
 
 function externalLink(href, icon, label) {
   if (!href) return "";
@@ -60,12 +66,13 @@ function courseCard(course, basePath, icon) {
 
 function courseGroup(status, courses, basePath, icon) {
   if (!courses.length) return "";
-  const label = STATUS_LABEL[status] ?? escapeHtml(status);
+  const label = groupLabel(status, courses.length);
   const labelId = `studies-group-${status}`;
+  const solo = courses.length === 1 ? " studies-grid--solo" : "";
   const cards = courses.map((c) => courseCard(c, basePath, icon)).join("\n");
   return `<section class="studies-group" aria-labelledby="${labelId}">
   <h2 class="section-label section-label--band" id="${labelId}">${label}</h2>
-  <div class="studies-grid">
+  <div class="studies-grid${solo}">
 ${cards}
   </div>
 </section>`;

@@ -61,6 +61,7 @@ async function main() {
   const pages = planPages({ siteConfig, docs });
   const studiesDir = path.join(root, "studies");
   const studiesConfigPath = path.join(root, "studies.config.json");
+  const exportsDir = path.join(root, "exports");
   for (const page of pages) {
     page.lastmod = await lastModifiedForPage(page, {
       contentDir,
@@ -68,6 +69,7 @@ async function main() {
       docs,
       studiesDir,
       studiesConfigPath,
+      exportsDir,
     });
   }
 
@@ -103,6 +105,20 @@ async function main() {
     await cp(studiesDir, path.join(publicDir, "studies"), { recursive: true });
   } catch (err) {
     if (err.code !== "ENOENT") throw err;
+  }
+
+  for (const entry of siteConfig.pdfExports ?? []) {
+    const rel = String(entry?.path ?? "").trim().replace(/^\/+/, "");
+    if (!rel || !rel.endsWith(".pdf") || rel.includes("..")) continue;
+    const src = path.join(exportsDir, rel);
+    const dest = path.join(publicDir, rel);
+    try {
+      await mkdir(path.dirname(dest), { recursive: true });
+      await copyFile(src, dest);
+      console.log(`  ${rel}`);
+    } catch (err) {
+      if (err.code !== "ENOENT") throw err;
+    }
   }
 
   const siteCss = await buildSiteStyles(templatesDir, registry.cssOrder);

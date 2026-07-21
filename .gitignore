@@ -1,6 +1,8 @@
 node_modules/
 public/
 content/
+exports/*
+!exports/.gitkeep
 studies/*.pdf
 __pycache__/
 *.pyc

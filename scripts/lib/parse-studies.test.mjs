@@ -66,10 +66,41 @@ test("renderStudiesSection groups currently then previously with one label each"
 
   const currentlyMatches = html.match(/>Current courses</g) ?? [];
   assert.equal(currentlyMatches.length, 1);
-  const previouslyMatches = html.match(/>Previous courses</g) ?? [];
+  const previouslyMatches = html.match(/>Completed course</g) ?? [];
   assert.equal(previouslyMatches.length, 1);
+  assert.doesNotMatch(html, />Completed courses</);
+  assert.match(
+    html,
+    /studies-group-currently[\s\S]*?<div class="studies-grid">/
+  );
+  assert.match(
+    html,
+    /studies-group-previously[\s\S]*?<div class="studies-grid studies-grid--solo">/
+  );
 
   const nowAt = html.indexOf("Now");
   const oldAt = html.indexOf("Old");
   assert.ok(nowAt < oldAt);
+});
+
+test("renderStudiesSection marks a lone course grid as solo", () => {
+  const html = renderStudiesSection(
+    "",
+    {
+      courses: [
+        {
+          status: "currently",
+          title: "Only",
+          instructor: "A",
+          pdf: "only.pdf",
+          repo: null,
+        },
+      ],
+    },
+    "/"
+  );
+
+  assert.match(html, /studies-grid studies-grid--solo/);
+  assert.match(html, />Current course</);
+  assert.doesNotMatch(html, />Current courses</);
 });

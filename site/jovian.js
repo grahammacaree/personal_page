@@ -6,7 +6,7 @@
  * Astronomical Algorithms, ch.44 (low-accuracy). Docs: JOVIAN.md
  *
  * X = east–west on the hairline; Z = depth (negative = nearer Earth than
- * Jupiter). Paint order follows Z so transits sit in front of occultations.
+ * Jupiter). Moons with Z > 0 sit behind Jupiter; Z < 0 in front.
  */
 (function () {
   const J2000 = 2451545.0;
@@ -88,18 +88,28 @@
     return [xz(u1, r1), xz(u2, r2), xz(u3, r3), xz(u4, r4)];
   }
 
+  function placeMoons(group, items, midY) {
+    group.replaceChildren();
+    for (const item of items) {
+      item.el.setAttribute("cx", String(item.cx));
+      item.el.setAttribute("cy", String(midY));
+      item.el.removeAttribute("visibility");
+      group.appendChild(item.el);
+    }
+  }
+
   function boot(footer) {
     const svg = footer.querySelector(".site-footer-jovian");
     if (!svg) return;
 
     const orbit = svg.querySelector(".site-footer-jovian-orbit");
+    const back = svg.querySelector(".site-footer-jovian-back");
     const jupiter = svg.querySelector(".site-footer-jovian-jupiter");
+    const front = svg.querySelector(".site-footer-jovian-front");
     const moons = MOONS.map((name) =>
       svg.querySelector(`.site-footer-jovian-moon[data-moon="${name}"]`)
     );
-    if (!orbit || !jupiter || moons.some((el) => !el)) return;
-
-    const positions = moonPositions(julianDay(new Date()));
+    if (!orbit || !back || !front || !jupiter || moons.some((el) => !el)) return;
 
     function draw() {
       const width = footer.getBoundingClientRect().width || footer.clientWidth || 0;
@@ -108,6 +118,8 @@
       const midY = h / 2;
       const centre = width / 2;
       const scale = (width * 0.46) / MAX_R;
+      const positions = moonPositions(julianDay(new Date()));
+
       svg.setAttribute("viewBox", `0 0 ${width} ${h}`);
       svg.setAttribute("width", String(width));
       svg.setAttribute("height", String(h));
@@ -115,27 +127,26 @@
       orbit.setAttribute("x2", String(width));
       orbit.setAttribute("y1", String(midY));
       orbit.setAttribute("y2", String(midY));
+      jupiter.setAttribute("cx", String(centre));
+      jupiter.setAttribute("cy", String(midY));
 
-      const bodies = [
-        { el: jupiter, z: 0, cx: centre },
-        ...moons.map((el, i) => ({
-          el,
+      const behind = [];
+      const inFront = [];
+      for (let i = 0; i < MOONS.length; i += 1) {
+        const item = {
+          el: moons[i],
           z: positions[i].z,
           cx: centre + positions[i].x * scale,
-        })),
-      ];
-
-      for (const body of bodies) {
-        body.el.setAttribute("cx", String(body.cx));
-        body.el.setAttribute("cy", String(midY));
+        };
+        if (item.z > 0) behind.push(item);
+        else inFront.push(item);
       }
 
-      // Far → near so nearer discs (transits) paint over Jupiter / farther moons.
-      bodies.sort((a, b) => b.z - a.z);
-      svg.appendChild(orbit);
-      for (const body of bodies) {
-        svg.appendChild(body.el);
-      }
+      behind.sort((a, b) => b.z - a.z);
+      inFront.sort((a, b) => a.z - b.z);
+
+      placeMoons(back, behind, midY);
+      placeMoons(front, inFront, midY);
     }
 
     draw();

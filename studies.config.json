@@ -15,24 +15,40 @@
   "courses": [
     {
       "status": "currently",
-      "title": "Learning from Data",
-      "href": "https://work.caltech.edu/telecourse.html",
-      "instructor": "Yaser Abu-Mostafa",
-      "year": 2012,
+      "title": "Introduction to Algorithms",
+      "href": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
+      "instructor": "Erik Demaine, Jason Ku, Justin Solomon",
+      "year": 2020,
       "summary": [
-        "The theory of machine learning",
-        "Vapnik–Chervonenkis generalisation",
-        "Bias and variance",
-        "Regularisation and validation",
-        "Linear models and feature transforms"
+        "Elementary data structures",
+        "Sorting, graphs and dynamic programming",
+        "Modelling computational problems",
+        "Algorithm performance and analysis"
       ],
-      "repo": "https://github.com/grahammacaree/learning-from-data",
-      "pdf": "learning-from-data.pdf",
-      "notebookUuid": "6849f12b-0129-467f-b06a-d38335812ced",
-      "notebookName": "Lfd"
+      "repo": null,
+      "pdf": "introduction-to-algorithms.pdf",
+      "notebookUuid": "bc560019-5ce2-4bb8-a8a2-90199642654b",
+      "notebookName": "Introduction to Algorithms"
     },
     {
       "status": "currently",
+      "title": "Statistics & Probability",
+      "href": "https://stat110.hsites.harvard.edu/",
+      "instructor": "Joe Blitzstein",
+      "year": 2013,
+      "summary": [
+        "Fundamentals of probability",
+        "Random variables and distributions",
+        "Limit theorems",
+        "Markov chains"
+      ],
+      "repo": null,
+      "pdf": "stat-110-probability.pdf",
+      "notebookUuid": "d8df4834-ac1a-45b3-9fa4-c65ad9cfcfa8",
+      "notebookName": "Statistics"
+    },
+    {
+      "status": "previously",
       "title": "Linear Algebra",
       "href": "https://www.youtube.com/playlist?list=PL49CF3715CB9EF31D",
       "instructor": "Gilbert Strang",
@@ -48,6 +64,24 @@
       "pdf": "linear-algebra.pdf",
       "notebookUuid": "c523ad76-6398-4aff-beae-3f06718f2613",
       "notebookName": "Linear Algebra"
+    },
+    {
+      "status": "previously",
+      "title": "Learning from Data",
+      "href": "https://work.caltech.edu/telecourse.html",
+      "instructor": "Yaser Abu-Mostafa",
+      "year": 2012,
+      "summary": [
+        "The theory of machine learning",
+        "Vapnik–Chervonenkis generalisation",
+        "Bias and variance",
+        "Regularisation and validation",
+        "Linear models and feature transforms"
+      ],
+      "repo": "https://github.com/grahammacaree/learning-from-data",
+      "pdf": "learning-from-data.pdf",
+      "notebookUuid": "6849f12b-0129-467f-b06a-d38335812ced",
+      "notebookName": "Lfd"
     }
   ]
 }
