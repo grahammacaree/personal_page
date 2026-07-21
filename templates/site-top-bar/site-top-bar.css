@@ -73,6 +73,7 @@
 .site-nav-current {
   box-shadow: none;
   color: var(--muted);
+  pointer-events: none;
 }
 
 .page-back {
