@@ -1,9 +1,10 @@
 /**
  * Jupiter + Galilean moons on the footer rule.
  *
- * Places Io, Europa, Ganymede, and Callisto at their Earth-view positions
- * (Jupiter radii) for the time the page loads. Formulas: Meeus,
- * Astronomical Algorithms, ch.44 (low-accuracy). Docs: JOVIAN.md
+ * Clockwork universe (Galileo’s moons) on the shared wall clock — pairs with
+ * the emergent Conway terrarium in life.js. Positions are Earth-view Jupiter
+ * radii for *now* (never time-compressed). Formulas: Meeus, Astronomical
+ * Algorithms, ch.44 (low-accuracy). Docs: JOVIAN.md
  *
  * X = east–west on the hairline; Z = depth (negative = nearer Earth than
  * Jupiter). Moons with Z > 0 sit behind Jupiter; Z < 0 in front.
@@ -14,9 +15,15 @@
   /** Callisto ≈ 26.4 Rj — leave margin so discs stay on the hairline. */
   const MAX_R = 27.5;
   const MOONS = ["io", "europa", "ganymede", "callisto"];
+  /** Real rates are slow; ~2 Hz is enough to drift without thrashing the DOM. */
+  const TICK_MS = 500;
 
   function julianDay(date) {
     return date.getTime() / 86400000 + 2440587.5;
+  }
+
+  function prefersReducedMotion() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
 
   /**
@@ -88,14 +95,21 @@
     return [xz(u1, r1), xz(u2, r2), xz(u3, r3), xz(u4, r4)];
   }
 
-  function placeMoons(group, items, midY) {
-    group.replaceChildren();
+  /** Rebuild group only when Z-order changes; otherwise just nudge cx. */
+  function syncGroup(group, items, midY) {
+    const next = items.map((item) => item.el);
+    const prev = [...group.children];
+    const sameOrder =
+      prev.length === next.length && next.every((el, i) => el === prev[i]);
+
     for (const item of items) {
       item.el.setAttribute("cx", String(item.cx));
       item.el.setAttribute("cy", String(midY));
       item.el.removeAttribute("visibility");
-      group.appendChild(item.el);
     }
+
+    if (sameOrder) return;
+    group.replaceChildren(...next);
   }
 
   function boot(footer) {
@@ -111,14 +125,19 @@
     );
     if (!orbit || !back || !front || !jupiter || moons.some((el) => !el)) return;
 
-    function draw() {
-      const width = footer.getBoundingClientRect().width || footer.clientWidth || 0;
-      if (width < 32) return;
+    let width = 0;
+    let midY = 7;
+    let centre = 0;
+    let scale = 1;
+    let timer = 0;
+
+    function layout() {
+      width = footer.getBoundingClientRect().width || footer.clientWidth || 0;
+      if (width < 32) return false;
       const h = 14;
-      const midY = h / 2;
-      const centre = width / 2;
-      const scale = (width * 0.46) / MAX_R;
-      const positions = moonPositions(julianDay(new Date()));
+      midY = h / 2;
+      centre = width / 2;
+      scale = (width * 0.46) / MAX_R;
 
       svg.setAttribute("viewBox", `0 0 ${width} ${h}`);
       svg.setAttribute("width", String(width));
@@ -129,6 +148,12 @@
       orbit.setAttribute("y2", String(midY));
       jupiter.setAttribute("cx", String(centre));
       jupiter.setAttribute("cy", String(midY));
+      return true;
+    }
+
+    function place(now = new Date()) {
+      if (width < 32 && !layout()) return;
+      const positions = moonPositions(julianDay(now));
 
       const behind = [];
       const inFront = [];
@@ -145,12 +170,47 @@
       behind.sort((a, b) => b.z - a.z);
       inFront.sort((a, b) => a.z - b.z);
 
-      placeMoons(back, behind, midY);
-      placeMoons(front, inFront, midY);
+      syncGroup(back, behind, midY);
+      syncGroup(front, inFront, midY);
+    }
+
+    function draw() {
+      if (!layout()) return;
+      place();
+    }
+
+    function stop() {
+      if (timer) {
+        window.clearInterval(timer);
+        timer = 0;
+      }
+    }
+
+    function start() {
+      stop();
+      if (prefersReducedMotion()) {
+        draw();
+        return;
+      }
+      draw();
+      if (document.visibilityState === "hidden") return;
+      timer = window.setInterval(() => place(), TICK_MS);
     }
 
     draw();
-    window.addEventListener("resize", draw, { passive: true });
+    window.addEventListener(
+      "resize",
+      () => {
+        if (!layout()) return;
+        place();
+      },
+      { passive: true }
+    );
+    document.addEventListener("visibilitychange", start);
+    window
+      .matchMedia("(prefers-reduced-motion: reduce)")
+      .addEventListener("change", start);
+    start();
   }
 
   function init() {

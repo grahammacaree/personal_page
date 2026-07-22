@@ -2,6 +2,8 @@
 
 A shared Game of Life lives inside the essay **endmark** — the little square after the last word on the thesis, stories, and CV.
 
+This is the site’s **emergent** flourish: simple local rules, surprising global behaviour, everyone seeing the same board because it is a pure function of UTC. It pairs with the footer’s Jupiter system ([`JOVIAN.md`](JOVIAN.md)) — clockwork Galilean orbits on the same wall clock, homage to determinate law rather than cellular surprise.
+
 ## What you see
 
 - **Collapsed:** a miniature live board (texture, not legible) — cursor `zoom-in`, light hover scale. If `life-state.json` can’t be loaded, a static square instead.
