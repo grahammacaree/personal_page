@@ -29,7 +29,7 @@ Constants live in [`site/life-engine.mjs`](site/life-engine.mjs):
 | `HARD_CAP` 2880 | Force meteor (~24h) |
 | `QUIET_POP` 2304 | “Quiet” if this many live cells or fewer |
 
-Palette: black field, off-white cells (`--bg` / `#faf5f4`). Modal is full-bleed black; the board is a centered square that **covers** the viewport (edges may crop). Quiet Close control in the corner.
+Palette: `--text` field, `--bg` cells. Modal is full-bleed `--text`; the board is a centered square that **covers** the viewport (edges may crop). Quiet Close control in the corner.
 
 **Performance:** each site build writes `public/life-state.json` for the current generation — CI resumes from the live file when reachable. Browsers fetch that tip, keep an in-memory cache for the visit, and only step the gap to “now” (≤ ~1 day after a daily deploy). If the published file is missing, the endmark stays a static square. Asset URLs use `data-life-base` from the build. Also: double-buffered steps and quiet checks every `QUIET_GAP`.
 

@@ -14,8 +14,26 @@ import {
 } from "./life-engine.mjs";
 
 const MINI_CSS_PX = 11;
-/** Terrarium palette: black void, site off-white life (--bg #faf5f4) */
-const COLORS = { bg: [0, 0, 0], fg: [250, 245, 244] };
+/** Terrarium palette: --text void, --bg life (resolved from CSS at paint time) */
+function terrariumColors() {
+  const styles = getComputedStyle(document.documentElement);
+  return {
+    bg: cssColorToRgb(styles.getPropertyValue("--text"), [26, 26, 26]),
+    fg: cssColorToRgb(styles.getPropertyValue("--bg"), [250, 245, 244]),
+  };
+}
+
+function cssColorToRgb(value, fallback) {
+  const hex = String(value).trim();
+  if (/^#[0-9a-fA-F]{6}$/.test(hex)) {
+    return [
+      parseInt(hex.slice(1, 3), 16),
+      parseInt(hex.slice(3, 5), 16),
+      parseInt(hex.slice(5, 7), 16),
+    ];
+  }
+  return fallback;
+}
 const ZOOM_MS = 720;
 /** Open: ease-in — linger on the mark, then accelerate into the void. */
 const ZOOM_EASE_IN = "cubic-bezier(0.64, 0, 0.78, 0)";
@@ -45,13 +63,14 @@ const imageData = pixelCtx.createImageData(SIZE, SIZE);
 
 function blitBoard(board) {
   const d = imageData.data;
-  const [fr, fg, fb] = COLORS.fg;
-  const [br, bg, bb] = COLORS.bg;
+  const { bg, fg } = terrariumColors();
+  const [fr, fgC, fb] = fg;
+  const [br, bgC, bb] = bg;
   for (let i = 0; i < board.length; i += 1) {
     const o = i << 2;
     const live = board[i];
     d[o] = live ? fr : br;
-    d[o + 1] = live ? fg : bg;
+    d[o + 1] = live ? fgC : bgC;
     d[o + 2] = live ? fb : bb;
     d[o + 3] = 255;
   }

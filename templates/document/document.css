@@ -50,7 +50,7 @@
     margin: 0 0 0 0.14em;
     padding: 0;
     border: 1px solid var(--text);
-    background: #000;
+    background: var(--text);
     color: inherit;
     cursor: zoom-in;
     line-height: 0;
@@ -124,7 +124,7 @@
   }
 
   &::backdrop {
-    background: #000;
+    background: var(--text);
     opacity: 0;
   }
 
@@ -141,7 +141,7 @@
   margin: 0;
   padding: var(--space-2xs) var(--space-xs);
   border: none;
-  background: #000;
+  background: var(--text);
   color: rgb(255 255 255 / 0.85);
   font-family: var(--font-sans);
   font-size: var(--text-sm);
@@ -177,7 +177,7 @@
   display: block;
   border: none;
   image-rendering: pixelated;
-  background: #000;
+  background: var(--text);
   transform: translate(-50%, -50%);
   transform-origin: center center;
   will-change: transform;
