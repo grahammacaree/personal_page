@@ -56,7 +56,7 @@ test("applyMeteor changes the board", () => {
 });
 
 test("quiet checks only at QUIET_GAP cadence", () => {
-  clearLifeCache({ storage: true });
+  clearLifeCache();
   // Still-life after seed is unlikely; just ensure evolve through one gap works.
   const a = boardAtGeneration(QUIET_GAP);
   const b = boardAtGeneration(QUIET_GAP);
@@ -70,22 +70,22 @@ test("quiet gap and hard cap constants are ordered", () => {
 });
 
 test("board evolves across generations", () => {
-  clearLifeCache({ storage: true });
+  clearLifeCache();
   const a = boardAtGeneration(0);
   const b = boardAtGeneration(10);
   assert.equal(boardsEqual(a, b), false);
 });
 
 test("startStateFor picks the newest candidate at or before n", () => {
-  clearLifeCache({ storage: true });
+  clearLifeCache();
   const older = boardAtGeneration(10);
-  clearLifeCache({ storage: true });
+  clearLifeCache();
   const newer = {
     n: 40,
     board: boardAtGeneration(40),
     lastMeteor: 0,
   };
-  clearLifeCache({ storage: true });
+  clearLifeCache();
   const start = startStateFor(100, [
     { n: 10, board: older, lastMeteor: 0 },
     newer,

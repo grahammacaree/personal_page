@@ -10,9 +10,7 @@ import {
   commitState,
   generationAt,
   parseLifeState,
-  readCheckpoint,
   startStateFor,
-  writeCheckpoint,
 } from "./life-engine.mjs";
 
 const MINI_CSS_PX = 11;
@@ -126,7 +124,7 @@ function runZoom(el, from, to, easing) {
   });
 }
 
-/** Daily-deployed checkpoint — one resume candidate for startStateFor. */
+/** Daily-deployed checkpoint — resume candidate for startStateFor. */
 async function fetchPublishedLifeState() {
   try {
     const res = await fetch(lifeAssetUrl("life-state.json"), {
@@ -139,7 +137,7 @@ async function fetchPublishedLifeState() {
   }
 }
 
-/** No checkpoint available — leave a static punctuation square. */
+/** No published tip — leave a static punctuation square. */
 function degradeEndmarks(marks) {
   for (const btn of marks) {
     btn.disabled = true;
@@ -150,84 +148,20 @@ function degradeEndmarks(marks) {
   }
 }
 
-/** Offload long catch-up to a worker; fall back to async main-thread evolve. */
-function boardAtGenerationFast(target, published) {
+/** Adopt published tip, then async-step any gap to target. */
+function boardAtGenerationFromTip(target, published) {
   const from = startStateFor(target, published ? [published] : []);
   if (from.n === target) return Promise.resolve(commitState(from));
-
-  if (typeof Worker === "undefined") {
-    return boardAtGenerationAsync(target);
-  }
-
-  return new Promise((resolve, reject) => {
-    let worker;
-    try {
-      worker = new Worker(lifeAssetUrl("life-worker.mjs"), {
-        type: "module",
-      });
-    } catch {
-      boardAtGenerationAsync(target).then(resolve, reject);
-      return;
-    }
-
-    const id = Math.random().toString(36).slice(2);
-
-    const fail = () => {
-      worker.terminate();
-      boardAtGenerationAsync(target).then(resolve, reject);
-    };
-
-    worker.onerror = () => fail();
-    worker.onmessage = (event) => {
-      const msg = event.data;
-      if (!msg || msg.id !== id) return;
-
-      if (msg.type === "progress") {
-        writeCheckpoint({
-          n: msg.n,
-          board: msg.board,
-          lastMeteor: msg.lastMeteor,
-        });
-        return;
-      }
-
-      if (msg.type === "error") {
-        fail();
-        return;
-      }
-
-      if (msg.type === "done") {
-        worker.terminate();
-        resolve(
-          commitState({
-            n: msg.n,
-            board: msg.board,
-            lastMeteor: msg.lastMeteor,
-          }),
-        );
-      }
-    };
-
-    worker.postMessage({
-      id,
-      target,
-      from: {
-        n: from.n,
-        lastMeteor: from.lastMeteor,
-        board: from.board.slice(),
-      },
-    });
-  });
+  return boardAtGenerationAsync(target);
 }
 
 async function boot() {
   const marks = document.querySelectorAll("button.endmark");
   if (!marks.length) return;
 
-  // Need a published build artifact or a prior local resume — never cold-start
-  // the whole timeline in the browser.
+  // Require the build artifact — never cold-start the timeline in-browser.
   const published = await fetchPublishedLifeState();
-  if (!published && !readCheckpoint()) {
+  if (!published) {
     degradeEndmarks(marks);
     return;
   }
@@ -286,7 +220,7 @@ async function boot() {
     }
 
     const target = generationAt();
-    ready = boardAtGenerationFast(target, published).then((b) => {
+    ready = boardAtGenerationFromTip(target, published).then((b) => {
       board = b;
       boardGen = target;
       blitBoard(board);
@@ -384,7 +318,6 @@ async function boot() {
     busy = false;
   }
 
-  // Catch up from published / local resume to “now”.
   refresh();
 
   marks.forEach((btn) => {

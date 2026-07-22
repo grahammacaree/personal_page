@@ -4,6 +4,9 @@
  * Shared across all visitors/URLs via wall clock:
  *   n = floor((Date.now() - GENESIS_MS) / TICK_MS)
  * Quiet-gated meteors keep entropy without a fixed drumbeat.
+ *
+ * Cold start: browsers load public/life-state.json (build tip), then step
+ * the short gap to “now”. In-memory cache covers the rest of the visit.
  */
 
 export const SIZE = 192;
@@ -18,10 +21,7 @@ export const HARD_CAP = 2880;
 export const QUIET_POP = 2304;
 /** Cells flipped by a meteor */
 export const METEOR_CELLS = 1728;
-/** Persist a resume point this often during long catch-up */
-export const CHECKPOINT_EVERY = 2048;
 
-const CHECKPOINT_KEY = `life-cp:v2:${SIZE}:${GENESIS_MS}`;
 const CELLS = SIZE * SIZE;
 
 /** In-memory: { n, board, lastMeteor } */
@@ -113,7 +113,6 @@ export function step(board, out = emptyBoard()) {
     const xp = x === S1 ? 0 : x + 1;
 
     {
-      const y = 0;
       const row = 0;
       const rowm = S1 * S;
       const rowp = S;
@@ -208,15 +207,6 @@ export function isQuiet(board, prev) {
   return false;
 }
 
-function storage() {
-  try {
-    if (typeof localStorage !== "undefined") return localStorage;
-  } catch {
-    /* private mode */
-  }
-  return null;
-}
-
 function boardToB64(board) {
   let binary = "";
   const chunk = 0x8000;
@@ -234,7 +224,7 @@ function boardFromB64(b64) {
   return board;
 }
 
-/** Published + localStorage payload (v2). */
+/** Published life-state.json payload. */
 export function serializeLifeState(state) {
   return {
     v: 2,
@@ -246,7 +236,7 @@ export function serializeLifeState(state) {
   };
 }
 
-/** Parse a published or localStorage life payload. */
+/** Parse a published life-state.json payload. */
 export function parseLifeState(data) {
   if (!data || typeof data !== "object") return null;
   if (data.size != null && data.size !== SIZE) return null;
@@ -266,40 +256,16 @@ export function parseLifeState(data) {
   return { n: data.n, board, lastMeteor: data.lastMeteor };
 }
 
-export function readCheckpoint() {
-  const store = storage();
-  if (!store) return null;
-  try {
-    const raw = store.getItem(CHECKPOINT_KEY);
-    if (!raw) return null;
-    return parseLifeState(JSON.parse(raw));
-  } catch {
-    return null;
-  }
-}
-
-export function writeCheckpoint(state) {
-  const store = storage();
-  if (!store) return;
-  try {
-    store.setItem(CHECKPOINT_KEY, JSON.stringify(serializeLifeState(state)));
-  } catch {
-    /* quota — ignore */
-  }
-}
-
 function initialState() {
   return { n: 0, board: seedBoard(0xc0ffee), lastMeteor: 0 };
 }
 
 /**
  * Advance from `from` through generation `target` using a double buffer.
- * Optional `yieldEvery` / `onProgress` for async catch-up without jank.
+ * Optional `yieldEvery` yields to the event loop during long catch-up.
  */
 export async function evolveTo(from, target, options = {}) {
   const yieldEvery = options.yieldEvery ?? 0;
-  const progressEvery = options.progressEvery ?? CHECKPOINT_EVERY;
-  const onProgress = options.onProgress;
 
   if (target < from.n) throw new Error("evolveTo: target behind start");
   if (target === from.n) {
@@ -331,15 +297,6 @@ export async function evolveTo(from, target, options = {}) {
       const tmp = cur;
       cur = nxt;
       nxt = tmp;
-
-      if (
-        onProgress &&
-        progressEvery > 0 &&
-        g !== target &&
-        g % progressEvery === 0
-      ) {
-        onProgress({ n: g, board: cur, lastMeteor });
-      }
     }
 
     if (g >= target) break;
@@ -349,7 +306,7 @@ export async function evolveTo(from, target, options = {}) {
   return { n: target, board: cur, lastMeteor };
 }
 
-/** Sync evolve (tests + small jumps). */
+/** Sync evolve (tests + build + small jumps). */
 export function evolveToSync(from, target) {
   if (target < from.n) throw new Error("evolveToSync: target behind start");
   if (target === from.n) {
@@ -392,15 +349,12 @@ function isLifeState(s) {
 
 /**
  * Best resume point at or before generation n.
- * Candidates: in-memory cache, localStorage, plus any extras (e.g. published
- * life-state.json). Highest n wins; cache + storage are write-through synced
- * when something newer is adopted.
+ * Candidates: in-memory cache, plus extras (published life-state.json).
+ * Highest n wins.
  */
 export function startStateFor(n, candidates = []) {
   const pool = [];
   if (isLifeState(cache) && cache.n <= n) pool.push(cache);
-  const stored = readCheckpoint();
-  if (isLifeState(stored) && stored.n <= n) pool.push(stored);
   for (const c of candidates) {
     if (isLifeState(c) && c.n <= n) pool.push(c);
   }
@@ -421,16 +375,13 @@ export function startStateFor(n, candidates = []) {
     };
   }
 
-  const memoryBehind = !cache || cache.n < best.n;
-  const storageBehind = !stored || stored.n < best.n;
-  if (memoryBehind) {
+  if (!cache || cache.n < best.n) {
     cache = {
       n: best.n,
       board: best.board,
       lastMeteor: best.lastMeteor,
     };
   }
-  if (storageBehind) writeCheckpoint(cache);
 
   return {
     n: cache.n,
@@ -445,7 +396,6 @@ export function commitState(state) {
     board: state.board,
     lastMeteor: state.lastMeteor,
   };
-  writeCheckpoint(state);
   return state.board;
 }
 
@@ -473,10 +423,7 @@ export function boardAtGeneration(n) {
   return commitState(evolveToSync(from, n));
 }
 
-/**
- * Async catch-up — yields so the UI can breathe. Prefer the Worker wrapper
- * in life.js for long gaps; this is the main-thread fallback.
- */
+/** Async catch-up — yields so the UI can breathe during the tip→now gap. */
 export async function boardAtGenerationAsync(n, yieldEvery = 256) {
   if (n < 0) n = 0;
   if (cache && cache.n === n) return cache.board;
@@ -493,18 +440,7 @@ export async function boardAtGenerationAsync(n, yieldEvery = 256) {
     return from.board;
   }
 
-  const state = await evolveTo(from, n, {
-    yieldEvery,
-    onProgress: (mid) => {
-      cache = {
-        n: mid.n,
-        board: mid.board.slice(),
-        lastMeteor: mid.lastMeteor,
-      };
-      writeCheckpoint(cache);
-    },
-  });
-  return commitState(state);
+  return commitState(await evolveTo(from, n, { yieldEvery }));
 }
 
 /** Fast path used by the page: board for “now”. */
@@ -516,14 +452,7 @@ export async function boardNowAsync(nowMs = Date.now(), yieldEvery = 256) {
   return boardAtGenerationAsync(generationAt(nowMs), yieldEvery);
 }
 
-/** Test helper — drop in-memory cache; pass `{ storage: true }` to clear localStorage. */
-export function clearLifeCache(opts = {}) {
+/** Test helper — drop in-memory cache. */
+export function clearLifeCache() {
   cache = null;
-  if (opts.storage) {
-    try {
-      storage()?.removeItem(CHECKPOINT_KEY);
-    } catch {
-      /* ignore */
-    }
-  }
 }

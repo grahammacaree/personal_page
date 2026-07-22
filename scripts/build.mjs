@@ -29,7 +29,6 @@ const STATIC_ASSETS = [
   "jovian.js",
   "life.js",
   "life-engine.mjs",
-  "life-worker.mjs",
   "CNAME",
   "favicon.svg",
   "llms.txt",

@@ -58,7 +58,7 @@ function pageScriptsHtml(basePath, scripts) {
   return (scripts ?? [])
     .map((file) => {
       const src = `${basePath}${file}`;
-      // life.js imports life-engine.mjs (+ worker / life-state via data-life-base)
+      // life.js imports life-engine.mjs; life-state.json via data-life-base
       if (file === "life.js") {
         return `<script type="module" src="${src}" data-life-base="${basePath}"></script>`;
       }
