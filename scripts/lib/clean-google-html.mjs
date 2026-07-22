@@ -90,6 +90,38 @@ function removeEmptyNodes($) {
   });
 }
 
+/** Drop trailing spaces / nbsp / <br> from block contents (Google Docs residue). */
+function trimTrailingWhitespace($, el) {
+  let children = $(el).contents().toArray();
+  while (children.length) {
+    const last = children[children.length - 1];
+    if (last.type === "tag" && last.tagName?.toLowerCase() === "br") {
+      $(last).remove();
+      children = $(el).contents().toArray();
+      continue;
+    }
+    break;
+  }
+  children = $(el).contents().toArray();
+  if (!children.length) return;
+  const last = children[children.length - 1];
+  if (last.type === "text") {
+    const next = (last.data ?? "").replace(/[\s\u00a0]+$/u, "");
+    if (!next) $(last).remove();
+    else last.data = next;
+    return;
+  }
+  if (last.type === "tag") {
+    trimTrailingWhitespace($, last);
+  }
+}
+
+function trimTrailingInBlocks($) {
+  $("p, li, h1, h2, h3, h4, h5, h6, blockquote").each((_, el) => {
+    trimTrailingWhitespace($, el);
+  });
+}
+
 function fontSizePt(style) {
   const match = style.toLowerCase().match(/font-size:\s*(\d+(?:\.\d+)?)pt/);
   return match ? parseFloat(match[1]) : null;
@@ -161,6 +193,7 @@ export function cleanGoogleHtml(rawHtml) {
   unwrapDisallowed($);
   stripAllAttributes($);
   removeEmptyNodes($);
+  trimTrailingInBlocks($);
 
   const html = $("body").length ? $("body").html() : $.root().html();
   return (html ?? "").trim();

@@ -56,7 +56,14 @@ function contactHref(basePath, email) {
 
 function pageScriptsHtml(basePath, scripts) {
   return (scripts ?? [])
-    .map((file) => `<script src="${basePath}${file}" defer></script>`)
+    .map((file) => {
+      const src = `${basePath}${file}`;
+      // life.js imports life-engine.mjs (+ worker / life-state via data-life-base)
+      if (file === "life.js") {
+        return `<script type="module" src="${src}" data-life-base="${basePath}"></script>`;
+      }
+      return `<script src="${src}" defer></script>`;
+    })
     .join("\n");
 }
 
@@ -69,7 +76,6 @@ function topBarVars(page, ctx) {
   const studiesHref = publishedDocHrefFromCtx(ctx, "studies");
 
   return {
-    topBarHidden: !!pt.topBarHidden,
     leftNavBack,
     backHref: leftNavBack ? homePageHref(page, ctx) : "",
     backChevron: leftNavBack

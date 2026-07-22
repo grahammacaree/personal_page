@@ -19,3 +19,4 @@ Personal site at [grahammacaree.com](https://grahammacaree.com/). Writing includ
 
 - [GitHub Repository](https://github.com/grahammacaree/personal_page): Generator, templates, and build scripts (MIT). Essays are all rights reserved.
 - Footer rule discs are Jupiter and the four Galilean moons at real Earth-view positions; see [`JOVIAN.md`](https://github.com/grahammacaree/personal_page/blob/main/JOVIAN.md) in the repo.
+- Essay endmarks hide a shared Conway’s Life terrarium; see [`LIFE.md`](https://github.com/grahammacaree/personal_page/blob/main/LIFE.md).

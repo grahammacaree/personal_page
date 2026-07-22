@@ -13,6 +13,7 @@ import { normalizeBasePath } from "./lib/site-config.mjs";
 import { buildSitemapXml } from "./lib/sitemap.mjs";
 import { lastModifiedForPage } from "./lib/lastmod.mjs";
 import { loadTemplates } from "./lib/templates.mjs";
+import { computePublishedLifeState } from "./lib/life-state.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
@@ -26,6 +27,9 @@ const STATIC_ASSETS = [
   "nav.js",
   "studies.js",
   "jovian.js",
+  "life.js",
+  "life-engine.mjs",
+  "life-worker.mjs",
   "CNAME",
   "favicon.svg",
   "llms.txt",
@@ -93,6 +97,16 @@ async function main() {
   for (const asset of STATIC_ASSETS) {
     await copyFile(path.join(siteDir, asset), path.join(publicDir, asset));
   }
+
+  const lifeState = await computePublishedLifeState({
+    siteUrl: siteConfig.url,
+  });
+  await writeFile(
+    path.join(publicDir, "life-state.json"),
+    `${JSON.stringify(lifeState)}\n`,
+    "utf8"
+  );
+  console.log(`  life-state.json (gen ${lifeState.n})`);
 
   await writeFaviconPng(
     path.join(siteDir, "favicon.svg"),

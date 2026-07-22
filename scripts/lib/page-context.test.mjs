@@ -99,3 +99,20 @@ test("chrome scripts prepend pageType scripts", () => {
     '<script src="/jovian.js" defer></script>\n<script src="/nav.js" defer></script>'
   );
 });
+
+test("life.js script carries data-life-base", () => {
+  const page = {
+    pageType: {
+      title: "siteName",
+      layout: "page",
+      scripts: ["life.js"],
+    },
+    sectionSlugs: ["intro"],
+    pageTitle: null,
+    output: "index.html",
+  };
+  assert.equal(
+    layoutVars(page, ctx).pageScripts,
+    '<script type="module" src="/life.js" data-life-base="/"></script>'
+  );
+});

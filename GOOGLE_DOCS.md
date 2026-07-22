@@ -80,7 +80,7 @@ What’s under-examined in how stories get told?
 What should the reader think or do differently?
 ```
 
-The build adds a square **endmark** after the last word of the final paragraph on thesis and story pages.
+The build adds a square **endmark** after the last word of the final paragraph on thesis and story pages. That mark is a miniature Conway’s Life terrarium (click for a modal) — see [`LIFE.md`](LIFE.md).
 
 ## 5. CV
 

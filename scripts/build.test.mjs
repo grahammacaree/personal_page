@@ -44,6 +44,14 @@ test("build writes core public artifacts", async () => {
   await access(path.join(root, "public/robots.txt"));
   await access(path.join(root, "public/favicon-48.png"));
   await access(path.join(root, "public/studies.html"));
+  await access(path.join(root, "public/life-state.json"));
+
+  const lifeState = JSON.parse(
+    await readFile(path.join(root, "public/life-state.json"), "utf8")
+  );
+  assert.equal(lifeState.v, 2);
+  assert.ok(typeof lifeState.n === "number" && lifeState.n >= 0);
+  assert.ok(typeof lifeState.b === "string" && lifeState.b.length > 0);
 
   // Study PDFs come from Drive during `npm run sync` (gitignored). Present after sync/local convert.
   for (const pdf of ["linear-algebra.pdf", "learning-from-data.pdf"]) {

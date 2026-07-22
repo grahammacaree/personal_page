@@ -69,7 +69,6 @@ Controls layout, title, nav, footer, scripts. Use `extends` to inherit (e.g. `st
 | `layout` | Shell component (`page`); homepage uses `bodyClass: "body--home"` and `templates/home/home.css` |
 | `title` | `siteName` or `docTitle` |
 | `bodyClass` | Optional `<body class="…">` |
-| `topBarHidden` | Hide fixed top bar on load |
 | `leftNav` | `brand` on homepage only; `back` on every other page (`pageTypes.default`) |
 | `cvNav` | `link` or `current` |
 | `aboutLink` | `true` / `false` — show About in footer |

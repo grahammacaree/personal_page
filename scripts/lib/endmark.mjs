@@ -15,9 +15,11 @@ function peelLastWord($, $parent, word) {
       if (idx === -1) continue;
 
       const before = data.slice(0, idx);
-      const wordPart = data.slice(idx);
+      const after = data.slice(idx + word.length).replace(/^[\s\u00a0]+/u, "");
+      // Endmark stands in for a terminal period.
+      const label = word.endsWith(".") ? word.slice(0, -1) : word;
       $(node).replaceWith(
-        `${before}<span class="endmark-container">${wordPart}<span class="endmark" aria-hidden="true"></span></span>`
+        `${before}<span class="endmark-container">${label}<button type="button" class="endmark" aria-label="Zoom into this universe"></button></span>${after}`
       );
       return true;
     }

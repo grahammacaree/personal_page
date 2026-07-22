@@ -8,23 +8,20 @@
   padding-top: env(safe-area-inset-top, 0);
   height: calc(var(--top-bar-height) + env(safe-area-inset-top, 0));
   background: var(--accent);
-  transform: translateY(0);
-  opacity: 1;
-  transition:
-    transform 0.3s ease,
-    opacity 0.3s ease;
 
-  &.site-top--hidden {
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
+  /* Homepage only: transparent until scrolled */
+  body.body--home & {
+    background: transparent;
+    transition: background-color 0.2s ease;
+
+    &.site-top--scrolled {
+      background: var(--accent);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    transition: none;
-
-    &.site-top--hidden {
-      transform: translateY(-100%);
+    body.body--home & {
+      transition: none;
     }
   }
 }

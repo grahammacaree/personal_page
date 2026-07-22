@@ -40,7 +40,8 @@ Credentials: `credentials.json` in the repo root (gitignored), or `GOOGLE_APPLIC
 5. Plan pages (`lib/pages.mjs`)
 6. Concat CSS → `public/style.css`
 7. Copy `site/` static files, `assets/`, `studies/*.pdf`, and `exports/*.pdf` → `public/`
-8. Render pages + `sitemap.xml` (includes `<lastmod>` from content/PDF mtimes)
+8. Write `life-state.json` (Conway checkpoint at build time; resumes from the live URL when reachable)
+9. Render pages + `sitemap.xml` (includes `<lastmod>` from content/PDF mtimes)
 
 `content/`, `public/`, `exports/*.pdf`, and `studies/*.pdf` are generated/gitignored. Actions syncs Docs + PDFs from Drive, then builds `public/`.
 

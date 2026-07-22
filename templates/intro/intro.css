@@ -21,17 +21,6 @@
     z-index: 1;
   }
 
-  /* 100svh up from space-md below intro copy — IO target (svh = small/stable on mobile) */
-  .intro-nav-sentinel {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: calc(var(--space-md) * -1);
-    height: 100vh;
-    height: 100svh;
-    pointer-events: none;
-  }
-
   .intro-scroll-hint {
     position: absolute;
     left: 50%;
