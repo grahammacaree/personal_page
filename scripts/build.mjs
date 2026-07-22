@@ -24,7 +24,6 @@ const repoAssetsDir = path.join(root, "assets");
 const templatesDir = path.join(root, "templates");
 
 const STATIC_ASSETS = [
-  "nav.js",
   "studies.js",
   "jovian.js",
   "life.js",

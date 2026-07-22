@@ -88,7 +88,7 @@ test("chrome scripts prepend pageType scripts", () => {
     pageType: {
       title: "siteName",
       layout: "page",
-      scripts: ["nav.js"],
+      scripts: ["studies.js"],
     },
     sectionSlugs: ["intro"],
     pageTitle: null,
@@ -96,7 +96,7 @@ test("chrome scripts prepend pageType scripts", () => {
   };
   assert.equal(
     layoutVars(page, withChromeScripts).pageScripts,
-    '<script src="/jovian.js" defer></script>\n<script src="/nav.js" defer></script>'
+    '<script src="/jovian.js" defer></script>\n<script src="/studies.js" defer></script>'
   );
 });
 

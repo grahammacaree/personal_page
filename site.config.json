@@ -92,7 +92,7 @@
       "leftNav": "brand",
       "cvNav": "link",
       "studiesNav": "link",
-      "scripts": ["nav.js", "life.js"]
+      "scripts": ["life.js"]
     },
     "default": {
       "layout": "page",
@@ -101,7 +101,7 @@
       "cvNav": "link",
       "studiesNav": "link",
       "aboutLink": true,
-      "scripts": ["nav.js", "life.js"]
+      "scripts": ["life.js"]
     },
     "cv": {
       "extends": "default",
@@ -112,7 +112,7 @@
     "about": {
       "extends": "default",
       "aboutLink": false,
-      "scripts": ["nav.js"]
+      "scripts": []
     },
     "studies": {
       "extends": "default",
@@ -120,7 +120,7 @@
       "cvNav": "link",
       "studiesNav": "current",
       "aboutLink": true,
-      "scripts": ["nav.js", "studies.js"]
+      "scripts": ["studies.js"]
     }
   }
 }
