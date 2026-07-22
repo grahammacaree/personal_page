@@ -8,22 +8,6 @@
   padding-top: env(safe-area-inset-top, 0);
   height: calc(var(--top-bar-height) + env(safe-area-inset-top, 0));
   background: var(--accent);
-
-  /* Homepage only: transparent until scrolled */
-  body.body--home & {
-    background: transparent;
-    transition: background-color 0.2s ease;
-
-    &.site-top--scrolled {
-      background: var(--accent);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    body.body--home & {
-      transition: none;
-    }
-  }
 }
 
 .site-top-nav {

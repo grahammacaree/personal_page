@@ -1,27 +1,16 @@
-/** Top bar: pin to visual viewport on mobile; homepage solidifies on scroll. */
+/** Top bar: pin to visual viewport on mobile (iOS URL-bar shift). */
 (function () {
   const nav = document.querySelector(".site-top");
   if (!nav) return;
 
   const vv = window.visualViewport;
+  if (!vv) return;
 
   function syncTop() {
-    if (!vv) return;
     nav.style.top = `${vv.offsetTop}px`;
   }
 
-  if (vv) {
-    vv.addEventListener("resize", syncTop);
-    vv.addEventListener("scroll", syncTop);
-    syncTop();
-  }
-
-  if (!document.body.classList.contains("body--home")) return;
-
-  function syncScrolled() {
-    nav.classList.toggle("site-top--scrolled", window.scrollY > 0);
-  }
-
-  window.addEventListener("scroll", syncScrolled, { passive: true });
-  syncScrolled();
+  vv.addEventListener("resize", syncTop);
+  vv.addEventListener("scroll", syncTop);
+  syncTop();
 })();
