@@ -117,6 +117,16 @@ function ensureModal() {
   dialog.innerHTML = `
     <button type="button" class="life-lightbox-close" aria-label="Close">Close</button>
     <canvas class="life-lightbox-canvas" aria-label="Game of Life universe"></canvas>
+    <div
+      class="life-lightbox-progress"
+      role="progressbar"
+      aria-label="Time until next generation"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="0"
+    >
+      <div class="life-lightbox-progress-fill"></div>
+    </div>
   `;
   document.body.appendChild(dialog);
   return dialog;
@@ -126,6 +136,12 @@ function msUntilNextTick(now = Date.now()) {
   const elapsed = Math.max(0, now - GENESIS_MS);
   const rem = elapsed % TICK_MS;
   return rem === 0 ? TICK_MS : TICK_MS - rem;
+}
+
+/** 0–1 progress through the current generation interval. */
+function tickProgress(now = Date.now()) {
+  if (now <= GENESIS_MS) return 0;
+  return ((now - GENESIS_MS) % TICK_MS) / TICK_MS;
 }
 
 function runZoom(el, from, to, easing) {
@@ -188,6 +204,8 @@ async function boot() {
   const dialog = ensureModal();
   const modalCanvas = dialog.querySelector(".life-lightbox-canvas");
   const closeBtn = dialog.querySelector(".life-lightbox-close");
+  const progressEl = dialog.querySelector(".life-lightbox-progress");
+  const progressFill = dialog.querySelector(".life-lightbox-progress-fill");
   const minis = [];
 
   marks.forEach((btn) => {
@@ -204,6 +222,52 @@ async function boot() {
   let ready = null;
   let sourceBtn = null;
   let busy = false;
+  let progressRaf = 0;
+  let scrollLockY = 0;
+
+  function lockBodyScroll() {
+    scrollLockY = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollLockY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+  }
+
+  function unlockBodyScroll() {
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    window.scrollTo(0, scrollLockY);
+  }
+
+  function syncProgress() {
+    if (!progressFill || !progressEl) return;
+    const p = tickProgress();
+    progressFill.style.transform = `scaleX(${p})`;
+    progressEl.setAttribute("aria-valuenow", String(Math.round(p * 100)));
+  }
+
+  function startProgressLoop() {
+    stopProgressLoop();
+    const frame = () => {
+      if (!dialog.open) {
+        progressRaf = 0;
+        return;
+      }
+      syncProgress();
+      progressRaf = requestAnimationFrame(frame);
+    };
+    syncProgress();
+    progressRaf = requestAnimationFrame(frame);
+  }
+
+  function stopProgressLoop() {
+    if (progressRaf) {
+      cancelAnimationFrame(progressRaf);
+      progressRaf = 0;
+    }
+  }
 
   function renderMinis() {
     if (!board) return;
@@ -277,8 +341,10 @@ async function boot() {
       modalCanvas.style.transform = TRANSFORM_SETTLED;
       if (typeof dialog.showModal === "function") dialog.showModal();
       else dialog.setAttribute("open", "");
+      lockBodyScroll();
       dialog.classList.add("is-settled");
       busy = false;
+      startProgressLoop();
       closeBtn?.focus();
       return;
     }
@@ -291,6 +357,7 @@ async function boot() {
 
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
+    lockBodyScroll();
 
     try {
       await runZoom(modalCanvas, start, TRANSFORM_SETTLED, ZOOM_EASE_IN);
@@ -300,12 +367,14 @@ async function boot() {
 
     dialog.classList.add("is-settled");
     busy = false;
+    startProgressLoop();
     closeBtn?.focus();
   }
 
   async function closeToSource() {
     if (!dialog.open || busy) return;
     busy = true;
+    stopProgressLoop();
 
     const btn = sourceBtn;
     const fromRect = btn?.getBoundingClientRect();
@@ -316,6 +385,7 @@ async function boot() {
 
     if (prefersReducedMotion() || !fromRect || fromRect.width < 1) {
       dialog.close();
+      unlockBodyScroll();
       btn?.classList.remove("is-zoomed-away");
       sourceBtn = null;
       busy = false;
@@ -332,6 +402,7 @@ async function boot() {
     }
 
     dialog.close();
+    unlockBodyScroll();
     btn?.classList.remove("is-zoomed-away");
     sourceBtn = null;
     busy = false;

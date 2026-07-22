@@ -118,6 +118,8 @@
   background: transparent;
   color: #fff;
   overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
 
   &[open] {
     display: block;
@@ -183,8 +185,42 @@
   will-change: transform;
 }
 
+.life-lightbox-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 1;
+  height: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgb(255 255 255 / 0.12);
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity 220ms ease;
+
+  .life-lightbox.is-settled & {
+    opacity: 1;
+  }
+}
+
+.life-lightbox-progress-fill {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .life-lightbox-close {
+    transition: none;
+  }
+
+  .life-lightbox-progress {
     transition: none;
   }
 }

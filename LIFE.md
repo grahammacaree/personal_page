@@ -5,7 +5,7 @@ A shared Game of Life lives inside the essay **endmark** — the little square a
 ## What you see
 
 - **Collapsed:** a miniature live board (texture, not legible) — cursor `zoom-in`, light hover scale. If `life-state.json` can’t be loaded, a static square instead.
-- **Click:** the square expands into a full-bleed void (FLIP zoom from the endmark); Close / Escape / backdrop reverse the zoom. Reduced-motion skips the animation.
+- **Click:** the square expands into a full-bleed void (FLIP zoom from the endmark); a thin bottom bar fills toward the next 30s generation. Close / Escape / backdrop reverse the zoom. Reduced-motion skips the animation.
 
 ## Sync (no backend)
 
