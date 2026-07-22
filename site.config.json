@@ -29,7 +29,8 @@
       "studies": "studies"
     },
     "assets": {
-      "backChevron": "chevrons/left.svg"
+      "backChevron": "chevrons/left.svg",
+      "lifeInfo": "icons/info.svg"
     },
     "scripts": ["jovian.js"]
   },
@@ -82,6 +83,11 @@
       "publish": true,
       "pageType": "studies",
       "parse": "studies"
+    },
+    "conway": {
+      "contentPath": "{slug}.html",
+      "publish": false,
+      "fragment": "life-about.html"
     }
   },
   "pageTypes": {

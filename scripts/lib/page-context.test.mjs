@@ -100,7 +100,24 @@ test("chrome scripts prepend pageType scripts", () => {
   );
 });
 
-test("life.js script carries data-life-base", () => {
+test("life.js script carries data-life-base and icon template", () => {
+  const withIcons = {
+    ...ctx,
+    siteConfig: {
+      ...siteConfig,
+      chrome: {
+        ...siteConfig.chrome,
+        assets: {
+          backChevron: "chevrons/left.svg",
+          lifeInfo: "icons/info.svg",
+        },
+      },
+    },
+    assets: {
+      "chevrons/left.svg": '<svg id="back-icon" aria-hidden="true"></svg>',
+      "icons/info.svg": '<svg id="info-icon" aria-hidden="true"></svg>',
+    },
+  };
   const page = {
     pageType: {
       title: "siteName",
@@ -111,8 +128,14 @@ test("life.js script carries data-life-base", () => {
     pageTitle: null,
     output: "index.html",
   };
-  assert.equal(
-    layoutVars(page, ctx).pageScripts,
-    '<script type="module" src="/life.js" data-life-base="/"></script>'
+  const html = layoutVars(page, withIcons).pageScripts;
+  assert.match(html, /<template id="life-chrome">/);
+  assert.match(html, /data-life-icon="back"/);
+  assert.match(html, /id="back-icon"/);
+  assert.match(html, /data-life-icon="info"/);
+  assert.match(html, /id="info-icon"/);
+  assert.match(
+    html,
+    /<script type="module" src="\/life\.js" data-life-base="\/"><\/script>/
   );
 });

@@ -45,6 +45,7 @@ test("build writes core public artifacts", async () => {
   await access(path.join(root, "public/favicon-48.png"));
   await access(path.join(root, "public/studies.html"));
   await access(path.join(root, "public/life-state.json"));
+  await access(path.join(root, "public/life-about.html"));
 
   const lifeState = JSON.parse(
     await readFile(path.join(root, "public/life-state.json"), "utf8")

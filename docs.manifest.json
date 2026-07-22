@@ -52,6 +52,12 @@
       "title": "Studies",
       "type": "studies",
       "description": "Course notes from a year of rebuilding my maths foundations — problem sets included."
+    },
+    {
+      "id": "1dsS2BYFagNs0imwBphBPxIUlfie01rrWLwRJIOD5_o4",
+      "slug": "conway",
+      "title": "Conway",
+      "type": "conway"
     }
   ]
 }

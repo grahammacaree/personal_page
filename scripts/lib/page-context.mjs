@@ -54,13 +54,26 @@ function contactHref(basePath, email) {
   return email ? `mailto:${escapeHtml(email)}` : `${basePath}#main`;
 }
 
-function pageScriptsHtml(basePath, scripts) {
+/** Inline SVGs for life.js modal chrome — same assets/ source as nav. */
+function lifeChromeTemplate(assets, chrome) {
+  const back =
+    assets[chrome.assets?.backChevron ?? "chevrons/left.svg"]?.trim() ?? "";
+  const info = assets[chrome.assets?.lifeInfo ?? "icons/info.svg"]?.trim() ?? "";
+  return `<template id="life-chrome">
+  <span data-life-icon="back">${back}</span>
+  <span data-life-icon="info">${info}</span>
+</template>`;
+}
+
+function pageScriptsHtml(basePath, scripts, { assets, chrome } = {}) {
   return (scripts ?? [])
     .map((file) => {
       const src = `${basePath}${file}`;
       // life.js imports life-engine.mjs; life-state.json via data-life-base
       if (file === "life.js") {
-        return `<script type="module" src="${src}" data-life-base="${basePath}"></script>`;
+        const chromeTpl =
+          assets && chrome ? `${lifeChromeTemplate(assets, chrome)}\n` : "";
+        return `${chromeTpl}<script type="module" src="${src}" data-life-base="${basePath}"></script>`;
       }
       return `<script src="${src}" defer></script>`;
     })
@@ -127,7 +140,11 @@ export function layoutVars(page, ctx) {
     lastmod: lastmod ? escapeHtml(lastmod) : "",
     personJsonLd: personJsonLd(page, ctx),
     bodyClass: pt.bodyClass ?? "",
-    pageScripts: pageScriptsHtml(basePath, allPageScripts(ctx.siteConfig, pt)),
+    pageScripts: pageScriptsHtml(
+      basePath,
+      allPageScripts(ctx.siteConfig, pt),
+      { assets: ctx.assets, chrome: chromeConfig(ctx.siteConfig) }
+    ),
     body,
     topBar: topBarVars(page, ctx),
     footer: footerVars(page, ctx),

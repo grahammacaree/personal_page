@@ -53,8 +53,9 @@ Each manifest `type` must have a `docTypes` entry:
 |-------|---------|
 | `section` | Component folder wrapping synced HTML (e.g. `intro`, `document`) |
 | `contentPath` | Path under `content/` (`{slug}` interpolated) |
-| `publish` | If `false`, doc is only used on composed pages (e.g. homepage) |
+| `publish` | If `false`, doc is only used on composed pages (e.g. homepage) or as a fragment |
 | `publishPath` | Output path under `public/` when `publish: true` |
+| `fragment` | Optional path under `public/` for cleaned HTML with no page shell (e.g. `life-about.html`) |
 | `pageType` | Key into `pageTypes` for chrome when published |
 | `endmark` | `true` = last paragraph; `"before-hr"` = paragraph above the first `<hr>` (CV) |
 | `sectionId` | Optional `id` on `<section>` |
@@ -73,6 +74,8 @@ Controls layout, title, nav, footer, scripts. Use `extends` to inherit (e.g. `st
 | `cvNav` | `link` or `current` |
 | `aboutLink` | `true` / `false` — show About in footer |
 | `scripts` | List of files under `site/` to append before `</body>` |
+
+`life.js` pages also get a `#life-chrome` template (back chevron + info icon from `chrome.assets`) so the modal doesn’t hardcode SVGs.
 
 Rendering reads `page.pageType` and passes **booleans + URLs** into component templates; chrome markup uses a small conditional syntax (see below).
 

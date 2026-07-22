@@ -108,6 +108,14 @@ function transformFromRect(rect, px, vw, vh) {
 
 const TRANSFORM_SETTLED = "translate(-50%, -50%) scale(1)";
 
+/** SVG markup from the build-injected `#life-chrome` template (assets/). */
+function lifeIcon(name) {
+  const node = document
+    .getElementById("life-chrome")
+    ?.content?.querySelector(`[data-life-icon="${name}"]`);
+  return node?.innerHTML?.trim() ?? "";
+}
+
 function ensureModal() {
   let dialog = document.querySelector(".life-lightbox");
   if (dialog) return dialog;
@@ -115,16 +123,31 @@ function ensureModal() {
   dialog = document.createElement("dialog");
   dialog.className = "life-lightbox";
   dialog.innerHTML = `
-    <button type="button" class="life-lightbox-close" aria-label="Close">Close</button>
-    <canvas class="life-lightbox-canvas" aria-label="Game of Life universe"></canvas>
-    <div
-      class="life-lightbox-progress"
-      role="progressbar"
-      aria-label="Time until next generation"
-      aria-valuemin="0"
-      aria-valuemax="100"
-      aria-valuenow="0"
+    <button type="button" class="life-lightbox-close" aria-label="Back">
+      ${lifeIcon("back")}
+      <span>Back</span>
+    </button>
+    <button
+      type="button"
+      class="life-lightbox-info"
+      aria-label="About this universe"
+      aria-expanded="false"
+      aria-controls="life-lightbox-about"
+      hidden
     >
+      ${lifeIcon("info")}
+    </button>
+    <canvas class="life-lightbox-canvas" aria-hidden="true"></canvas>
+    <aside
+      id="life-lightbox-about"
+      class="life-lightbox-about"
+      aria-label="Notes"
+      tabindex="-1"
+      hidden
+    >
+      <div class="life-lightbox-about-inner"></div>
+    </aside>
+    <div class="life-lightbox-progress" aria-hidden="true">
       <div class="life-lightbox-progress-fill"></div>
     </div>
   `;
@@ -172,6 +195,19 @@ async function fetchPublishedLifeState() {
   }
 }
 
+/** Synced Conway Doc fragment — about copy for the expanded terrarium. */
+async function fetchLifeAboutHtml() {
+  try {
+    const res = await fetch(lifeAssetUrl("life-about.html"), {
+      cache: "no-cache",
+    });
+    if (!res.ok) return "";
+    return (await res.text()).trim();
+  } catch {
+    return "";
+  }
+}
+
 /** No published tip — leave a static punctuation square. */
 function degradeEndmarks(marks) {
   for (const btn of marks) {
@@ -204,9 +240,38 @@ async function boot() {
   const dialog = ensureModal();
   const modalCanvas = dialog.querySelector(".life-lightbox-canvas");
   const closeBtn = dialog.querySelector(".life-lightbox-close");
+  const infoBtn = dialog.querySelector(".life-lightbox-info");
+  const aboutEl = dialog.querySelector(".life-lightbox-about");
+  const aboutInner = dialog.querySelector(".life-lightbox-about-inner");
   const progressEl = dialog.querySelector(".life-lightbox-progress");
   const progressFill = dialog.querySelector(".life-lightbox-progress-fill");
   const minis = [];
+
+  // Info control is available once chrome icons exist; about HTML loads on demand.
+  const canShowInfo = Boolean(infoBtn && aboutEl && aboutInner && lifeIcon("info"));
+  if (canShowInfo) {
+    infoBtn.hidden = false;
+    aboutEl.hidden = false;
+    aboutEl.setAttribute("inert", "");
+  }
+
+  let aboutHtml = null;
+  let aboutLoad = null;
+
+  function loadAboutHtml() {
+    if (aboutHtml !== null) return Promise.resolve(aboutHtml);
+    if (aboutLoad) return aboutLoad;
+    aboutLoad = fetchLifeAboutHtml().then((html) => {
+      aboutHtml = html;
+      aboutLoad = null;
+      if (!html && infoBtn) {
+        infoBtn.hidden = true;
+        aboutEl.hidden = true;
+      }
+      return html;
+    });
+    return aboutLoad;
+  }
 
   marks.forEach((btn) => {
     btn.replaceChildren();
@@ -222,8 +287,68 @@ async function boot() {
   let ready = null;
   let sourceBtn = null;
   let busy = false;
+  let aboutOpen = false;
   let progressRaf = 0;
   let scrollLockY = 0;
+
+  function syncAboutScrollable() {
+    if (!aboutEl || !aboutInner) return;
+    // Measure with overflow hidden so scrollHeight is the content size.
+    aboutEl.classList.remove("is-scrollable");
+    const overflows = aboutInner.scrollHeight > aboutInner.clientHeight + 1;
+    aboutEl.classList.toggle("is-scrollable", overflows);
+  }
+
+  function setAboutChromeInert(open) {
+    // While notes are open, only ⓘ + the panel stay in the tab order.
+    closeBtn?.toggleAttribute("inert", open);
+    modalCanvas?.toggleAttribute("inert", open);
+    progressEl?.toggleAttribute("inert", open);
+  }
+
+  function setAboutOpen(open) {
+    aboutOpen = open;
+    dialog.classList.toggle("is-about-open", open);
+    infoBtn?.setAttribute("aria-expanded", open ? "true" : "false");
+    setAboutChromeInert(open);
+    if (aboutEl) {
+      if (open) {
+        aboutEl.removeAttribute("inert");
+        // After paint so max-height / visibility apply before measuring.
+        requestAnimationFrame(() => {
+          syncAboutScrollable();
+          const focusTarget =
+            aboutInner.querySelector("a[href], button") || aboutEl;
+          focusTarget.focus?.();
+        });
+      } else {
+        aboutEl.setAttribute("inert", "");
+        aboutEl.classList.remove("is-scrollable");
+      }
+    }
+  }
+
+  function closeAbout() {
+    if (!aboutOpen) return false;
+    setAboutOpen(false);
+    infoBtn?.focus();
+    return true;
+  }
+
+  async function toggleAbout() {
+    if (!canShowInfo) return;
+    if (aboutOpen) {
+      closeAbout();
+      return;
+    }
+    const html = await loadAboutHtml();
+    if (!html) return;
+    if (!aboutInner.dataset.ready) {
+      aboutInner.innerHTML = html;
+      aboutInner.dataset.ready = "1";
+    }
+    setAboutOpen(true);
+  }
 
   function lockBodyScroll() {
     scrollLockY = window.scrollY;
@@ -242,10 +367,8 @@ async function boot() {
   }
 
   function syncProgress() {
-    if (!progressFill || !progressEl) return;
-    const p = tickProgress();
-    progressFill.style.transform = `scaleX(${p})`;
-    progressEl.setAttribute("aria-valuenow", String(Math.round(p * 100)));
+    if (!progressFill) return;
+    progressFill.style.transform = `scaleX(${tickProgress()})`;
   }
 
   function startProgressLoop() {
@@ -323,6 +446,7 @@ async function boot() {
     if (dialog.open || busy) return;
     busy = true;
     sourceBtn = btn;
+    setAboutOpen(false);
 
     await ensureBoard();
     renderMinis();
@@ -373,6 +497,7 @@ async function boot() {
 
   async function closeToSource() {
     if (!dialog.open || busy) return;
+    closeAbout();
     busy = true;
     stopProgressLoop();
 
@@ -420,22 +545,38 @@ async function boot() {
     event.preventDefault();
     closeToSource();
   });
+  infoBtn?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleAbout();
+  });
+  aboutEl?.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+  modalCanvas.addEventListener("click", () => {
+    closeAbout();
+  });
   dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) closeToSource();
+    if (event.target !== dialog) return;
+    if (closeAbout()) return;
+    closeToSource();
   });
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape" || !dialog.open) return;
     event.preventDefault();
+    if (closeAbout()) return;
     closeToSource();
   });
   // Prevent native dialog close from skipping the zoom-out.
   dialog.addEventListener("cancel", (event) => {
     event.preventDefault();
+    if (closeAbout()) return;
     closeToSource();
   });
 
   window.addEventListener("resize", () => {
     if (dialog.open) renderModal();
+    if (aboutOpen) syncAboutScrollable();
   });
 
   if (!prefersReducedMotion()) {

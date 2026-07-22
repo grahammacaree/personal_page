@@ -5,7 +5,8 @@ A shared Game of Life lives inside the essay **endmark** — the little square a
 ## What you see
 
 - **Collapsed:** a miniature live board (texture, not legible) — cursor `zoom-in`, light hover scale. If `life-state.json` can’t be loaded, a static square instead.
-- **Click:** the square expands into a full-bleed void (FLIP zoom from the endmark); a thin bottom bar fills toward the next 30s generation. Close / Escape / backdrop reverse the zoom. Reduced-motion skips the animation.
+- **Click:** the square expands into a full-bleed void (FLIP zoom from the endmark); a thin bottom bar fills toward the next 30s generation. Back / Escape / backdrop reverse the zoom. Reduced-motion skips the animation.
+- **About:** an ⓘ control (top-right; Lucide icon from `assets/`) lazy-loads a bordered popover of Conway Doc copy (`life-about.html`). Escape / void click collapse it first; Back always leaves the universe.
 
 ## Sync (no backend)
 
@@ -29,7 +30,7 @@ Constants live in [`site/life-engine.mjs`](site/life-engine.mjs):
 | `HARD_CAP` 2880 | Force meteor (~24h) |
 | `QUIET_POP` 2304 | “Quiet” if this many live cells or fewer |
 
-Palette: `--text` field, `--bg` cells. Modal is full-bleed `--text`; the board is a centered square that **covers** the viewport (edges may crop). Quiet Close control in the corner.
+Palette: `--text` field, `--bg` cells. Modal is full-bleed `--text`; the board is a centered square that **covers** the viewport (edges may crop). Quiet Back control (chevron + label) top-left, matching site nav. Info (Lucide) top-right when the Conway Doc synced.
 
 **Performance:** each site build writes `public/life-state.json` for the current generation — CI resumes from the live file when reachable. Browsers fetch that tip, keep an in-memory cache for the visit, and only step the gap to “now” (≤ ~1 day after a daily deploy). If the published file is missing, the endmark stays a static square. Asset URLs use `data-life-base` from the build. Also: double-buffered steps and quiet checks every `QUIET_GAP`.
 
@@ -43,6 +44,8 @@ Palette: `--text` field, `--bg` cells. Modal is full-bleed `--text`; the board i
 | `site/life.js` | Miniature + modal UI (`type="module"`) |
 | `scripts/lib/life-state.mjs` | Build-time `life-state.json` |
 | `scripts/lib/endmark.mjs` | Emits `<button class="endmark">` |
+| `public/life-about.html` | Cleaned Conway Doc fragment (build; fetched on first ⓘ) |
+| `assets/icons/info.svg` | Lucide info — injected via `#life-chrome` with the back chevron |
 | `templates/document/document.css` | Mini + `.life-lightbox` |
 
-Loaded on home, stories, and CV via `site.config.json` pageType scripts.
+Loaded on home, stories, and CV via `site.config.json` pageType scripts. Conway about copy: manifest slug `conway` → `docTypes.conway.fragment`.

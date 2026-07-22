@@ -14,6 +14,7 @@ Create one Doc per row in `docs.manifest.json`. A dedicated Drive folder keeps t
 | 6 | About this site | `about-this-site` | `about` | `/about-this-site.html` |
 | 7 | Reading | `reading` | `reading` | Homepage (`/`) only — top two entries |
 | 8 | Studies | `studies` | `studies` | `/studies.html` — intro + course grid |
+| 9 | Conway | `conway` | `conway` | Terrarium about sheet only (`/life-about.html` fragment) |
 
 Full paths use your `basePath`, e.g. `https://grahammacaree.com/stories/baseball-potato.html`.
 
@@ -147,6 +148,16 @@ Intro copy for `/studies.html`. The course cards (status, title, instructor, yea
 Title: Studies
 
 A short paragraph or two on why you’re doing the maths courses / what this page is.
+```
+
+## 9. Conway (terrarium about)
+
+Not a public page. Synced HTML is published as `/life-about.html` and shown when someone opens the endmark universe and taps ⓘ. Keep it short — what the terrarium is, how the shared clock works, maybe a nod to Conway.
+
+```
+Title: optional
+
+A few short paragraphs…
 ```
 
 ## Formatting rules

@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { cleanGoogleHtml } from "./clean-google-html.mjs";
 import { applyEndmark } from "./endmark.mjs";
@@ -26,6 +26,13 @@ async function readContent(contentDir, relPath) {
   }
 }
 
+/** Clean + link-rewrite synced Doc HTML (no section wrapper). */
+async function loadDocHtml(doc, docUrlById, { contentDir, siteConfig }) {
+  const raw = await readContent(contentDir, contentPathForDoc(siteConfig, doc));
+  const cleaned = raw ? cleanGoogleHtml(raw) : "";
+  return rewriteDocLinks(cleaned, docUrlById);
+}
+
 function sectionIdAttr(docTypeCfg) {
   if (!docTypeCfg.sectionId) return "";
   return ` id="${docTypeCfg.sectionId}"`;
@@ -49,15 +56,18 @@ export async function buildDocSection(
 ) {
   const docTypeCfg = docTypeConfig(siteConfig, doc);
   const sectionName = docTypeCfg.section;
+  if (!sectionName) {
+    throw new Error(
+      `Doc type "${doc.type}" (slug "${doc.slug}") has no section — use fragment output instead`
+    );
+  }
   const component = registry.components.get(sectionName);
 
   if (!component?.html) {
     throw new Error(`Section component "${sectionName}" has no HTML template`);
   }
 
-  const raw = await readContent(contentDir, contentPathForDoc(siteConfig, doc));
-  const cleaned = raw ? cleanGoogleHtml(raw) : "";
-  let html = rewriteDocLinks(cleaned, docUrlById);
+  let html = await loadDocHtml(doc, docUrlById, { contentDir, siteConfig });
 
   if (doc.type === "cv") {
     const basePath = normalizeBasePath(siteConfig.basePath ?? "/");
@@ -95,9 +105,10 @@ export async function buildAllSections(
   docUrlById,
   { contentDir, templates, assets, siteConfig, registry }
 ) {
+  const sectionDocs = docs.filter((doc) => docTypeConfig(siteConfig, doc).section);
   return Object.fromEntries(
     await Promise.all(
-      docs.map(async (doc) => [
+      sectionDocs.map(async (doc) => [
         doc.slug,
         await buildDocSection(doc, docUrlById, {
           contentDir,
@@ -109,4 +120,26 @@ export async function buildAllSections(
       ])
     )
   );
+}
+
+/**
+ * Docs with `docTypes.*.fragment` — cleaned HTML written under public/ (e.g. life-about.html).
+ * No page shell; fetched by client scripts.
+ */
+export async function writeDocFragments(
+  docs,
+  docUrlById,
+  { contentDir, siteConfig, outDir }
+) {
+  for (const doc of docs) {
+    const fragment = docTypeConfig(siteConfig, doc).fragment;
+    if (!fragment) continue;
+    if (fragment.includes("..") || path.isAbsolute(fragment)) {
+      throw new Error(`Invalid fragment path for slug "${doc.slug}": ${fragment}`);
+    }
+    const html = await loadDocHtml(doc, docUrlById, { contentDir, siteConfig });
+    const dest = path.join(outDir, fragment);
+    await mkdir(path.dirname(dest), { recursive: true });
+    await writeFile(dest, html ? `${html}\n` : "", "utf8");
+  }
 }

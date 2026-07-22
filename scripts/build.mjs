@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadAssets } from "./lib/assets.mjs";
 import { FAVICON_PNG_NAME, writeFaviconPng } from "./lib/favicon-png.mjs";
-import { buildAllSections } from "./lib/doc-section.mjs";
+import { buildAllSections, writeDocFragments } from "./lib/doc-section.mjs";
 import { discoverComponents } from "./lib/discover-components.mjs";
 import { planPages } from "./lib/pages.mjs";
 import { buildDocUrlMap } from "./lib/rewrite-doc-links.mjs";
@@ -105,6 +105,16 @@ async function main() {
     "utf8"
   );
   console.log(`  life-state.json (gen ${lifeState.n})`);
+
+  await writeDocFragments(docs, docUrlById, {
+    contentDir,
+    siteConfig,
+    outDir: publicDir,
+  });
+  for (const doc of docs) {
+    const fragment = siteConfig.docTypes?.[doc.type]?.fragment;
+    if (fragment) console.log(`  ${fragment}`);
+  }
 
   await writeFaviconPng(
     path.join(siteDir, "favicon.svg"),
