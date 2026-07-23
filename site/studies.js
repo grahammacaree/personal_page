@@ -1,4 +1,8 @@
-/** Studies page: open course note PDFs in a modal lightbox.
+/** Studies page: open course note PDFs in a modal lightbox (desktop).
+ *
+ * On coarse / non-hover pointers (phones, most tablets), follow the real
+ * PDF href so the browser can use its native viewer — iframe embeds on iOS
+ * Safari are a poor preview, not the system PDF UI.
  *
  * Shareable deep links: /studies.html?notes=<pdf-slug>&page=<n>
  * e.g. ?notes=learning-from-data&page=25
@@ -18,6 +22,11 @@
   let activeSlug = null;
   /** @type {number | null} */
   let activePage = null;
+
+  /** Desktop-class pointer: keep the in-page lightbox. */
+  function useLightbox() {
+    return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  }
 
   function pdfSlug(href) {
     if (!href) return "";
@@ -145,6 +154,8 @@
     ) {
       return;
     }
+    // Phones / tablets: navigate to the PDF (native viewer).
+    if (!useLightbox()) return;
     event.preventDefault();
     openPdf(
       link.getAttribute("data-studies-pdf"),
@@ -162,11 +173,16 @@
   if (notesSlug) {
     const link = findNotesLink(notesSlug);
     if (link) {
-      openPdf(
-        link.getAttribute("data-studies-pdf"),
-        link.getAttribute("data-studies-title") || "Notes",
-        { slug: notesSlug, page, updateUrl: true }
-      );
+      const src = link.getAttribute("data-studies-pdf");
+      if (!useLightbox()) {
+        location.replace(withPage(src, page));
+      } else {
+        openPdf(src, link.getAttribute("data-studies-title") || "Notes", {
+          slug: notesSlug,
+          page,
+          updateUrl: true,
+        });
+      }
     }
   }
 })();

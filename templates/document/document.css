@@ -260,7 +260,7 @@
     )
   );
   max-height: calc(
-    100dvh - var(--life-about-top) - 0.5rem -
+    100% - var(--life-about-top) - 0.5rem -
       env(safe-area-inset-bottom, 0px) - var(--space-xs)
   );
   margin: 0;

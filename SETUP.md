@@ -128,7 +128,7 @@ Full command list: [`scripts/BUILD.md`](scripts/BUILD.md). Styles: component CSS
 
 ## 7. Studies PDFs (reMarkable → Drive)
 
-Handwritten notebooks convert on the Mac, upload to a **Google Drive folder**, then Actions syncs them into `studies/` at build time (same pattern as Docs). Lightbox URLs stay `/studies/*.pdf` on your domain. Cards/summaries: `studies.config.json`. Intro: Google Doc. **Commands:** [`scripts/BUILD.md`](scripts/BUILD.md#studies-remarkable--drive--actions).
+Handwritten notebooks convert on the Mac, upload to a **Google Drive folder**, then Actions syncs them into `studies/` at build time (same pattern as Docs). On desktop, Notes opens an in-page lightbox; on phones/tablets the PDF opens directly so the browser can use its native viewer. URLs stay `/studies/*.pdf` on your domain. Cards/summaries: `studies.config.json`. Intro: Google Doc. **Commands:** [`scripts/BUILD.md`](scripts/BUILD.md#studies-remarkable--drive--actions).
 
 **Default stack:** tablet → **reMarkable cloud** → `rmapi` download → `rmrl`/`rmc` convert → Drive **update** → `npm run sync` in CI. Tune `pdfDpi` / `pdfJpegQuality` in config. LAN/Wi‑Fi backup remains a manual fallback (`npm run studies:lan`).
 

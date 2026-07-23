@@ -87,9 +87,9 @@ function paint(canvas, cellPx) {
   ctx.drawImage(pixelCanvas, 0, 0, w, h);
 }
 
-function coverMetrics() {
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
+function coverMetrics(size) {
+  const vw = size?.width ?? window.innerWidth;
+  const vh = size?.height ?? window.innerHeight;
   const side = Math.max(vw, vh);
   const cell = Math.max(1, Math.ceil(side / SIZE));
   const px = SIZE * cell;
@@ -366,6 +366,64 @@ async function boot() {
     window.scrollTo(0, scrollLockY);
   }
 
+  /** True when the page itself is pinch-zoomed (not just browser chrome). */
+  function pagePinchZoomed() {
+    const scale = window.visualViewport?.scale ?? 1;
+    return scale > 1.02 || scale < 0.98;
+  }
+
+  /**
+   * Keep the dialog on the *visual* viewport. After pinch-zoom, layout-viewport
+   * fullscreen leaves Back / ⓘ off-screen; counter-scale restores usable chrome.
+   */
+  function pinDialogToVisualViewport() {
+    if (!dialog.open) {
+      unpinDialogFromVisualViewport();
+      return;
+    }
+    const vv = window.visualViewport;
+    const scale = vv?.scale || 1;
+    const width = vv ? vv.width * scale : window.innerWidth;
+    const height = vv ? vv.height * scale : window.innerHeight;
+    const left = vv?.offsetLeft ?? 0;
+    const top = vv?.offsetTop ?? 0;
+
+    dialog.style.inset = "auto";
+    dialog.style.left = "0";
+    dialog.style.top = "0";
+    dialog.style.right = "auto";
+    dialog.style.bottom = "auto";
+    dialog.style.margin = "0";
+    dialog.style.width = `${width}px`;
+    dialog.style.height = `${height}px`;
+    dialog.style.maxWidth = "none";
+    dialog.style.maxHeight = "none";
+    dialog.style.transformOrigin = "0 0";
+    dialog.style.transform = `translate(${left}px, ${top}px) scale(${1 / scale})`;
+  }
+
+  function unpinDialogFromVisualViewport() {
+    dialog.style.inset = "";
+    dialog.style.left = "";
+    dialog.style.top = "";
+    dialog.style.right = "";
+    dialog.style.bottom = "";
+    dialog.style.margin = "";
+    dialog.style.width = "";
+    dialog.style.height = "";
+    dialog.style.maxWidth = "";
+    dialog.style.maxHeight = "";
+    dialog.style.transform = "";
+    dialog.style.transformOrigin = "";
+  }
+
+  function modalViewportSize() {
+    if (dialog.open && dialog.clientWidth > 0 && dialog.clientHeight > 0) {
+      return { width: dialog.clientWidth, height: dialog.clientHeight };
+    }
+    return { width: window.innerWidth, height: window.innerHeight };
+  }
+
   function syncProgress() {
     if (!progressFill) return;
     progressFill.style.transform = `scaleX(${tickProgress()})`;
@@ -404,7 +462,7 @@ async function boot() {
 
   function layoutModalCanvas() {
     if (!board) return null;
-    const metrics = coverMetrics();
+    const metrics = coverMetrics(modalViewportSize());
     paint(modalCanvas, metrics.cell);
     modalCanvas.style.width = `${metrics.px}px`;
     modalCanvas.style.height = `${metrics.px}px`;
@@ -415,6 +473,13 @@ async function boot() {
     if (!dialog.open || !board || busy) return;
     layoutModalCanvas();
     modalCanvas.style.transform = TRANSFORM_SETTLED;
+  }
+
+  function onVisualViewportChange() {
+    if (!dialog.open) return;
+    pinDialogToVisualViewport();
+    if (!busy) renderModal();
+    if (aboutOpen) syncAboutScrollable();
   }
 
   async function ensureBoard() {
@@ -454,18 +519,28 @@ async function boot() {
     const fromRect = btn.getBoundingClientRect();
     btn.classList.add("is-zoomed-away");
 
+    // Instant open when motion is reduced or the page is already pinch-zoomed
+    // (FLIP + layout-viewport geometry fights the visual viewport).
+    const skipFlip = prefersReducedMotion() || pagePinchZoomed();
+
+    if (typeof dialog.showModal === "function") dialog.showModal();
+    else dialog.setAttribute("open", "");
+    lockBodyScroll();
+    pinDialogToVisualViewport();
+
     const metrics = layoutModalCanvas();
     if (!metrics) {
+      dialog.close();
+      unpinDialogFromVisualViewport();
+      unlockBodyScroll();
       btn.classList.remove("is-zoomed-away");
+      sourceBtn = null;
       busy = false;
       return;
     }
 
-    if (prefersReducedMotion()) {
+    if (skipFlip) {
       modalCanvas.style.transform = TRANSFORM_SETTLED;
-      if (typeof dialog.showModal === "function") dialog.showModal();
-      else dialog.setAttribute("open", "");
-      lockBodyScroll();
       dialog.classList.add("is-settled");
       busy = false;
       startProgressLoop();
@@ -473,15 +548,11 @@ async function boot() {
       return;
     }
 
-    // Place the canvas on the endmark *before* the dialog paints, so we never
+    // Place the canvas on the endmark *before* paint settles, so we never
     // flash a full-bleed black frame.
     const start = transformFromRect(fromRect, metrics.px, metrics.vw, metrics.vh);
     dialog.classList.remove("is-settled");
     modalCanvas.style.transform = start;
-
-    if (typeof dialog.showModal === "function") dialog.showModal();
-    else dialog.setAttribute("open", "");
-    lockBodyScroll();
 
     try {
       await runZoom(modalCanvas, start, TRANSFORM_SETTLED, ZOOM_EASE_IN);
@@ -503,13 +574,16 @@ async function boot() {
 
     const btn = sourceBtn;
     const fromRect = btn?.getBoundingClientRect();
+    const skipFlip =
+      prefersReducedMotion() || pagePinchZoomed() || !fromRect || fromRect.width < 1;
 
     // Drop the void behind the canvas first so the page can reappear around
     // the shrinking square (same path as zoom-in, reversed).
     dialog.classList.remove("is-settled");
 
-    if (prefersReducedMotion() || !fromRect || fromRect.width < 1) {
+    if (skipFlip) {
       dialog.close();
+      unpinDialogFromVisualViewport();
       unlockBodyScroll();
       btn?.classList.remove("is-zoomed-away");
       sourceBtn = null;
@@ -517,7 +591,7 @@ async function boot() {
       return;
     }
 
-    const metrics = layoutModalCanvas() || coverMetrics();
+    const metrics = layoutModalCanvas() || coverMetrics(modalViewportSize());
     const end = transformFromRect(fromRect, metrics.px, metrics.vw, metrics.vh);
 
     try {
@@ -527,6 +601,7 @@ async function boot() {
     }
 
     dialog.close();
+    unpinDialogFromVisualViewport();
     unlockBodyScroll();
     btn?.classList.remove("is-zoomed-away");
     sourceBtn = null;
@@ -574,10 +649,11 @@ async function boot() {
     closeToSource();
   });
 
-  window.addEventListener("resize", () => {
-    if (dialog.open) renderModal();
-    if (aboutOpen) syncAboutScrollable();
-  });
+  window.addEventListener("resize", onVisualViewportChange);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", onVisualViewportChange);
+    window.visualViewport.addEventListener("scroll", onVisualViewportChange);
+  }
 
   if (!prefersReducedMotion()) {
     const tick = async () => {
