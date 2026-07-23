@@ -86,6 +86,10 @@ function paint(canvas, cellPx) {
   ctx.drawImage(pixelCanvas, 0, 0, w, h);
 }
 
+/**
+ * Cover the viewport with a square board on the longer side.
+ * Wide: full width (crop / pan vertically). Tall: full height (crop / pan horizontally).
+ */
 function coverMetrics(size) {
   const vw = size?.width ?? window.innerWidth;
   const vh = size?.height ?? window.innerHeight;
@@ -490,10 +494,12 @@ async function boot() {
 
   function panLimits(metrics) {
     const m = metrics || coverMetrics(modalViewportSize());
-    return {
-      maxX: Math.max(0, (m.px - m.vw) / 2),
-      maxY: Math.max(0, (m.px - m.vh) / 2),
-    };
+    // Only the overflow axis is pannable — ceil overshoot on the fitted
+    // axis must not unlock sideways drag on a “full width” desktop.
+    if (m.vw >= m.vh) {
+      return { maxX: 0, maxY: Math.max(0, (m.px - m.vh) / 2) };
+    }
+    return { maxX: Math.max(0, (m.px - m.vw) / 2), maxY: 0 };
   }
 
   function clampPan(x, y, metrics) {
