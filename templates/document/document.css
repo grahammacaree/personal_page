@@ -389,6 +389,12 @@
   transform: translate(-50%, -50%);
   transform-origin: center center;
   will-change: transform;
+  touch-action: none;
+  cursor: grab;
+
+  &.is-panning {
+    cursor: grabbing;
+  }
 }
 
 .life-lightbox-progress {

@@ -22,10 +22,30 @@
   let activeSlug = null;
   /** @type {number | null} */
   let activePage = null;
+  let scrollLockY = 0;
 
   /** Desktop-class pointer: keep the in-page lightbox. */
   function useLightbox() {
     return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  }
+
+  function lockBodyScroll() {
+    scrollLockY = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollLockY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+  }
+
+  function unlockBodyScroll() {
+    const y = scrollLockY;
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    requestAnimationFrame(() => {
+      window.scrollTo(0, y);
+    });
   }
 
   function pdfSlug(href) {
@@ -102,6 +122,7 @@
     } else {
       dialog.setAttribute("open", "");
     }
+    lockBodyScroll();
     if (opts.updateUrl !== false) {
       syncUrl(activeSlug, activePage);
     }
@@ -119,6 +140,7 @@
   }
 
   function resetViewer() {
+    unlockBodyScroll();
     frame.src = "";
     frame.title = "Course notes PDF";
     titleEl.textContent = "";

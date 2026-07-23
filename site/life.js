@@ -105,7 +105,9 @@ function transformFromRect(rect, px, vw, vh) {
   return `translate(${dx}px, ${dy}px) translate(-50%, -50%) scale(${scale})`;
 }
 
-const TRANSFORM_SETTLED = "translate(-50%, -50%) scale(1)";
+function settledCanvasTransform(panX = 0, panY = 0) {
+  return `translate(-50%, -50%) translate(${panX}px, ${panY}px) scale(1)`;
+}
 
 /** SVG markup from the build-injected `#life-chrome` template (assets/). */
 function lifeIcon(name) {
@@ -294,6 +296,11 @@ async function boot() {
   let aboutOpen = false;
   let progressRaf = 0;
   let scrollLockY = 0;
+  /** Pan of the cover board (CSS px); chrome stays fixed. */
+  let panX = 0;
+  let panY = 0;
+  /** @type {{ id: number, x: number, y: number, originX: number, originY: number, moved: boolean } | null} */
+  let panDrag = null;
 
   function syncAboutScrollable() {
     if (!aboutEl || !aboutInner) return;
@@ -481,10 +488,41 @@ async function boot() {
     return metrics;
   }
 
+  function panLimits(metrics) {
+    const m = metrics || coverMetrics(modalViewportSize());
+    return {
+      maxX: Math.max(0, (m.px - m.vw) / 2),
+      maxY: Math.max(0, (m.px - m.vh) / 2),
+    };
+  }
+
+  function clampPan(x, y, metrics) {
+    const { maxX, maxY } = panLimits(metrics);
+    return {
+      x: Math.min(maxX, Math.max(-maxX, x)),
+      y: Math.min(maxY, Math.max(-maxY, y)),
+    };
+  }
+
+  function applySettledCanvasTransform() {
+    modalCanvas.style.transform = settledCanvasTransform(panX, panY);
+  }
+
+  function resetPan() {
+    panX = 0;
+    panY = 0;
+    panDrag = null;
+    modalCanvas.classList.remove("is-panning");
+  }
+
   function renderModal() {
     if (!dialog.open || !board || busy) return;
-    layoutModalCanvas();
-    modalCanvas.style.transform = TRANSFORM_SETTLED;
+    const metrics = layoutModalCanvas();
+    if (!metrics) return;
+    const clamped = clampPan(panX, panY, metrics);
+    panX = clamped.x;
+    panY = clamped.y;
+    applySettledCanvasTransform();
   }
 
   function onVisualViewportChange() {
@@ -492,6 +530,66 @@ async function boot() {
     pinDialogToVisualViewport();
     if (!busy) renderModal();
     if (aboutOpen) syncAboutScrollable();
+  }
+
+  /** clientΔ → dialog-local px when the dialog is counter-scaled for pinch-zoom. */
+  function clientDeltaToDialog(dx, dy) {
+    const scale = window.visualViewport?.scale || 1;
+    return { dx: dx * scale, dy: dy * scale };
+  }
+
+  function onCanvasPointerDown(event) {
+    if (busy || !dialog.open || !dialog.classList.contains("is-settled")) return;
+    if (event.button !== 0) return;
+    panDrag = {
+      id: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      originX: panX,
+      originY: panY,
+      moved: false,
+    };
+    modalCanvas.setPointerCapture(event.pointerId);
+  }
+
+  function onCanvasPointerMove(event) {
+    if (!panDrag || event.pointerId !== panDrag.id) return;
+    const rawDx = event.clientX - panDrag.x;
+    const rawDy = event.clientY - panDrag.y;
+    if (!panDrag.moved && rawDx * rawDx + rawDy * rawDy > 36) {
+      panDrag.moved = true;
+      modalCanvas.classList.add("is-panning");
+    }
+    if (!panDrag.moved) return;
+    const { dx, dy } = clientDeltaToDialog(rawDx, rawDy);
+    const next = clampPan(panDrag.originX + dx, panDrag.originY + dy);
+    panX = next.x;
+    panY = next.y;
+    applySettledCanvasTransform();
+  }
+
+  function onCanvasPointerUp(event) {
+    if (!panDrag || event.pointerId !== panDrag.id) return;
+    const moved = panDrag.moved;
+    panDrag = null;
+    modalCanvas.classList.remove("is-panning");
+    try {
+      modalCanvas.releasePointerCapture(event.pointerId);
+    } catch {
+      /* already released */
+    }
+    if (!moved && aboutOpen) closeAbout();
+  }
+
+  function onCanvasWheel(event) {
+    if (!dialog.open || busy || !dialog.classList.contains("is-settled")) return;
+    if (aboutOpen) return;
+    event.preventDefault();
+    const { dx, dy } = clientDeltaToDialog(-event.deltaX, -event.deltaY);
+    const next = clampPan(panX + dx, panY + dy);
+    panX = next.x;
+    panY = next.y;
+    applySettledCanvasTransform();
   }
 
   async function ensureBoard() {
@@ -524,6 +622,7 @@ async function boot() {
     busy = true;
     sourceBtn = btn;
     setAboutOpen(false);
+    resetPan();
 
     await ensureBoard();
     renderMinis();
@@ -552,7 +651,7 @@ async function boot() {
     }
 
     if (skipFlip) {
-      modalCanvas.style.transform = TRANSFORM_SETTLED;
+      applySettledCanvasTransform();
       dialog.classList.add("is-settled");
       busy = false;
       startProgressLoop();
@@ -567,9 +666,9 @@ async function boot() {
     modalCanvas.style.transform = start;
 
     try {
-      await runZoom(modalCanvas, start, TRANSFORM_SETTLED, ZOOM_EASE_IN);
+      await runZoom(modalCanvas, start, settledCanvasTransform(), ZOOM_EASE_IN);
     } catch {
-      modalCanvas.style.transform = TRANSFORM_SETTLED;
+      applySettledCanvasTransform();
     }
 
     dialog.classList.add("is-settled");
@@ -588,6 +687,7 @@ async function boot() {
     const fromRect = btn?.getBoundingClientRect();
     const skipFlip =
       prefersReducedMotion() || pagePinchZoomed() || !fromRect || fromRect.width < 1;
+    const fromPan = settledCanvasTransform(panX, panY);
 
     // Drop the void behind the canvas first so the page can reappear around
     // the shrinking square (same path as zoom-in, reversed).
@@ -595,6 +695,7 @@ async function boot() {
 
     if (skipFlip) {
       dialog.close();
+      resetPan();
       unpinDialogFromVisualViewport();
       unlockBodyScroll();
       revealEndmark(btn);
@@ -607,12 +708,13 @@ async function boot() {
     const end = transformFromRect(fromRect, metrics.px, metrics.vw, metrics.vh);
 
     try {
-      await runZoom(modalCanvas, TRANSFORM_SETTLED, end, ZOOM_EASE_OUT);
+      await runZoom(modalCanvas, fromPan, end, ZOOM_EASE_OUT);
     } catch {
       /* aborted */
     }
 
     dialog.close();
+    resetPan();
     unpinDialogFromVisualViewport();
     unlockBodyScroll();
     revealEndmark(btn);
@@ -640,9 +742,11 @@ async function boot() {
   aboutEl?.addEventListener("click", (event) => {
     event.stopPropagation();
   });
-  modalCanvas.addEventListener("click", () => {
-    closeAbout();
-  });
+  modalCanvas.addEventListener("pointerdown", onCanvasPointerDown);
+  modalCanvas.addEventListener("pointermove", onCanvasPointerMove);
+  modalCanvas.addEventListener("pointerup", onCanvasPointerUp);
+  modalCanvas.addEventListener("pointercancel", onCanvasPointerUp);
+  modalCanvas.addEventListener("wheel", onCanvasWheel, { passive: false });
   dialog.addEventListener("click", (event) => {
     if (event.target !== dialog) return;
     if (closeAbout()) return;
