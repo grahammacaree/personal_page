@@ -19,7 +19,7 @@ function peelLastWord($, $parent, word) {
       // Endmark stands in for a terminal period.
       const label = word.endsWith(".") ? word.slice(0, -1) : word;
       $(node).replaceWith(
-        `${before}<span class="endmark-container">${label}<button type="button" class="endmark" aria-label="Zoom into this universe"></button></span>${after}`
+        `${before}<span class="endmark-container">${label}<button type="button" class="endmark" aria-label="Zoom into this universe"><span class="endmark-life" aria-hidden="true"></span></button></span>${after}`
       );
       return true;
     }

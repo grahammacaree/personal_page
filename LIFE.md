@@ -6,7 +6,7 @@ This is the site’s **emergent** flourish: simple local rules, surprising globa
 
 ## What you see
 
-- **Collapsed:** a miniature live board (texture, not legible) — cursor `zoom-in`, light hover scale. If `life-state.json` can’t be loaded, a static square instead.
+- **Collapsed:** a miniature live board (texture, not legible) — cursor `zoom-in`, light hover scale on fine pointers. If `life-state.json` can’t be loaded, a static square instead. Optical offset uses `em` (not `%` of the mark) so mounting the canvas doesn’t nudge baseline.
 - **Click:** the square expands into a full-bleed void (FLIP zoom from the endmark); a thin bottom bar fills toward the next 30s generation. Back / Escape / backdrop reverse the zoom. Reduced-motion skips the animation. If the page is already pinch-zoomed, open is instant and the dialog is pinned to the visual viewport (so Back / ⓘ stay on-screen).
 - **About:** an ⓘ control (top-right; Lucide icon from `assets/`) lazy-loads a bordered popover of Conway Doc copy (`life-about.html`). Escape / void click collapse it first; Back always leaves the universe.
 

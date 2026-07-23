@@ -13,7 +13,6 @@ import {
   startStateFor,
 } from "./life-engine.mjs";
 
-const MINI_CSS_PX = 11;
 /** Terrarium palette: --text void, --bg life (resolved from CSS at paint time) */
 function terrariumColors() {
   const styles = getComputedStyle(document.documentElement);
@@ -230,6 +229,21 @@ async function boot() {
   const marks = document.querySelectorAll("button.endmark");
   if (!marks.length) return;
 
+  // Mount canvases before the network round-trip so the mark isn’t an empty
+  // inline-block on first paint (WebKit baseline / used-box quirks).
+  const minis = [];
+  marks.forEach((btn) => {
+    btn.replaceChildren();
+    const canvas = document.createElement("canvas");
+    canvas.className = "endmark-life";
+    canvas.setAttribute("aria-hidden", "true");
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.imageRendering = "pixelated";
+    btn.appendChild(canvas);
+    minis.push(canvas);
+  });
+
   // Require the build artifact — never cold-start the timeline in-browser.
   const published = await fetchPublishedLifeState();
   if (!published) {
@@ -245,7 +259,6 @@ async function boot() {
   const aboutInner = dialog.querySelector(".life-lightbox-about-inner");
   const progressEl = dialog.querySelector(".life-lightbox-progress");
   const progressFill = dialog.querySelector(".life-lightbox-progress-fill");
-  const minis = [];
 
   // Info control is available once chrome icons exist; about HTML loads on demand.
   const canShowInfo = Boolean(infoBtn && aboutEl && aboutInner && lifeIcon("info"));
@@ -272,15 +285,6 @@ async function boot() {
     });
     return aboutLoad;
   }
-
-  marks.forEach((btn) => {
-    btn.replaceChildren();
-    const canvas = document.createElement("canvas");
-    canvas.className = "endmark-life";
-    canvas.setAttribute("aria-hidden", "true");
-    btn.appendChild(canvas);
-    minis.push(canvas);
-  });
 
   let board = null;
   let boardGen = -1;
@@ -359,11 +363,15 @@ async function boot() {
   }
 
   function unlockBodyScroll() {
+    const y = scrollLockY;
     document.body.style.position = "";
     document.body.style.top = "";
     document.body.style.left = "";
     document.body.style.right = "";
-    window.scrollTo(0, scrollLockY);
+    // Defer scroll restore so iOS applies the unlocked layout first.
+    requestAnimationFrame(() => {
+      window.scrollTo(0, y);
+    });
   }
 
   /** True when the page itself is pinch-zoomed (not just browser chrome). */
@@ -454,10 +462,14 @@ async function boot() {
     if (!board) return;
     for (const canvas of minis) {
       paint(canvas, 1);
-      canvas.style.width = `${MINI_CSS_PX}px`;
-      canvas.style.height = `${MINI_CSS_PX}px`;
-      canvas.style.imageRendering = "pixelated";
     }
+  }
+
+  function revealEndmark(btn) {
+    if (!btn) return;
+    btn.classList.remove("is-zoomed-away");
+    // Drop sticky :hover / focus from the opening tap (esp. iOS).
+    btn.blur();
   }
 
   function layoutModalCanvas() {
@@ -533,7 +545,7 @@ async function boot() {
       dialog.close();
       unpinDialogFromVisualViewport();
       unlockBodyScroll();
-      btn.classList.remove("is-zoomed-away");
+      revealEndmark(btn);
       sourceBtn = null;
       busy = false;
       return;
@@ -585,7 +597,7 @@ async function boot() {
       dialog.close();
       unpinDialogFromVisualViewport();
       unlockBodyScroll();
-      btn?.classList.remove("is-zoomed-away");
+      revealEndmark(btn);
       sourceBtn = null;
       busy = false;
       return;
@@ -603,7 +615,7 @@ async function boot() {
     dialog.close();
     unpinDialogFromVisualViewport();
     unlockBodyScroll();
-    btn?.classList.remove("is-zoomed-away");
+    revealEndmark(btn);
     sourceBtn = null;
     busy = false;
   }

@@ -10,6 +10,7 @@ test("applyEndmarkToLastParagraph replaces terminal period with endmark", () => 
   const html = "<p>One.</p><p>Two three.</p>";
   const out = applyEndmarkToLastParagraph(html);
   assert.match(out, /endmark-container">three<button type="button" class="endmark"/);
+  assert.match(out, /class="endmark-life"/);
   assert.doesNotMatch(out, /three\./);
   assert.doesNotMatch(out, /One\.<span class="endmark"/);
 });

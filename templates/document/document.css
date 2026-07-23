@@ -52,15 +52,14 @@
     border: 1px solid var(--text);
     background: var(--text);
     color: inherit;
+    vertical-align: baseline;
     cursor: zoom-in;
     line-height: 0;
     overflow: hidden;
-    transform: translateY(-10%) translateX(10%);
-    transition: transform 180ms ease;
-
-    &:hover {
-      transform: translateY(-10%) translateX(10%) scale(1.2);
-    }
+    /* em offsets track the surrounding text; % of self shifted when the
+       empty button gained a canvas (same size, different used box). */
+    transform: translateY(-0.055em) translateX(0.055em);
+    transition: none;
 
     &:focus-visible {
       outline: 2px solid var(--text);
@@ -70,18 +69,12 @@
     &.is-zoomed-away {
       visibility: hidden;
       pointer-events: none;
-      transition: none;
     }
 
     &:disabled,
     &.endmark--inert {
       cursor: default;
       pointer-events: none;
-      transition: none;
-
-      &:hover {
-        transform: translateY(-10%) translateX(10%);
-      }
     }
 
     .endmark-life {
@@ -93,13 +86,19 @@
   }
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .endmark-container .endmark {
+    transition: transform 180ms ease;
+
+    &:hover {
+      transform: translateY(-0.055em) translateX(0.055em) scale(1.2);
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .endmark-container .endmark {
     transition: none;
-
-    &:hover {
-      transform: translateY(-10%) translateX(10%);
-    }
   }
 }
 
