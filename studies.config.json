@@ -56,8 +56,8 @@
       "summary": [
         "Matrix operations and elimination",
         "Vector spaces and fundamental subspaces",
-        "Orthogonality, determinants and matrix geometry",
-        "Eigenvalues, eigenvectors and linear transforms",
+        "Orthogonality and matrix geometry",
+        "Eigenvalues and eigenvectors",
         "Singular Value Decomposition"
       ],
       "repo": null,
