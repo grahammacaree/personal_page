@@ -62,7 +62,8 @@ test("renderStudiesSection groups currently then previously with one label each"
   assert.match(html, /aria-label="Open course page for Now"/);
   assert.match(html, /<h3 class="entry-title">/);
   assert.match(html, /GitHub repo <svg class="test-ext"/);
-  assert.doesNotMatch(html, /studies-btn--notes[^>]*<\/button>/);
+  assert.doesNotMatch(html, /studies-card-action--notes[^>]*<\/button>/);
+  assert.match(html, /studies-card-action--notes/);
 
   const currentlyMatches = html.match(/>Current courses</g) ?? [];
   assert.equal(currentlyMatches.length, 1);

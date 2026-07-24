@@ -50,14 +50,14 @@ function courseCard(course, basePath, icon) {
         .join("")}</ul>`
     : "";
   const repo = course.repo
-    ? `<a class="studies-btn" href="${escapeHtml(course.repo)}" target="_blank" rel="noopener noreferrer">GitHub repo ${icon}</a>`
+    ? `<a class="studies-card-action" href="${escapeHtml(course.repo)}" target="_blank" rel="noopener noreferrer">GitHub repo ${icon}</a>`
     : "";
 
   return `<article class="studies-card">
-  <h3 class="entry-title">${titleText}${courseLink ? ` ${courseLink}` : ""}</h3>
+  <h3 class="entry-title">${titleText}${courseLink ? `\u00a0${courseLink}` : ""}</h3>
   ${byline}
   <div class="studies-card-actions">
-    <a class="studies-btn studies-btn--notes" href="${pdfHref}" data-studies-pdf="${pdfHref}" data-studies-title="${titleText}" aria-label="${notesLabel}" aria-haspopup="dialog">Notes</a>
+    <a class="studies-card-action studies-card-action--notes" href="${pdfHref}" data-studies-pdf="${pdfHref}" data-studies-title="${titleText}" aria-label="${notesLabel}" aria-haspopup="dialog">Notes</a>
     ${repo}
   </div>
   ${summary}

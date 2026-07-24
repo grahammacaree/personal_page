@@ -9,8 +9,10 @@ import {
   boardAtGenerationAsync,
   commitState,
   generationAt,
+  lastMeteorGeneration,
   parseLifeState,
   startStateFor,
+  wallClockAtGeneration,
 } from "./life-engine.mjs";
 
 /** Terrarium palette: --text void, --bg life (resolved from CSS at paint time) */
@@ -276,6 +278,50 @@ async function boot() {
 
   let aboutHtml = null;
   let aboutLoad = null;
+  let aboutLastMeteor = -1;
+
+  const GMT_MONTHS = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  /** e.g. 10:24am GMT, 24 Jul 2026 */
+  function formatLastResetGmt(ms) {
+    const d = new Date(ms);
+    let h = d.getUTCHours();
+    const min = String(d.getUTCMinutes()).padStart(2, "0");
+    const ampm = h >= 12 ? "pm" : "am";
+    h = h % 12 || 12;
+    return `${h}:${min}${ampm} GMT, ${d.getUTCDate()} ${GMT_MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+  }
+
+  function paintAboutHtml(html) {
+    const meteor = lastMeteorGeneration();
+    aboutLastMeteor = meteor;
+    const when = formatLastResetGmt(wallClockAtGeneration(meteor));
+    const suffix = ` (Last reset ${when})`;
+    const wrap = document.createElement("div");
+    wrap.innerHTML = html;
+    const lastP = wrap.querySelector("p:last-of-type");
+    if (lastP) {
+      lastP.append(suffix);
+    } else {
+      const p = document.createElement("p");
+      p.textContent = `Last reset ${when}.`;
+      wrap.appendChild(p);
+    }
+    aboutInner.innerHTML = wrap.innerHTML;
+  }
 
   function loadAboutHtml() {
     if (aboutHtml !== null) return Promise.resolve(aboutHtml);
@@ -358,10 +404,8 @@ async function boot() {
     }
     const html = await loadAboutHtml();
     if (!html) return;
-    if (!aboutInner.dataset.ready) {
-      aboutInner.innerHTML = html;
-      aboutInner.dataset.ready = "1";
-    }
+    await ensureBoard();
+    paintAboutHtml(html);
     setAboutOpen(true);
   }
 
@@ -621,6 +665,14 @@ async function boot() {
     await ensureBoard();
     renderMinis();
     renderModal();
+    if (
+      aboutOpen &&
+      aboutHtml &&
+      lastMeteorGeneration() !== aboutLastMeteor
+    ) {
+      paintAboutHtml(aboutHtml);
+      syncAboutScrollable();
+    }
   }
 
   async function openFrom(btn) {

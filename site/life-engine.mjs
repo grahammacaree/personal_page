@@ -452,6 +452,16 @@ export async function boardNowAsync(nowMs = Date.now(), yieldEvery = 256) {
   return boardAtGenerationAsync(generationAt(nowMs), yieldEvery);
 }
 
+/** Most recent meteor generation in the warm cache (0 = genesis / not yet evolved). */
+export function lastMeteorGeneration() {
+  return cache?.lastMeteor ?? 0;
+}
+
+/** Wall-clock ms (UTC) for a generation index. */
+export function wallClockAtGeneration(n) {
+  return GENESIS_MS + n * TICK_MS;
+}
+
 /** Test helper — drop in-memory cache. */
 export function clearLifeCache() {
   cache = null;

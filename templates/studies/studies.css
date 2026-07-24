@@ -1,19 +1,8 @@
-body.body--studies {
-  .site-main {
-    width: 100%;
-    max-width: none;
-  }
-}
-
 .doc.doc--studies {
   padding: 0;
 }
 
 .studies-intro {
-  width: 90vw;
-  max-width: var(--measure);
-  margin-left: auto;
-  margin-right: auto;
   margin-bottom: var(--space-md);
 
   > :first-child {
@@ -30,11 +19,13 @@ body.body--studies {
 }
 
 .studies-group {
-  width: 90vw;
-  max-width: 40rem;
   margin-top: 0;
-  margin-left: auto;
-  margin-right: auto;
+
+  .section-label--band {
+    margin-bottom: var(--space-sm);
+    padding-bottom: 0;
+    border-bottom: none;
+  }
 }
 
 .studies-grid {
@@ -46,6 +37,7 @@ body.body--studies {
 @media (min-width: 40rem) {
   .studies-grid {
     grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm) var(--space-xs);
   }
 
   /* One course: same column width as a two-up card, centered */
@@ -56,18 +48,25 @@ body.body--studies {
 
   .studies-grid--solo > .studies-card {
     width: 100%;
-    max-width: calc((100% - var(--space-md)) / 2);
+    max-width: calc((100% - var(--space-xs)) / 2);
   }
 }
 
 .studies-card {
   min-width: 0;
+  padding: var(--space-sm);
+  border: 1px solid var(--accent);
+
+  .entry-title {
+    font-size: var(--text-base);
+    white-space: nowrap;
+  }
 }
 
 .studies-external {
   display: inline-block;
-  margin-left: 0.2em;
-  vertical-align: -0.1em;
+  margin-left: 0;
+  vertical-align: -0.175em;
   box-shadow: none;
 
   svg {
@@ -84,22 +83,36 @@ body.body--studies {
 
 /* entry-byline + gap before actions */
 .studies-card-byline {
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-2xs);
+  font-size: var(--text-xs);
 }
 
 .studies-card-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2xs);
+  gap: var(--space-2xs) var(--space-sm);
+  font-size: var(--text-xs);
+  line-height: var(--leading-tight);
+}
+
+.studies-card-action {
+  svg {
+    display: inline-block;
+    width: 0.85em;
+    height: 0.85em;
+    vertical-align: -0.175em;
+  }
 }
 
 .studies-card-summary {
-  margin: var(--space-ms) 0 0;
-  padding-left: var(--space-ms);
-  font-size: var(--text-sm);
+  margin: var(--space-sm) 0 0;
+  padding-left: 0.95em;
+  list-style-position: outside;
+  font-size: var(--text-xs);
+  line-height: 1.35;
 
   li {
-    margin: 0 0 var(--space-2xs);
+    margin: 0 0 var(--space-3xs);
 
     &:last-child {
       margin-bottom: 0;
