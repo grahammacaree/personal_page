@@ -139,3 +139,42 @@ test("life.js script carries data-life-base and icon template", () => {
     /<script type="module" src="\/life\.js" data-life-base="\/"><\/script>/
   );
 });
+
+test("footer exposes social icons when configured", () => {
+  const withSocial = {
+    ...ctx,
+    siteConfig: {
+      ...siteConfig,
+      bluesky: "https://bsky.app/profile/grahammacaree.com",
+      linkedin: "https://www.linkedin.com/in/graham-macaree-856750405",
+      github: "https://github.com/grahammacaree",
+      chrome: {
+        ...siteConfig.chrome,
+        assets: {
+          bluesky: "icons/bluesky.svg",
+          linkedin: "icons/linkedin.svg",
+          github: "icons/github.svg",
+        },
+      },
+    },
+    assets: {
+      "icons/bluesky.svg": '<svg id="bsky-icon" aria-hidden="true"></svg>',
+      "icons/linkedin.svg": '<svg id="li-icon" aria-hidden="true"></svg>',
+      "icons/github.svg": '<svg id="gh-icon" aria-hidden="true"></svg>',
+    },
+  };
+  const page = {
+    pageType: { title: "siteName", layout: "page", aboutLink: false },
+    sectionSlugs: ["intro"],
+    pageTitle: null,
+    output: "index.html",
+  };
+  const { socialLinks } = layoutVars(page, withSocial).footer;
+  assert.match(socialLinks, /site-footer-socials/);
+  assert.match(socialLinks, /aria-label="Bluesky"/);
+  assert.match(socialLinks, /id="bsky-icon"/);
+  assert.match(socialLinks, /aria-label="LinkedIn"/);
+  assert.match(socialLinks, /id="li-icon"/);
+  assert.match(socialLinks, /href="https:\/\/github.com\/grahammacaree"/);
+  assert.match(socialLinks, /id="gh-icon"/);
+});

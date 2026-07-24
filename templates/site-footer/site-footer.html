@@ -14,7 +14,9 @@
     <circle class="site-footer-jovian-moon" data-moon="ganymede" cx="0" cy="0" r="1.56" />
     <circle class="site-footer-jovian-moon" data-moon="callisto" cx="0" cy="0" r="1.5" />
   </svg>
-  <p class="site-footer-copy">© {{year}} {{siteName}}</p>
+  <p class="site-footer-copy">
+    <span>© {{year}} {{siteName}}</span>{{socialLinks}}
+  </p>
   {{#showAboutLink}}
   <a href="{{aboutHref}}" class="site-footer-about">About this site</a>
   {{/showAboutLink}}

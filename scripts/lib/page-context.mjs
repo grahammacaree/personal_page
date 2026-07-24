@@ -106,6 +106,46 @@ function topBarVars(page, ctx) {
   };
 }
 
+/** Footer social icons — href from site.config, SVG from chrome.assets / assets/. */
+const FOOTER_SOCIAL = [
+  {
+    key: "bluesky",
+    label: "Bluesky",
+    assetKey: "bluesky",
+    defaultAsset: "icons/bluesky.svg",
+    className: "site-footer-social site-footer-social--bluesky",
+  },
+  {
+    key: "github",
+    label: "GitHub",
+    assetKey: "github",
+    defaultAsset: "icons/github.svg",
+    className: "site-footer-social",
+  },
+  {
+    key: "linkedin",
+    label: "LinkedIn",
+    assetKey: "linkedin",
+    defaultAsset: "icons/linkedin.svg",
+    className: "site-footer-social",
+  },
+];
+
+function footerSocialHtml(ctx) {
+  const chrome = chromeConfig(ctx.siteConfig);
+  const links = FOOTER_SOCIAL.map((item) => {
+    const hrefRaw = ctx.siteConfig[item.key];
+    if (!hrefRaw) return "";
+    const href = escapeHtml(String(hrefRaw));
+    const assetPath = chrome.assets?.[item.assetKey] ?? item.defaultAsset;
+    const icon = ctx.assets[assetPath]?.trim() ?? "";
+    if (!icon) return "";
+    return `<a href="${href}" class="${item.className}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(item.label)}">${icon}</a>`;
+  }).filter(Boolean);
+  if (!links.length) return "";
+  return `<span class="site-footer-socials">${links.join("")}</span>`;
+}
+
 function footerVars(page, ctx) {
   const pt = page.pageType;
   const aboutHref = publishedDocHrefFromCtx(ctx, "about");
@@ -115,6 +155,7 @@ function footerVars(page, ctx) {
     siteName: escapeHtml(ctx.siteConfig.name),
     showAboutLink: pt.aboutLink !== false && !!aboutHref,
     aboutHref,
+    socialLinks: footerSocialHtml(ctx),
   };
 }
 

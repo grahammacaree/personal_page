@@ -144,7 +144,7 @@
   gap: var(--space-3xs);
   margin: 0;
   padding: var(--space-2xs) var(--space-xs);
-  border: none;
+  border: 1px solid #fff;
   background: var(--text);
   color: rgb(255 255 255 / 0.85);
   font-family: var(--font-sans);
@@ -196,7 +196,7 @@
   justify-content: center;
   margin: 0;
   padding: var(--space-2xs);
-  border: none;
+  border: 1px solid #fff;
   background: var(--text);
   color: rgb(255 255 255 / 0.85);
   cursor: pointer;

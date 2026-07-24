@@ -38,7 +38,41 @@
   }
 
   & .site-footer-copy {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
     margin: 0;
+  }
+
+  & .site-footer-socials {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    /* Optical centre with the copyright line */
+    transform: translateY(-0.1em);
+  }
+
+  & .site-footer-social {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: inherit;
+    box-shadow: none;
+
+    svg {
+      display: block;
+      width: 0.95em;
+      height: 0.95em;
+    }
+
+    &:hover {
+      color: var(--text);
+      box-shadow: none;
+    }
+  }
+
+  /* Butterfly mass sits high in the viewBox — nudge within the group */
+  & .site-footer-social--bluesky {
+    transform: translateY(0.06em);
   }
 
   & .site-footer-about {

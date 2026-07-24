@@ -3,6 +3,9 @@
   "url": "https://grahammacaree.com",
   "name": "Graham MacAree",
   "email": "hi@grahammacaree.com",
+  "bluesky": "https://bsky.app/profile/grahammacaree.com",
+  "linkedin": "https://www.linkedin.com/in/graham-macaree-856750405",
+  "github": "https://github.com/grahammacaree",
   "description": "This is the personal site of Graham MacAree — engineer, editor and analyst",
   "person": {
     "jobTitle": "Editorial/Engineering Leader"
@@ -30,7 +33,10 @@
     },
     "assets": {
       "backChevron": "chevrons/left.svg",
-      "lifeInfo": "icons/info.svg"
+      "lifeInfo": "icons/info.svg",
+      "bluesky": "icons/bluesky.svg",
+      "linkedin": "icons/linkedin.svg",
+      "github": "icons/github.svg"
     },
     "scripts": ["jovian.js"]
   },
