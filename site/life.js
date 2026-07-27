@@ -91,12 +91,14 @@ function paint(canvas, cellPx) {
 /**
  * Cover the viewport with a square board on the longer side.
  * Wide: full width (crop / pan vertically). Tall: full height (crop / pan horizontally).
+ * Cell size floors so the fitted axis never exceeds the viewport — ceil overshoot
+ * used to clip a cell or two on each edge with pan locked on that axis.
  */
 function coverMetrics(size) {
   const vw = size?.width ?? window.innerWidth;
   const vh = size?.height ?? window.innerHeight;
   const side = Math.max(vw, vh);
-  const cell = Math.max(1, Math.ceil(side / SIZE));
+  const cell = Math.max(1, Math.floor(side / SIZE));
   const px = SIZE * cell;
   return { vw, vh, cell, px };
 }
@@ -538,8 +540,8 @@ async function boot() {
 
   function panLimits(metrics) {
     const m = metrics || coverMetrics(modalViewportSize());
-    // Only the overflow axis is pannable — ceil overshoot on the fitted
-    // axis must not unlock sideways drag on a “full width” desktop.
+    // Only the overflow (crop) axis is pannable — the fitted axis is sized
+    // with floor so it never overshoots the viewport.
     if (m.vw >= m.vh) {
       return { maxX: 0, maxY: Math.max(0, (m.px - m.vh) / 2) };
     }

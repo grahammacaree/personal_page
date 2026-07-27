@@ -78,6 +78,7 @@
     },
     "reading": {
       "section": "reading",
+      "sectionId": "books",
       "contentPath": "{slug}.html",
       "publish": false,
       "parse": "reading"

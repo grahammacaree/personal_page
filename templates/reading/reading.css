@@ -2,6 +2,8 @@
   margin-top: var(--space-lg);
   padding-top: var(--space-lg);
   border-top: 1px solid var(--rule);
+  /* Clear the fixed top bar when reached via #books */
+  scroll-margin-top: calc(var(--top-bar-height) + var(--space-md));
 
   .reading-entry {
     margin-bottom: var(--space-lg);
