@@ -537,6 +537,10 @@ async function boot() {
     paint(modalCanvas, metrics.cell);
     modalCanvas.style.width = `${metrics.display}px`;
     modalCanvas.style.height = `${metrics.display}px`;
+    // Match the generation timer to one on-screen Life cell.
+    if (progressEl) {
+      progressEl.style.height = `${metrics.display / SIZE}px`;
+    }
     return metrics;
   }
 

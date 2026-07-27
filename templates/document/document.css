@@ -403,7 +403,7 @@
   right: 0;
   bottom: env(safe-area-inset-bottom, 0px);
   z-index: 3;
-  height: 0.5rem;
+  height: 0;
   margin: 0;
   padding: 0;
   border: none;
