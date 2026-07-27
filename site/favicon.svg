@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" fill="#faf5f4"/>
-  <rect x="4" y="4" width="24" height="24" fill="#ddb8ad"/>
+  <!-- Bauhaus nested squares: outer accent, inner accent×(1/φ²) toward text; inner side = outer/φ -->
+  <rect width="32" height="32" fill="#ddb8ad"/>
+  <rect x="6.111" y="6.111" width="19.778" height="19.778" fill="#937c75"/>
 </svg>
