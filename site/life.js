@@ -91,25 +91,27 @@ function paint(canvas, cellPx) {
 /**
  * Cover the viewport with a square board on the longer side.
  * Wide: full width (crop / pan vertically). Tall: full height (crop / pan horizontally).
- * Cell size floors so the fitted axis never exceeds the viewport — ceil overshoot
- * used to clip a cell or two on each edge with pan locked on that axis.
+ *
+ * Backing store uses integer ceil cells (crisp pixels). CSS box is exactly the
+ * long viewport side so the fitted axis fills edge-to-edge — no ceil crop, no
+ * floor gutter; the browser scales the bitmap slightly when side % SIZE ≠ 0.
  */
 function coverMetrics(size) {
   const vw = size?.width ?? window.innerWidth;
   const vh = size?.height ?? window.innerHeight;
   const side = Math.max(vw, vh);
-  const cell = Math.max(1, Math.floor(side / SIZE));
+  const cell = Math.max(1, Math.ceil(side / SIZE));
   const px = SIZE * cell;
-  return { vw, vh, cell, px };
+  return { vw, vh, cell, px, display: side };
 }
 
 /** Canvas sits at viewport center; FLIP from the endmark’s screen rect. */
-function transformFromRect(rect, px, vw, vh) {
+function transformFromRect(rect, display, vw, vh) {
   const fromCx = rect.left + rect.width / 2;
   const fromCy = rect.top + rect.height / 2;
   const dx = fromCx - vw / 2;
   const dy = fromCy - vh / 2;
-  const scale = Math.max(rect.width / px, 0.001);
+  const scale = Math.max(rect.width / display, 0.001);
   return `translate(${dx}px, ${dy}px) translate(-50%, -50%) scale(${scale})`;
 }
 
@@ -533,19 +535,19 @@ async function boot() {
     if (!board) return null;
     const metrics = coverMetrics(modalViewportSize());
     paint(modalCanvas, metrics.cell);
-    modalCanvas.style.width = `${metrics.px}px`;
-    modalCanvas.style.height = `${metrics.px}px`;
+    modalCanvas.style.width = `${metrics.display}px`;
+    modalCanvas.style.height = `${metrics.display}px`;
     return metrics;
   }
 
   function panLimits(metrics) {
     const m = metrics || coverMetrics(modalViewportSize());
-    // Only the overflow (crop) axis is pannable — the fitted axis is sized
-    // with floor so it never overshoots the viewport.
+    // Only the overflow (crop) axis is pannable — fitted axis matches the
+    // viewport exactly via CSS size.
     if (m.vw >= m.vh) {
-      return { maxX: 0, maxY: Math.max(0, (m.px - m.vh) / 2) };
+      return { maxX: 0, maxY: Math.max(0, (m.display - m.vh) / 2) };
     }
-    return { maxX: Math.max(0, (m.px - m.vw) / 2), maxY: 0 };
+    return { maxX: Math.max(0, (m.display - m.vw) / 2), maxY: 0 };
   }
 
   function clampPan(x, y, metrics) {
@@ -721,7 +723,7 @@ async function boot() {
 
     // Place the canvas on the endmark *before* paint settles, so we never
     // flash a full-bleed black frame.
-    const start = transformFromRect(fromRect, metrics.px, metrics.vw, metrics.vh);
+    const start = transformFromRect(fromRect, metrics.display, metrics.vw, metrics.vh);
     dialog.classList.remove("is-settled");
     modalCanvas.style.transform = start;
 
@@ -765,7 +767,7 @@ async function boot() {
     }
 
     const metrics = layoutModalCanvas() || coverMetrics(modalViewportSize());
-    const end = transformFromRect(fromRect, metrics.px, metrics.vw, metrics.vh);
+    const end = transformFromRect(fromRect, metrics.display, metrics.vw, metrics.vh);
 
     try {
       await runZoom(modalCanvas, fromPan, end, ZOOM_EASE_OUT);
