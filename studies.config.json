@@ -232,11 +232,9 @@
           "title": "Probability and Counting",
           "lecture": 1,
           "terms": [
-            "probability counting",
-            "probability",
-            "counting",
-            "sample space",
-            "naive definition"
+            "probability and counting",
+            "naive definition",
+            "sample space"
           ]
         },
         {
@@ -245,11 +243,7 @@
           "lecture": 2,
           "terms": [
             "story proofs",
-            "story",
-            "proofs",
-            "axioms probability",
-            "axioms",
-            "probability",
+            "axioms of probability",
             "story proof"
           ]
         },
@@ -259,11 +253,8 @@
           "lecture": 3,
           "terms": [
             "birthday problem",
-            "birthday",
-            "problem",
-            "properties probability",
-            "properties",
-            "probability"
+            "properties of probability",
+            "birthday"
           ]
         },
         {
@@ -272,8 +263,6 @@
           "lecture": 4,
           "terms": [
             "conditional probability",
-            "conditional",
-            "probability",
             "bayes"
           ]
         },
@@ -282,12 +271,8 @@
           "title": "Conditioning Continued, Law of Total Probability",
           "lecture": 5,
           "terms": [
-            "conditioning",
-            "law total probability",
-            "total",
-            "probability",
-            "total probability",
-            "lof"
+            "conditioning continued",
+            "law of total probability"
           ]
         },
         {
@@ -296,11 +281,7 @@
           "lecture": 6,
           "terms": [
             "monty hall",
-            "monty",
-            "hall",
             "simpson's paradox",
-            "simpson's",
-            "paradox",
             "simpson"
           ]
         },
@@ -309,13 +290,8 @@
           "title": "Gambler's Ruin and Random Variables",
           "lecture": 7,
           "terms": [
-            "gambler's ruin random variables",
-            "gambler's",
-            "ruin",
-            "random",
-            "variables",
-            "gambler",
-            "random variable"
+            "gambler's ruin and random variables",
+            "gambler"
           ]
         },
         {
@@ -323,10 +299,7 @@
           "title": "Random Variables and Their Distributions",
           "lecture": 8,
           "terms": [
-            "random variables distributions",
-            "random",
-            "variables",
-            "distributions",
+            "random variables and their distributions",
             "pmf",
             "cdf"
           ]
@@ -336,11 +309,8 @@
           "title": "Expectation, Indicator Random Variables, Linearity",
           "lecture": 9,
           "terms": [
-            "expectation",
             "indicator random variables",
-            "indicator",
-            "random",
-            "variables",
+            "indicator random",
             "linearity"
           ]
         },
@@ -349,7 +319,7 @@
           "title": "Expectation Continued",
           "lecture": 10,
           "terms": [
-            "expectation"
+            "expectation continued"
           ]
         },
         {
@@ -358,8 +328,7 @@
           "lecture": 11,
           "terms": [
             "poisson distribution",
-            "poisson",
-            "distribution"
+            "poisson"
           ]
         },
         {
@@ -367,9 +336,7 @@
           "title": "Discrete vs. Continuous, the Uniform",
           "lecture": 12,
           "terms": [
-            "discrete continuous",
-            "discrete",
-            "continuous",
+            "discrete vs. continuous",
             "uniform"
           ]
         },
@@ -378,10 +345,7 @@
           "title": "Standard Normal",
           "lecture": 13,
           "terms": [
-            "standard normal",
-            "standard",
-            "normal",
-            "gaussian"
+            "standard normal"
           ]
         },
         {
@@ -390,10 +354,8 @@
           "lecture": 14,
           "terms": [
             "normal distribution",
-            "normal",
-            "distribution",
-            "standardization",
-            "lotus"
+            "lotus",
+            "standardization"
           ]
         },
         {
@@ -401,7 +363,7 @@
           "title": "Midterm Review",
           "lecture": 15,
           "terms": [
-            "midterm"
+            "midterm review"
           ]
         },
         {
@@ -410,8 +372,6 @@
           "lecture": 16,
           "terms": [
             "exponential distribution",
-            "exponential",
-            "distribution",
             "memoryless"
           ]
         },
@@ -421,9 +381,6 @@
           "lecture": 17,
           "terms": [
             "moment generating functions",
-            "moment",
-            "generating",
-            "functions",
             "mgf",
             "moment generating"
           ]
@@ -433,7 +390,7 @@
           "title": "MGFs Continued",
           "lecture": 18,
           "terms": [
-            "mgfs",
+            "mgfs continued",
             "mgf"
           ]
         },
@@ -442,11 +399,8 @@
           "title": "Joint, Conditional, and Marginal Distributions",
           "lecture": 19,
           "terms": [
-            "joint",
-            "conditional",
-            "marginal distributions",
+            "and marginal distributions",
             "marginal",
-            "distributions",
             "chicken-egg"
           ]
         },
@@ -455,7 +409,7 @@
           "title": "Multinomial and Cauchy",
           "lecture": 20,
           "terms": [
-            "multinomial cauchy",
+            "multinomial and cauchy",
             "multinomial",
             "cauchy"
           ]
@@ -465,7 +419,7 @@
           "title": "Covariance and Correlation",
           "lecture": 21,
           "terms": [
-            "covariance correlation",
+            "covariance and correlation",
             "covariance",
             "correlation"
           ]
@@ -475,11 +429,8 @@
           "title": "Transformations and Convolutions",
           "lecture": 22,
           "terms": [
-            "transformations convolutions",
-            "transformations",
-            "convolutions",
-            "convolution",
-            "transformation"
+            "transformations and convolutions",
+            "convolution"
           ]
         },
         {
@@ -488,8 +439,7 @@
           "lecture": 23,
           "terms": [
             "beta distribution",
-            "beta",
-            "distribution"
+            "beta"
           ]
         },
         {
@@ -497,11 +447,8 @@
           "title": "Gamma Distribution and Poisson Process",
           "lecture": 24,
           "terms": [
-            "gamma distribution poisson process",
+            "gamma distribution and poisson process",
             "gamma",
-            "distribution",
-            "poisson",
-            "process",
             "poisson process"
           ]
         },
@@ -510,13 +457,8 @@
           "title": "Order Statistics and Conditional Expectation",
           "lecture": 25,
           "terms": [
-            "order statistics conditional expectation",
-            "order",
-            "statistics",
-            "conditional",
-            "expectation",
-            "order statistic",
-            "conditional expectation"
+            "order statistics and conditional expectation",
+            "order statistic"
           ]
         },
         {
@@ -524,9 +466,7 @@
           "title": "Conditional Expectation Continued",
           "lecture": 26,
           "terms": [
-            "conditional expectation",
-            "conditional",
-            "expectation"
+            "conditional expectation continued"
           ]
         },
         {
@@ -535,11 +475,7 @@
           "lecture": 27,
           "terms": [
             "adam's law",
-            "adam's",
-            "eve's law",
-            "eve's",
-            "adam",
-            "eve"
+            "eve's law"
           ]
         },
         {
@@ -547,10 +483,9 @@
           "title": "Inequalities",
           "lecture": 28,
           "terms": [
-            "inequalities",
             "jensen",
             "chebyshev",
-            "markov inequality"
+            "cauchy-schwarz"
           ]
         },
         {
@@ -558,16 +493,10 @@
           "title": "Law of Large Numbers and Central Limit Theorem",
           "lecture": 29,
           "terms": [
-            "law large numbers central",
-            "large",
-            "numbers",
-            "central",
-            "limit",
-            "theorem",
+            "law of large numbers and central limit theorem",
             "law of large numbers",
             "central limit",
-            "clt",
-            "lln"
+            "clt"
           ]
         },
         {
@@ -575,12 +504,9 @@
           "title": "Chi-Square, Student's t, Multivariate Normal",
           "lecture": 30,
           "terms": [
-            "chi-square",
-            "student's",
+            "student's t",
             "multivariate normal",
-            "multivariate",
-            "normal",
-            "student"
+            "chi-square"
           ]
         },
         {
@@ -589,8 +515,6 @@
           "lecture": 31,
           "terms": [
             "markov chains",
-            "markov",
-            "chains",
             "markov chain",
             "stationary"
           ]
@@ -600,10 +524,8 @@
           "title": "Markov Chains Continued",
           "lecture": 32,
           "terms": [
-            "markov chains",
-            "markov",
-            "chains",
-            "irreducible",
+            "markov chains continued",
+            "irreducib",
             "reversib"
           ]
         },
@@ -612,18 +534,18 @@
           "title": "Google PageRank as a Markov Chain",
           "lecture": 33,
           "terms": [
-            "google pagerank markov chain",
-            "google",
-            "pagerank",
-            "markov",
-            "chain"
+            "google pagerank as a markov chain",
+            "pagerank"
           ]
         },
         {
           "id": "L34",
           "title": "A Look Ahead",
           "lecture": 34,
-          "terms": []
+          "terms": [
+            "look ahead",
+            "regression"
+          ]
         }
       ]
     },
@@ -650,11 +572,7 @@
           "title": "The Geometry of Linear Equations",
           "lecture": 1,
           "terms": [
-            "geometry linear equations",
-            "geometry",
-            "linear",
-            "equations",
-            "elimination",
+            "geometry of linear equations",
             "geometry of linear"
           ]
         },
@@ -663,9 +581,8 @@
           "title": "Elimination with Matrices",
           "lecture": 2,
           "terms": [
-            "elimination matrices",
-            "elimination",
-            "matrices"
+            "elimination with matrices",
+            "elimination"
           ]
         },
         {
@@ -673,10 +590,8 @@
           "title": "Multiplication and Inverse Matrices",
           "lecture": 3,
           "terms": [
-            "multiplication inverse matrices",
-            "multiplication",
-            "inverse",
-            "matrices"
+            "multiplication and inverse matrices",
+            "inverse matrices"
           ]
         },
         {
@@ -684,7 +599,7 @@
           "title": "Factorization into A = LU",
           "lecture": 4,
           "terms": [
-            "factorization",
+            "factorization into a = lu",
             "re:A\\s*=\\s*LU"
           ]
         },
@@ -693,9 +608,7 @@
           "title": "Transposes, Permutations, Spaces R^n",
           "lecture": 5,
           "terms": [
-            "transposes",
-            "permutations",
-            "spaces",
+            "spaces r^n",
             "transpose",
             "permutation"
           ]
@@ -705,11 +618,9 @@
           "title": "Column Space and Nullspace",
           "lecture": 6,
           "terms": [
-            "column space nullspace",
-            "column",
-            "space",
-            "nullspace",
+            "column space and nullspace",
             "column space",
+            "nullspace",
             "null space"
           ]
         },
@@ -718,12 +629,10 @@
           "title": "Solving Ax = 0: Pivot Variables, Special Solutions",
           "lecture": 7,
           "terms": [
-            "solving",
+            "solving ax = 0",
             "pivot variables",
-            "pivot",
-            "variables",
             "special solutions",
-            "special",
+            "pivot",
             "special solution"
           ]
         },
@@ -732,10 +641,8 @@
           "title": "Solving Ax = b: Row Reduced Form R",
           "lecture": 8,
           "terms": [
-            "solving",
-            "row reduced form",
-            "reduced",
-            "form",
+            "solving ax = b",
+            "row reduced form r",
             "row reduced",
             "rref"
           ]
@@ -745,7 +652,7 @@
           "title": "Independence, Basis, and Dimension",
           "lecture": 9,
           "terms": [
-            "independence",
+            "and dimension",
             "basis",
             "dimension"
           ]
@@ -756,9 +663,6 @@
           "lecture": 10,
           "terms": [
             "four fundamental subspaces",
-            "four",
-            "fundamental",
-            "subspaces",
             "four fundamental",
             "fundamental subspace"
           ]
@@ -769,13 +673,8 @@
           "lecture": 11,
           "terms": [
             "matrix spaces",
-            "matrix",
-            "spaces",
-            "rank",
             "small world graphs",
-            "small",
-            "rank 1",
-            "matrix space"
+            "rank 1"
           ]
         },
         {
@@ -783,29 +682,25 @@
           "title": "Graphs, Networks, Incidence Matrices",
           "lecture": 12,
           "terms": [
-            "graphs",
-            "networks",
             "incidence matrices",
-            "incidence",
-            "matrices",
-            "network"
+            "incidence"
           ]
         },
         {
           "id": "L13",
           "title": "Quiz 1 Review",
           "lecture": 13,
-          "terms": []
+          "terms": [
+            "quiz 1 review"
+          ]
         },
         {
           "id": "L14",
           "title": "Orthogonal Vectors and Subspaces",
           "lecture": 14,
           "terms": [
-            "orthogonal vectors subspaces",
-            "orthogonal",
-            "vectors",
-            "subspaces"
+            "orthogonal vectors and subspaces",
+            "orthogonal"
           ]
         },
         {
@@ -814,9 +709,6 @@
           "lecture": 15,
           "terms": [
             "projections onto subspaces",
-            "projections",
-            "onto",
-            "subspaces",
             "projection"
           ]
         },
@@ -825,11 +717,7 @@
           "title": "Projection Matrices and Least Squares",
           "lecture": 16,
           "terms": [
-            "projection matrices least squares",
-            "projection",
-            "matrices",
-            "least",
-            "squares",
+            "projection matrices and least squares",
             "least square"
           ]
         },
@@ -838,9 +726,7 @@
           "title": "Orthogonal Matrices and Gram-Schmidt",
           "lecture": 17,
           "terms": [
-            "orthogonal matrices gram-schmidt",
-            "orthogonal",
-            "matrices",
+            "orthogonal matrices and gram-schmidt",
             "gram-schmidt",
             "gram schmidt",
             "orthonormal"
@@ -851,9 +737,7 @@
           "title": "Properties of Determinants",
           "lecture": 18,
           "terms": [
-            "properties determinants",
-            "properties",
-            "determinants",
+            "properties of determinants",
             "determinant"
           ]
         },
@@ -862,10 +746,7 @@
           "title": "Determinant Formulas and Cofactors",
           "lecture": 19,
           "terms": [
-            "determinant formulas cofactors",
-            "determinant",
-            "formulas",
-            "cofactors",
+            "determinant formulas and cofactors",
             "cofactor"
           ]
         },
@@ -875,11 +756,8 @@
           "lecture": 20,
           "terms": [
             "cramer's rule",
-            "cramer's",
-            "rule",
             "inverse matrix",
-            "inverse",
-            "matrix",
+            "and volume",
             "cramer"
           ]
         },
@@ -888,9 +766,7 @@
           "title": "Eigenvalues and Eigenvectors",
           "lecture": 21,
           "terms": [
-            "eigenvalues eigenvectors",
-            "eigenvalues",
-            "eigenvectors",
+            "eigenvalues and eigenvectors",
             "eigenvalue",
             "eigenvector"
           ]
@@ -900,9 +776,7 @@
           "title": "Diagonalization and Powers of A",
           "lecture": 22,
           "terms": [
-            "diagonalization powers",
-            "diagonalization",
-            "powers",
+            "diagonalization and powers of a",
             "diagonaliz"
           ]
         },
@@ -911,10 +785,8 @@
           "title": "Differential Equations and exp(At)",
           "lecture": 23,
           "terms": [
-            "differential equations exp",
-            "differential",
-            "equations",
-            "exp(at)",
+            "differential equations and exp(at)",
+            "re:exp\\(at\\)",
             "matrix exponential"
           ]
         },
@@ -924,12 +796,9 @@
           "lecture": 24,
           "terms": [
             "markov matrices",
-            "markov",
-            "matrices",
             "fourier series",
-            "fourier",
-            "series",
-            "markov matrix"
+            "markov matrix",
+            "fourier"
           ]
         },
         {
@@ -937,11 +806,8 @@
           "title": "Symmetric Matrices and Positive Definiteness",
           "lecture": 25,
           "terms": [
-            "symmetric matrices positive definiteness",
+            "symmetric matrices and positive definiteness",
             "symmetric",
-            "matrices",
-            "positive",
-            "definiteness",
             "positive definite"
           ]
         },
@@ -951,13 +817,9 @@
           "lecture": 26,
           "terms": [
             "complex matrices",
-            "complex",
-            "matrices",
             "fast fourier transform",
-            "fast",
-            "fourier",
             "fft",
-            "complex matrix"
+            "fast fourier"
           ]
         },
         {
@@ -965,11 +827,7 @@
           "title": "Positive Definite Matrices and Minima",
           "lecture": 27,
           "terms": [
-            "positive definite matrices minima",
-            "positive",
-            "definite",
-            "matrices",
-            "minima",
+            "positive definite matrices and minima",
             "positive definite"
           ]
         },
@@ -978,11 +836,8 @@
           "title": "Similar Matrices and Jordan Form",
           "lecture": 28,
           "terms": [
-            "similar matrices jordan form",
-            "similar",
-            "matrices",
-            "jordan",
-            "form"
+            "similar matrices and jordan form",
+            "jordan"
           ]
         },
         {
@@ -991,9 +846,6 @@
           "lecture": 29,
           "terms": [
             "singular value decomposition",
-            "singular",
-            "value",
-            "decomposition",
             "svd",
             "singular value"
           ]
@@ -1003,10 +855,7 @@
           "title": "Linear Transformations and Their Matrices",
           "lecture": 30,
           "terms": [
-            "linear transformations matrices",
-            "linear",
-            "transformations",
-            "matrices",
+            "linear transformations and their matrices",
             "linear transformation"
           ]
         },
@@ -1015,39 +864,34 @@
           "title": "Change of Basis; Image Compression",
           "lecture": 31,
           "terms": [
-            "change basis",
-            "change",
-            "basis",
-            "image compression",
-            "image",
-            "compression",
-            "change of basis"
+            "change of basis",
+            "image compression"
           ]
         },
         {
           "id": "L32",
           "title": "Quiz 3 Review",
           "lecture": 32,
-          "terms": []
+          "terms": [
+            "quiz 3 review"
+          ]
         },
         {
           "id": "L33",
           "title": "Left and Right Inverses; Pseudoinverse",
           "lecture": 33,
           "terms": [
-            "left right inverses",
-            "left",
-            "right",
-            "inverses",
-            "pseudoinverse",
-            "left and right"
+            "left and right inverses",
+            "pseudoinverse"
           ]
         },
         {
           "id": "L34",
           "title": "Final Course Review",
           "lecture": 34,
-          "terms": []
+          "terms": [
+            "final course review"
+          ]
         }
       ]
     },
@@ -1075,8 +919,6 @@
           "lecture": 1,
           "terms": [
             "learning problem",
-            "learning",
-            "problem",
             "perceptron"
           ]
         },
@@ -1085,9 +927,7 @@
           "title": "Is Learning Feasible?",
           "lecture": 2,
           "terms": [
-            "learning feasible",
-            "learning",
-            "feasible",
+            "is learning feasible",
             "hoeffding",
             "heffding"
           ]
@@ -1097,9 +937,8 @@
           "title": "The Linear Model I",
           "lecture": 3,
           "terms": [
+            "linear model i",
             "linear model",
-            "linear",
-            "model",
             "pla"
           ]
         },
@@ -1108,9 +947,9 @@
           "title": "Error and Noise",
           "lecture": 4,
           "terms": [
-            "error noise",
-            "error",
-            "noise"
+            "error and noise",
+            "error measure",
+            "noisy target"
           ]
         },
         {
@@ -1118,11 +957,10 @@
           "title": "Training versus Testing",
           "lecture": 5,
           "terms": [
-            "training testing",
-            "training",
-            "testing",
-            "ein",
-            "eout"
+            "training versus testing",
+            "re:\\bein\\b",
+            "re:\\beout\\b",
+            "dichotom"
           ]
         },
         {
@@ -1130,10 +968,9 @@
           "title": "Theory of Generalization",
           "lecture": 6,
           "terms": [
-            "theory generalization",
-            "theory",
-            "generalization",
-            "growth function"
+            "theory of generalization",
+            "growth function",
+            "generalization"
           ]
         },
         {
@@ -1141,7 +978,6 @@
           "title": "The VC Dimension",
           "lecture": 7,
           "terms": [
-            "dimension",
             "vc dimension",
             "shatter"
           ]
@@ -1153,9 +989,7 @@
           "terms": [
             "bias-variance tradeoff",
             "bias-variance",
-            "tradeoff",
-            "bias",
-            "variance"
+            "bias variance"
           ]
         },
         {
@@ -1163,9 +997,7 @@
           "title": "The Linear Model II",
           "lecture": 9,
           "terms": [
-            "linear model",
-            "linear",
-            "model",
+            "linear model ii",
             "logistic",
             "pocket"
           ]
@@ -1177,9 +1009,7 @@
           "terms": [
             "neural networks",
             "neural",
-            "networks",
-            "backprop",
-            "backpropagation"
+            "backprop"
           ]
         },
         {
@@ -1187,7 +1017,6 @@
           "title": "Overfitting",
           "lecture": 11,
           "terms": [
-            "overfitting",
             "overfit"
           ]
         },
@@ -1196,7 +1025,7 @@
           "title": "Regularization",
           "lecture": 12,
           "terms": [
-            "regularization",
+            "regulariz",
             "weight decay"
           ]
         },
@@ -1205,8 +1034,7 @@
           "title": "Validation",
           "lecture": 13,
           "terms": [
-            "validation",
-            "cross validation"
+            "validation"
           ]
         },
         {
@@ -1215,9 +1043,6 @@
           "lecture": 14,
           "terms": [
             "support vector machines",
-            "support",
-            "vector",
-            "machines",
             "support vector",
             "svm",
             "margin"
@@ -1229,8 +1054,7 @@
           "lecture": 15,
           "terms": [
             "kernel methods",
-            "kernel",
-            "methods"
+            "kernel"
           ]
         },
         {
@@ -1239,9 +1063,6 @@
           "lecture": 16,
           "terms": [
             "radial basis functions",
-            "radial",
-            "basis",
-            "functions",
             "radial basis",
             "rbf"
           ]
@@ -1252,9 +1073,6 @@
           "lecture": 17,
           "terms": [
             "three learning principles",
-            "three",
-            "learning",
-            "principles",
             "occam",
             "sampling bias",
             "data snooping"

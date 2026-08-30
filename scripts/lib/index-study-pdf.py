@@ -119,11 +119,44 @@ def find_lecture_headers(page_records: list[dict[str, Any]]) -> dict[int, int]:
     return headers
 
 
+def monotonic_headers(headers: dict[int, int]) -> dict[int, int]:
+    """Keep the longest run of headers whose pages rise with lecture number.
+
+    Notebooks are chronological, so a header that goes backwards is almost
+    always an OCR misread (a stray "L30" on the MGF page, say). Dropping the
+    outliers is safer than letting one bad anchor reorder the outline.
+    """
+    if not headers:
+        return {}
+    lectures = sorted(headers)
+    pages = [headers[n] for n in lectures]
+
+    # O(n^2) longest strictly increasing subsequence — syllabi are tiny.
+    best = [1] * len(pages)
+    prev = [-1] * len(pages)
+    for i in range(len(pages)):
+        for j in range(i):
+            if pages[j] < pages[i] and best[j] + 1 > best[i]:
+                best[i] = best[j] + 1
+                prev[i] = j
+    end = max(range(len(pages)), key=lambda i: best[i])
+    keep: list[int] = []
+    while end != -1:
+        keep.append(end)
+        end = prev[end]
+    return {lectures[i]: pages[i] for i in reversed(keep)}
+
+
 def resolve_topic_anchors(
     page_records: list[dict[str, Any]], topics: list[dict[str, Any]]
 ) -> tuple[dict[str, int], dict[str, list[int]], dict[str, str]]:
-    """Prefer LECTURE N headers; fall back to first syllabus-term hit."""
-    headers = find_lecture_headers(page_records)
+    """Anchor each topic on its LECTURE N header, else an in-order term hit.
+
+    Term hits are only trusted when they land between the anchors of the
+    surrounding lectures. A topic with no confident anchor is left out of the
+    outline entirely — a missing bookmark beats one pointing at the wrong page.
+    """
+    headers = monotonic_headers(find_lecture_headers(page_records))
     topic_pages: dict[str, list[int]] = {t["id"]: [] for t in topics}
     topic_first_page: dict[str, int] = {}
     topic_source: dict[str, str] = {}
@@ -133,15 +166,43 @@ def resolve_topic_anchors(
             topic_pages[hit["id"]].append(rec["page"])
 
     for topic in topics:
-        tid = topic["id"]
         n = topic.get("lecture")
         if n is not None and n in headers:
-            topic_first_page[tid] = headers[n]
-            topic_source[tid] = "lecture-header"
+            topic_first_page[topic["id"]] = headers[n]
+            topic_source[topic["id"]] = "lecture-header"
+
+    last_page = max((rec["page"] for rec in page_records), default=1)
+    # Lecture order drives the bounds; unnumbered topics keep config order.
+    ordered = sorted(
+        topics,
+        key=lambda t: (t.get("lecture") is None, t.get("lecture") or 0),
+    )
+    for i, topic in enumerate(ordered):
+        tid = topic["id"]
+        if tid in topic_first_page:
             continue
         pages = topic_pages[tid]
-        if pages:
-            topic_first_page[tid] = pages[0]
+        if not pages:
+            continue
+        lower = max(
+            (
+                topic_first_page[o["id"]]
+                for o in ordered[:i]
+                if o["id"] in topic_first_page
+            ),
+            default=1,
+        )
+        upper = min(
+            (
+                topic_first_page[o["id"]]
+                for o in ordered[i + 1 :]
+                if o["id"] in topic_first_page
+            ),
+            default=last_page,
+        )
+        candidate = next((p for p in pages if lower <= p <= upper), None)
+        if candidate is not None:
+            topic_first_page[tid] = candidate
             topic_source[tid] = "term-fallback"
 
     return topic_first_page, topic_pages, topic_source
@@ -253,7 +314,7 @@ def build_searchable_pdf(
                 for t in topics
                 if t["id"] in topic_first_page
             ),
-            key=lambda pair: pair[0],
+            key=lambda pair: (pair[0], pair[1].get("lecture") or 0),
         )
         for page_1based, topic in ordered:
             toc.append([1, f"{topic['id']}: {topic['title']}", page_1based])

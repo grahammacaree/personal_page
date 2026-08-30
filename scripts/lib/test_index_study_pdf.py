@@ -18,8 +18,16 @@ _SPEC.loader.exec_module(index_study_pdf)
 expand_topics = index_study_pdf.expand_topics
 find_lecture_headers = index_study_pdf.find_lecture_headers
 match_topics = index_study_pdf.match_topics
+monotonic_headers = index_study_pdf.monotonic_headers
 resolve_topic_anchors = index_study_pdf.resolve_topic_anchors
 term_pattern = index_study_pdf.term_pattern
+
+
+def records(pages: list[tuple[int, str]], topics: list[dict]) -> list[dict]:
+    return [
+        {"page": n, "text": text, "hits": match_topics(text, topics)}
+        for n, text in pages
+    ]
 
 
 class TermPatternTests(unittest.TestCase):
@@ -73,23 +81,14 @@ class MatchAndResolveTests(unittest.TestCase):
         )
 
     def test_lecture_header_preferred(self):
-        pages = [
-            {
-                "page": 1,
-                "text": "LEGTURE 1\npeak finding",
-                "hits": match_topics("LEGTURE 1\npeak finding", self.topics),
-            },
-            {
-                "page": 6,
-                "text": "linked list notes",
-                "hits": match_topics("linked list notes", self.topics),
-            },
-            {
-                "page": 10,
-                "text": "LECTURE 2",
-                "hits": match_topics("LECTURE 2", self.topics),
-            },
-        ]
+        pages = records(
+            [
+                (1, "LEGTURE 1\npeak finding"),
+                (6, "linked list notes"),
+                (10, "LECTURE 2"),
+            ],
+            self.topics,
+        )
         headers = find_lecture_headers(pages)
         self.assertEqual(headers[1], 1)
         self.assertEqual(headers[2], 10)
@@ -100,16 +99,52 @@ class MatchAndResolveTests(unittest.TestCase):
         self.assertEqual(source["L2"], "lecture-header")
 
     def test_term_fallback_and_diskstra(self):
-        pages = [
-            {
-                "page": 89,
-                "text": "DISKSTRA shortest paths",
-                "hits": match_topics("DISKSTRA shortest paths", self.topics),
-            }
-        ]
+        pages = records([(89, "DISKSTRA shortest paths")], self.topics)
         first, _, source = resolve_topic_anchors(pages, self.topics)
         self.assertEqual(first["L13"], 89)
         self.assertEqual(source["L13"], "term-fallback")
+
+    def test_out_of_order_term_hit_is_rejected(self):
+        """A late lecture's term appearing on page 1 must not anchor there."""
+        pages = records(
+            [
+                (1, "LECTURE 1 peak finding, dijkstra mentioned in passing"),
+                (5, "LECTURE 2 linked list"),
+            ],
+            self.topics,
+        )
+        first, _, _ = resolve_topic_anchors(pages, self.topics)
+        self.assertEqual(first["L1"], 1)
+        self.assertEqual(first["L2"], 5)
+        self.assertNotIn("L13", first)
+
+    def test_in_range_term_hit_is_accepted(self):
+        pages = records(
+            [
+                (1, "LECTURE 1 peak finding"),
+                (4, "dijkstra shortest paths"),
+                (9, "LECTURE 14 johnson"),
+            ],
+            self.topics,
+        )
+        first, _, source = resolve_topic_anchors(pages, self.topics)
+        self.assertEqual(first["L13"], 4)
+        self.assertEqual(source["L13"], "term-fallback")
+
+
+class MonotonicHeaderTests(unittest.TestCase):
+    def test_drops_backwards_outlier(self):
+        headers = {16: 81, 17: 82, 18: 85, 19: 92, 20: 94, 30: 82}
+        self.assertEqual(
+            monotonic_headers(headers), {16: 81, 17: 82, 18: 85, 19: 92, 20: 94}
+        )
+
+    def test_keeps_already_increasing(self):
+        headers = {1: 1, 3: 17, 6: 27}
+        self.assertEqual(monotonic_headers(headers), headers)
+
+    def test_empty(self):
+        self.assertEqual(monotonic_headers({}), {})
 
 
 if __name__ == "__main__":
