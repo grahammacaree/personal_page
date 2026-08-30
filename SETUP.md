@@ -130,7 +130,9 @@ Full command list: [`scripts/BUILD.md`](scripts/BUILD.md). Styles: component CSS
 
 Handwritten notebooks convert on the Mac, upload to a **Google Drive folder**, then Actions syncs them into `studies/` at build time (same pattern as Docs). On desktop, Notes opens an in-page lightbox; on phones/tablets the PDF opens directly so the browser can use its native viewer. URLs stay `/studies/*.pdf` on your domain. Cards/summaries: `studies.config.json`. Intro: Google Doc. **Commands:** [`scripts/BUILD.md`](scripts/BUILD.md#studies-remarkable--drive--actions).
 
-**Default stack:** tablet → **reMarkable cloud** → `rmapi` download → `rmrl`/`rmc` convert → Drive **update** → `npm run sync` in CI. Tune `pdfDpi` / `pdfJpegQuality` in config. LAN/Wi‑Fi backup remains a manual fallback (`npm run studies:lan`).
+**Default stack:** tablet → **reMarkable cloud** → `rmapi` download → `rmrl`/`rmc` convert → (optional) syllabus OCR index → Drive **update** → `npm run sync` in CI. Tune `pdfDpi` / `pdfJpegQuality` in config. LAN/Wi‑Fi backup remains a manual fallback (`npm run studies:lan`).
+
+Courses with a `syllabus` in `studies.config.json` get a searchable text layer + outline on the Mac before Drive upload (`npm run studies:index`, also part of `studies:publish`). Good enough for concept lookup while homeworking — not equation-perfect.
 
 **Without Connect:** cloud only keeps files opened/synced in roughly the **last 50 days**. Publish skips missing notebooks and leaves the previous `studies/*.pdf` (and Drive file) alone — open the notebook on the tablet to bring it back into cloud, then re-publish. Drive upload also skips notebooks whose PDF bytes didn’t change (and skips when Drive already has the same MD5).
 
@@ -176,7 +178,7 @@ launchctl bootout "gui/$(id -u)/com.grahammacaree.sync-studies" 2>/dev/null || t
 
 ### Daily flow
 
-1. LaunchAgent weekdays 14:00 (or `npm run studies:publish`): cloud → convert → Drive.
+1. LaunchAgent weekdays 14:00 (or `npm run studies:publish`): cloud → convert → index → Drive.
 2. Actions daily cron: sync Docs + PDFs → build → Pages.
 
 `studies/*.pdf` are gitignored — never commit them.

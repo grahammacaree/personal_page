@@ -56,7 +56,7 @@ Credentials: `credentials.json` in the repo root (gitignored), or `GOOGLE_APPLIC
 ## Studies (reMarkable → Drive → Actions)
 
 ```
-reMarkable cloud → rmapi .rmdoc → convert → Google Drive → npm run sync (CI) → public/studies/
+reMarkable cloud → rmapi .rmdoc → convert → index (syllabus OCR) → Google Drive → npm run sync (CI) → public/studies/
 ```
 
 | Piece | Role |
@@ -66,11 +66,16 @@ reMarkable cloud → rmapi .rmdoc → convert → Google Drive → npm run sync 
 | `scripts/lib/unpack-rmdoc.py` | `.rmdoc` zip → RemarkableSync-like layout for convert |
 | `scripts/studies-drive.mjs` | Drive download **or** `--upload` |
 | `scripts/lib/convert-rm-notebook.py` | `rmrl` (v3/v5) + `rmc` SVG → MuPDF (v6) → JPEG compress |
+| `scripts/lib/index-study-pdf.py` | Apple Vision OCR → invisible text + outline (courses with `syllabus`) |
+| `scripts/lib/vision-ocr.swift` | Per-page Vision helper (macOS) |
+| `scripts/index-studies.sh` | Manual `npm run studies:index` |
 | `scripts/lib/discover-remarkable.py` | LAN discovery (manual fallback) |
 | `scripts/setup-remarkable-ssh.sh` | LAN SSH password → keyring (optional) |
 | `scripts/launchd/….plist` | Weekdays 14:00 → `--from-cloud --publish` |
 
-Config: `studies.config.json` (`cloudFolder`, `notebookName`, `driveFolderId`, `pdf`). Setup: [`SETUP.md` §7](../SETUP.md#7-studies-pdfs-remarkable--drive).
+Config: `studies.config.json` (`cloudFolder`, `notebookName`, `driveFolderId`, `pdf`, optional per-course `syllabus`). Setup: [`SETUP.md` §7](../SETUP.md#7-studies-pdfs-remarkable--drive).
+
+**Searchable notes:** On the Mac publish path, courses with a `syllabus` array get an invisible text layer (Cmd-F / tablet lookup) and PDF outline bookmarks. Lecture headers (`LECTURE N`) win as anchors when OCR finds them; otherwise the first matching term. OCR cache + stamps live under `~/Library/Application Support/remarkablesync/` (`index-cache`, `index-stamps`). Re-run with `npm run studies:index -- --force`. Courses without `syllabus` are left as image-only PDFs. Indexing is skipped on non-macOS (CI only downloads from Drive).
 
 Without Connect, cloud may omit notebooks idle ~50d — `--from-cloud` **skips** those and keeps prior PDFs rather than failing the run. Convert is skipped when the notebook input fingerprint (ordered page ids + `.rm` bytes, plus PDF dpi/jpeg settings) **and** the local PDF sha256 both match the last successful run — sidecars like `.content` bookkeeping and `.metadata` are ignored. Input-only match is not enough (e.g. `npm run sync` can overwrite `studies/*.pdf` from Drive). `--publish` always checks Drive upload; each file is skipped when its md5 already matches.
 

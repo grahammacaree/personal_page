@@ -1,5 +1,5 @@
 {
-  "description": "Course notes from a year of rebuilding my maths foundations — problem sets included.",
+  "description": "Course notes from a year of rebuilding my maths foundations \u2014 problem sets included.",
   "remarkable": {
     "wifiHost": "auto",
     "tabletFolder": "Studies",
@@ -28,7 +28,187 @@
       "repo": "https://github.com/grahammacaree/intro-to-algorithms",
       "pdf": "introduction-to-algorithms.pdf",
       "notebookUuid": "bc560019-5ce2-4bb8-a8a2-90199642654b",
-      "notebookName": "Introduction to Algorithms"
+      "notebookName": "Introduction to Algorithms",
+      "syllabus": [
+        {
+          "id": "L1",
+          "title": "Introduction",
+          "lecture": 1,
+          "terms": [
+            "peak finding",
+            "asymptotic"
+          ]
+        },
+        {
+          "id": "L2",
+          "title": "Data Structures",
+          "lecture": 2,
+          "terms": [
+            "data struct",
+            "linked list"
+          ]
+        },
+        {
+          "id": "L3",
+          "title": "Sorting",
+          "lecture": 3,
+          "terms": [
+            "sorting",
+            "insertion sort",
+            "merge sort"
+          ]
+        },
+        {
+          "id": "L4",
+          "title": "Hashing",
+          "lecture": 4,
+          "terms": [
+            "hashing",
+            "hash table",
+            "hash function",
+            "rolling hash"
+          ]
+        },
+        {
+          "id": "L5",
+          "title": "Linear Sorting",
+          "lecture": 5,
+          "terms": [
+            "counting sort",
+            "radix sort",
+            "linear sort",
+            "bucket sort"
+          ]
+        },
+        {
+          "id": "L6",
+          "title": "Binary Trees, Part 1",
+          "lecture": 6,
+          "terms": [
+            "binary search tree",
+            "bst",
+            "binary tree"
+          ]
+        },
+        {
+          "id": "L7",
+          "title": "Binary Trees, Part 2: AVL",
+          "lecture": 7,
+          "terms": [
+            "avl"
+          ]
+        },
+        {
+          "id": "L8",
+          "title": "Binary Heaps",
+          "lecture": 8,
+          "terms": [
+            "binary heap",
+            "priority queue",
+            "re:\\bheaps?\\b"
+          ]
+        },
+        {
+          "id": "L9",
+          "title": "Breadth-First Search",
+          "lecture": 9,
+          "terms": [
+            "re:breadth[- ]first",
+            "bfs"
+          ]
+        },
+        {
+          "id": "L10",
+          "title": "Depth-First Search",
+          "lecture": 10,
+          "terms": [
+            "re:depth[- ]first",
+            "dfs"
+          ]
+        },
+        {
+          "id": "L11",
+          "title": "Weighted Shortest Paths",
+          "lecture": 11,
+          "terms": [
+            "re:weighted.*shortest",
+            "shortest path"
+          ]
+        },
+        {
+          "id": "L12",
+          "title": "Bellman-Ford",
+          "lecture": 12,
+          "terms": [
+            "bellman"
+          ]
+        },
+        {
+          "id": "L13",
+          "title": "Dijkstra's Algorithm",
+          "lecture": 13,
+          "terms": [
+            "re:dij?k?s?tra",
+            "diskstra"
+          ]
+        },
+        {
+          "id": "L14",
+          "title": "ASP & Johnson's Algorithm",
+          "lecture": 14,
+          "terms": [
+            "re:\\bjohnson",
+            "re:all[- ]pairs"
+          ]
+        },
+        {
+          "id": "L15",
+          "title": "Dynamic Programming, Part 1",
+          "lecture": 15,
+          "terms": [
+            "dynamic programming",
+            "srbot",
+            "bowling"
+          ]
+        },
+        {
+          "id": "L16",
+          "title": "Dynamic Programming, Part 2: LCS, LIS, Coins",
+          "lecture": 16,
+          "terms": [
+            "lcs",
+            "lis",
+            "longest common",
+            "longest increasing"
+          ]
+        },
+        {
+          "id": "L17",
+          "title": "Dynamic Programming, Part 3",
+          "lecture": 17,
+          "terms": []
+        },
+        {
+          "id": "L18",
+          "title": "Dynamic Programming, Part 4: Rods, Subsetsums",
+          "lecture": 18,
+          "terms": [
+            "rod cutting",
+            "re:subset ?sum",
+            "pseudopolynomial"
+          ]
+        },
+        {
+          "id": "L19",
+          "title": "Complexity",
+          "lecture": 19,
+          "terms": [
+            "complexity",
+            "np-hard",
+            "np-complete"
+          ]
+        }
+      ]
     },
     {
       "status": "currently",
@@ -45,7 +225,407 @@
       "repo": null,
       "pdf": "stat-110-probability.pdf",
       "notebookUuid": "d8df4834-ac1a-45b3-9fa4-c65ad9cfcfa8",
-      "notebookName": "Statistics"
+      "notebookName": "Statistics",
+      "syllabus": [
+        {
+          "id": "L1",
+          "title": "Probability and Counting",
+          "lecture": 1,
+          "terms": [
+            "probability counting",
+            "probability",
+            "counting",
+            "sample space",
+            "naive definition"
+          ]
+        },
+        {
+          "id": "L2",
+          "title": "Story Proofs, Axioms of Probability",
+          "lecture": 2,
+          "terms": [
+            "story proofs",
+            "story",
+            "proofs",
+            "axioms probability",
+            "axioms",
+            "probability",
+            "story proof"
+          ]
+        },
+        {
+          "id": "L3",
+          "title": "Birthday Problem, Properties of Probability",
+          "lecture": 3,
+          "terms": [
+            "birthday problem",
+            "birthday",
+            "problem",
+            "properties probability",
+            "properties",
+            "probability"
+          ]
+        },
+        {
+          "id": "L4",
+          "title": "Conditional Probability",
+          "lecture": 4,
+          "terms": [
+            "conditional probability",
+            "conditional",
+            "probability",
+            "bayes"
+          ]
+        },
+        {
+          "id": "L5",
+          "title": "Conditioning Continued, Law of Total Probability",
+          "lecture": 5,
+          "terms": [
+            "conditioning",
+            "law total probability",
+            "total",
+            "probability",
+            "total probability",
+            "lof"
+          ]
+        },
+        {
+          "id": "L6",
+          "title": "Monty Hall, Simpson's Paradox",
+          "lecture": 6,
+          "terms": [
+            "monty hall",
+            "monty",
+            "hall",
+            "simpson's paradox",
+            "simpson's",
+            "paradox",
+            "simpson"
+          ]
+        },
+        {
+          "id": "L7",
+          "title": "Gambler's Ruin and Random Variables",
+          "lecture": 7,
+          "terms": [
+            "gambler's ruin random variables",
+            "gambler's",
+            "ruin",
+            "random",
+            "variables",
+            "gambler",
+            "random variable"
+          ]
+        },
+        {
+          "id": "L8",
+          "title": "Random Variables and Their Distributions",
+          "lecture": 8,
+          "terms": [
+            "random variables distributions",
+            "random",
+            "variables",
+            "distributions",
+            "pmf",
+            "cdf"
+          ]
+        },
+        {
+          "id": "L9",
+          "title": "Expectation, Indicator Random Variables, Linearity",
+          "lecture": 9,
+          "terms": [
+            "expectation",
+            "indicator random variables",
+            "indicator",
+            "random",
+            "variables",
+            "linearity"
+          ]
+        },
+        {
+          "id": "L10",
+          "title": "Expectation Continued",
+          "lecture": 10,
+          "terms": [
+            "expectation"
+          ]
+        },
+        {
+          "id": "L11",
+          "title": "The Poisson Distribution",
+          "lecture": 11,
+          "terms": [
+            "poisson distribution",
+            "poisson",
+            "distribution"
+          ]
+        },
+        {
+          "id": "L12",
+          "title": "Discrete vs. Continuous, the Uniform",
+          "lecture": 12,
+          "terms": [
+            "discrete continuous",
+            "discrete",
+            "continuous",
+            "uniform"
+          ]
+        },
+        {
+          "id": "L13",
+          "title": "Standard Normal",
+          "lecture": 13,
+          "terms": [
+            "standard normal",
+            "standard",
+            "normal",
+            "gaussian"
+          ]
+        },
+        {
+          "id": "L14",
+          "title": "Normal Distribution, Standardization, LOTUS",
+          "lecture": 14,
+          "terms": [
+            "normal distribution",
+            "normal",
+            "distribution",
+            "standardization",
+            "lotus"
+          ]
+        },
+        {
+          "id": "L15",
+          "title": "Midterm Review",
+          "lecture": 15,
+          "terms": [
+            "midterm"
+          ]
+        },
+        {
+          "id": "L16",
+          "title": "Exponential Distribution",
+          "lecture": 16,
+          "terms": [
+            "exponential distribution",
+            "exponential",
+            "distribution",
+            "memoryless"
+          ]
+        },
+        {
+          "id": "L17",
+          "title": "Moment Generating Functions",
+          "lecture": 17,
+          "terms": [
+            "moment generating functions",
+            "moment",
+            "generating",
+            "functions",
+            "mgf",
+            "moment generating"
+          ]
+        },
+        {
+          "id": "L18",
+          "title": "MGFs Continued",
+          "lecture": 18,
+          "terms": [
+            "mgfs",
+            "mgf"
+          ]
+        },
+        {
+          "id": "L19",
+          "title": "Joint, Conditional, and Marginal Distributions",
+          "lecture": 19,
+          "terms": [
+            "joint",
+            "conditional",
+            "marginal distributions",
+            "marginal",
+            "distributions",
+            "chicken-egg"
+          ]
+        },
+        {
+          "id": "L20",
+          "title": "Multinomial and Cauchy",
+          "lecture": 20,
+          "terms": [
+            "multinomial cauchy",
+            "multinomial",
+            "cauchy"
+          ]
+        },
+        {
+          "id": "L21",
+          "title": "Covariance and Correlation",
+          "lecture": 21,
+          "terms": [
+            "covariance correlation",
+            "covariance",
+            "correlation"
+          ]
+        },
+        {
+          "id": "L22",
+          "title": "Transformations and Convolutions",
+          "lecture": 22,
+          "terms": [
+            "transformations convolutions",
+            "transformations",
+            "convolutions",
+            "convolution",
+            "transformation"
+          ]
+        },
+        {
+          "id": "L23",
+          "title": "Beta Distribution",
+          "lecture": 23,
+          "terms": [
+            "beta distribution",
+            "beta",
+            "distribution"
+          ]
+        },
+        {
+          "id": "L24",
+          "title": "Gamma Distribution and Poisson Process",
+          "lecture": 24,
+          "terms": [
+            "gamma distribution poisson process",
+            "gamma",
+            "distribution",
+            "poisson",
+            "process",
+            "poisson process"
+          ]
+        },
+        {
+          "id": "L25",
+          "title": "Order Statistics and Conditional Expectation",
+          "lecture": 25,
+          "terms": [
+            "order statistics conditional expectation",
+            "order",
+            "statistics",
+            "conditional",
+            "expectation",
+            "order statistic",
+            "conditional expectation"
+          ]
+        },
+        {
+          "id": "L26",
+          "title": "Conditional Expectation Continued",
+          "lecture": 26,
+          "terms": [
+            "conditional expectation",
+            "conditional",
+            "expectation"
+          ]
+        },
+        {
+          "id": "L27",
+          "title": "Adam's Law, Eve's Law",
+          "lecture": 27,
+          "terms": [
+            "adam's law",
+            "adam's",
+            "eve's law",
+            "eve's",
+            "adam",
+            "eve"
+          ]
+        },
+        {
+          "id": "L28",
+          "title": "Inequalities",
+          "lecture": 28,
+          "terms": [
+            "inequalities",
+            "jensen",
+            "chebyshev",
+            "markov inequality"
+          ]
+        },
+        {
+          "id": "L29",
+          "title": "Law of Large Numbers and Central Limit Theorem",
+          "lecture": 29,
+          "terms": [
+            "law large numbers central",
+            "large",
+            "numbers",
+            "central",
+            "limit",
+            "theorem",
+            "law of large numbers",
+            "central limit",
+            "clt",
+            "lln"
+          ]
+        },
+        {
+          "id": "L30",
+          "title": "Chi-Square, Student's t, Multivariate Normal",
+          "lecture": 30,
+          "terms": [
+            "chi-square",
+            "student's",
+            "multivariate normal",
+            "multivariate",
+            "normal",
+            "student"
+          ]
+        },
+        {
+          "id": "L31",
+          "title": "Markov Chains",
+          "lecture": 31,
+          "terms": [
+            "markov chains",
+            "markov",
+            "chains",
+            "markov chain",
+            "stationary"
+          ]
+        },
+        {
+          "id": "L32",
+          "title": "Markov Chains Continued",
+          "lecture": 32,
+          "terms": [
+            "markov chains",
+            "markov",
+            "chains",
+            "irreducible",
+            "reversib"
+          ]
+        },
+        {
+          "id": "L33",
+          "title": "Google PageRank as a Markov Chain",
+          "lecture": 33,
+          "terms": [
+            "google pagerank markov chain",
+            "google",
+            "pagerank",
+            "markov",
+            "chain"
+          ]
+        },
+        {
+          "id": "L34",
+          "title": "A Look Ahead",
+          "lecture": 34,
+          "terms": []
+        }
+      ]
     },
     {
       "status": "previously",
@@ -63,7 +643,413 @@
       "repo": null,
       "pdf": "linear-algebra.pdf",
       "notebookUuid": "c523ad76-6398-4aff-beae-3f06718f2613",
-      "notebookName": "Linear Algebra"
+      "notebookName": "Linear Algebra",
+      "syllabus": [
+        {
+          "id": "L1",
+          "title": "The Geometry of Linear Equations",
+          "lecture": 1,
+          "terms": [
+            "geometry linear equations",
+            "geometry",
+            "linear",
+            "equations",
+            "elimination",
+            "geometry of linear"
+          ]
+        },
+        {
+          "id": "L2",
+          "title": "Elimination with Matrices",
+          "lecture": 2,
+          "terms": [
+            "elimination matrices",
+            "elimination",
+            "matrices"
+          ]
+        },
+        {
+          "id": "L3",
+          "title": "Multiplication and Inverse Matrices",
+          "lecture": 3,
+          "terms": [
+            "multiplication inverse matrices",
+            "multiplication",
+            "inverse",
+            "matrices"
+          ]
+        },
+        {
+          "id": "L4",
+          "title": "Factorization into A = LU",
+          "lecture": 4,
+          "terms": [
+            "factorization",
+            "re:A\\s*=\\s*LU"
+          ]
+        },
+        {
+          "id": "L5",
+          "title": "Transposes, Permutations, Spaces R^n",
+          "lecture": 5,
+          "terms": [
+            "transposes",
+            "permutations",
+            "spaces",
+            "transpose",
+            "permutation"
+          ]
+        },
+        {
+          "id": "L6",
+          "title": "Column Space and Nullspace",
+          "lecture": 6,
+          "terms": [
+            "column space nullspace",
+            "column",
+            "space",
+            "nullspace",
+            "column space",
+            "null space"
+          ]
+        },
+        {
+          "id": "L7",
+          "title": "Solving Ax = 0: Pivot Variables, Special Solutions",
+          "lecture": 7,
+          "terms": [
+            "solving",
+            "pivot variables",
+            "pivot",
+            "variables",
+            "special solutions",
+            "special",
+            "special solution"
+          ]
+        },
+        {
+          "id": "L8",
+          "title": "Solving Ax = b: Row Reduced Form R",
+          "lecture": 8,
+          "terms": [
+            "solving",
+            "row reduced form",
+            "reduced",
+            "form",
+            "row reduced",
+            "rref"
+          ]
+        },
+        {
+          "id": "L9",
+          "title": "Independence, Basis, and Dimension",
+          "lecture": 9,
+          "terms": [
+            "independence",
+            "basis",
+            "dimension"
+          ]
+        },
+        {
+          "id": "L10",
+          "title": "The Four Fundamental Subspaces",
+          "lecture": 10,
+          "terms": [
+            "four fundamental subspaces",
+            "four",
+            "fundamental",
+            "subspaces",
+            "four fundamental",
+            "fundamental subspace"
+          ]
+        },
+        {
+          "id": "L11",
+          "title": "Matrix Spaces; Rank 1; Small World Graphs",
+          "lecture": 11,
+          "terms": [
+            "matrix spaces",
+            "matrix",
+            "spaces",
+            "rank",
+            "small world graphs",
+            "small",
+            "rank 1",
+            "matrix space"
+          ]
+        },
+        {
+          "id": "L12",
+          "title": "Graphs, Networks, Incidence Matrices",
+          "lecture": 12,
+          "terms": [
+            "graphs",
+            "networks",
+            "incidence matrices",
+            "incidence",
+            "matrices",
+            "network"
+          ]
+        },
+        {
+          "id": "L13",
+          "title": "Quiz 1 Review",
+          "lecture": 13,
+          "terms": []
+        },
+        {
+          "id": "L14",
+          "title": "Orthogonal Vectors and Subspaces",
+          "lecture": 14,
+          "terms": [
+            "orthogonal vectors subspaces",
+            "orthogonal",
+            "vectors",
+            "subspaces"
+          ]
+        },
+        {
+          "id": "L15",
+          "title": "Projections onto Subspaces",
+          "lecture": 15,
+          "terms": [
+            "projections onto subspaces",
+            "projections",
+            "onto",
+            "subspaces",
+            "projection"
+          ]
+        },
+        {
+          "id": "L16",
+          "title": "Projection Matrices and Least Squares",
+          "lecture": 16,
+          "terms": [
+            "projection matrices least squares",
+            "projection",
+            "matrices",
+            "least",
+            "squares",
+            "least square"
+          ]
+        },
+        {
+          "id": "L17",
+          "title": "Orthogonal Matrices and Gram-Schmidt",
+          "lecture": 17,
+          "terms": [
+            "orthogonal matrices gram-schmidt",
+            "orthogonal",
+            "matrices",
+            "gram-schmidt",
+            "gram schmidt",
+            "orthonormal"
+          ]
+        },
+        {
+          "id": "L18",
+          "title": "Properties of Determinants",
+          "lecture": 18,
+          "terms": [
+            "properties determinants",
+            "properties",
+            "determinants",
+            "determinant"
+          ]
+        },
+        {
+          "id": "L19",
+          "title": "Determinant Formulas and Cofactors",
+          "lecture": 19,
+          "terms": [
+            "determinant formulas cofactors",
+            "determinant",
+            "formulas",
+            "cofactors",
+            "cofactor"
+          ]
+        },
+        {
+          "id": "L20",
+          "title": "Cramer's Rule, Inverse Matrix, and Volume",
+          "lecture": 20,
+          "terms": [
+            "cramer's rule",
+            "cramer's",
+            "rule",
+            "inverse matrix",
+            "inverse",
+            "matrix",
+            "cramer"
+          ]
+        },
+        {
+          "id": "L21",
+          "title": "Eigenvalues and Eigenvectors",
+          "lecture": 21,
+          "terms": [
+            "eigenvalues eigenvectors",
+            "eigenvalues",
+            "eigenvectors",
+            "eigenvalue",
+            "eigenvector"
+          ]
+        },
+        {
+          "id": "L22",
+          "title": "Diagonalization and Powers of A",
+          "lecture": 22,
+          "terms": [
+            "diagonalization powers",
+            "diagonalization",
+            "powers",
+            "diagonaliz"
+          ]
+        },
+        {
+          "id": "L23",
+          "title": "Differential Equations and exp(At)",
+          "lecture": 23,
+          "terms": [
+            "differential equations exp",
+            "differential",
+            "equations",
+            "exp(at)",
+            "matrix exponential"
+          ]
+        },
+        {
+          "id": "L24",
+          "title": "Markov Matrices; Fourier Series",
+          "lecture": 24,
+          "terms": [
+            "markov matrices",
+            "markov",
+            "matrices",
+            "fourier series",
+            "fourier",
+            "series",
+            "markov matrix"
+          ]
+        },
+        {
+          "id": "L25",
+          "title": "Symmetric Matrices and Positive Definiteness",
+          "lecture": 25,
+          "terms": [
+            "symmetric matrices positive definiteness",
+            "symmetric",
+            "matrices",
+            "positive",
+            "definiteness",
+            "positive definite"
+          ]
+        },
+        {
+          "id": "L26",
+          "title": "Complex Matrices; Fast Fourier Transform",
+          "lecture": 26,
+          "terms": [
+            "complex matrices",
+            "complex",
+            "matrices",
+            "fast fourier transform",
+            "fast",
+            "fourier",
+            "fft",
+            "complex matrix"
+          ]
+        },
+        {
+          "id": "L27",
+          "title": "Positive Definite Matrices and Minima",
+          "lecture": 27,
+          "terms": [
+            "positive definite matrices minima",
+            "positive",
+            "definite",
+            "matrices",
+            "minima",
+            "positive definite"
+          ]
+        },
+        {
+          "id": "L28",
+          "title": "Similar Matrices and Jordan Form",
+          "lecture": 28,
+          "terms": [
+            "similar matrices jordan form",
+            "similar",
+            "matrices",
+            "jordan",
+            "form"
+          ]
+        },
+        {
+          "id": "L29",
+          "title": "Singular Value Decomposition",
+          "lecture": 29,
+          "terms": [
+            "singular value decomposition",
+            "singular",
+            "value",
+            "decomposition",
+            "svd",
+            "singular value"
+          ]
+        },
+        {
+          "id": "L30",
+          "title": "Linear Transformations and Their Matrices",
+          "lecture": 30,
+          "terms": [
+            "linear transformations matrices",
+            "linear",
+            "transformations",
+            "matrices",
+            "linear transformation"
+          ]
+        },
+        {
+          "id": "L31",
+          "title": "Change of Basis; Image Compression",
+          "lecture": 31,
+          "terms": [
+            "change basis",
+            "change",
+            "basis",
+            "image compression",
+            "image",
+            "compression",
+            "change of basis"
+          ]
+        },
+        {
+          "id": "L32",
+          "title": "Quiz 3 Review",
+          "lecture": 32,
+          "terms": []
+        },
+        {
+          "id": "L33",
+          "title": "Left and Right Inverses; Pseudoinverse",
+          "lecture": 33,
+          "terms": [
+            "left right inverses",
+            "left",
+            "right",
+            "inverses",
+            "pseudoinverse",
+            "left and right"
+          ]
+        },
+        {
+          "id": "L34",
+          "title": "Final Course Review",
+          "lecture": 34,
+          "terms": []
+        }
+      ]
     },
     {
       "status": "previously",
@@ -73,7 +1059,7 @@
       "year": 2012,
       "summary": [
         "The theory of machine learning",
-        "Vapnik–Chervonenkis generalisation",
+        "Vapnik\u2013Chervonenkis generalisation",
         "Bias and variance",
         "Regularisation and validation",
         "Linear models and feature transforms"
@@ -81,7 +1067,208 @@
       "repo": "https://github.com/grahammacaree/learning-from-data",
       "pdf": "learning-from-data.pdf",
       "notebookUuid": "6849f12b-0129-467f-b06a-d38335812ced",
-      "notebookName": "Lfd"
+      "notebookName": "Lfd",
+      "syllabus": [
+        {
+          "id": "L1",
+          "title": "The Learning Problem",
+          "lecture": 1,
+          "terms": [
+            "learning problem",
+            "learning",
+            "problem",
+            "perceptron"
+          ]
+        },
+        {
+          "id": "L2",
+          "title": "Is Learning Feasible?",
+          "lecture": 2,
+          "terms": [
+            "learning feasible",
+            "learning",
+            "feasible",
+            "hoeffding",
+            "heffding"
+          ]
+        },
+        {
+          "id": "L3",
+          "title": "The Linear Model I",
+          "lecture": 3,
+          "terms": [
+            "linear model",
+            "linear",
+            "model",
+            "pla"
+          ]
+        },
+        {
+          "id": "L4",
+          "title": "Error and Noise",
+          "lecture": 4,
+          "terms": [
+            "error noise",
+            "error",
+            "noise"
+          ]
+        },
+        {
+          "id": "L5",
+          "title": "Training versus Testing",
+          "lecture": 5,
+          "terms": [
+            "training testing",
+            "training",
+            "testing",
+            "ein",
+            "eout"
+          ]
+        },
+        {
+          "id": "L6",
+          "title": "Theory of Generalization",
+          "lecture": 6,
+          "terms": [
+            "theory generalization",
+            "theory",
+            "generalization",
+            "growth function"
+          ]
+        },
+        {
+          "id": "L7",
+          "title": "The VC Dimension",
+          "lecture": 7,
+          "terms": [
+            "dimension",
+            "vc dimension",
+            "shatter"
+          ]
+        },
+        {
+          "id": "L8",
+          "title": "Bias-Variance Tradeoff",
+          "lecture": 8,
+          "terms": [
+            "bias-variance tradeoff",
+            "bias-variance",
+            "tradeoff",
+            "bias",
+            "variance"
+          ]
+        },
+        {
+          "id": "L9",
+          "title": "The Linear Model II",
+          "lecture": 9,
+          "terms": [
+            "linear model",
+            "linear",
+            "model",
+            "logistic",
+            "pocket"
+          ]
+        },
+        {
+          "id": "L10",
+          "title": "Neural Networks",
+          "lecture": 10,
+          "terms": [
+            "neural networks",
+            "neural",
+            "networks",
+            "backprop",
+            "backpropagation"
+          ]
+        },
+        {
+          "id": "L11",
+          "title": "Overfitting",
+          "lecture": 11,
+          "terms": [
+            "overfitting",
+            "overfit"
+          ]
+        },
+        {
+          "id": "L12",
+          "title": "Regularization",
+          "lecture": 12,
+          "terms": [
+            "regularization",
+            "weight decay"
+          ]
+        },
+        {
+          "id": "L13",
+          "title": "Validation",
+          "lecture": 13,
+          "terms": [
+            "validation",
+            "cross validation"
+          ]
+        },
+        {
+          "id": "L14",
+          "title": "Support Vector Machines",
+          "lecture": 14,
+          "terms": [
+            "support vector machines",
+            "support",
+            "vector",
+            "machines",
+            "support vector",
+            "svm",
+            "margin"
+          ]
+        },
+        {
+          "id": "L15",
+          "title": "Kernel Methods",
+          "lecture": 15,
+          "terms": [
+            "kernel methods",
+            "kernel",
+            "methods"
+          ]
+        },
+        {
+          "id": "L16",
+          "title": "Radial Basis Functions",
+          "lecture": 16,
+          "terms": [
+            "radial basis functions",
+            "radial",
+            "basis",
+            "functions",
+            "radial basis",
+            "rbf"
+          ]
+        },
+        {
+          "id": "L17",
+          "title": "Three Learning Principles",
+          "lecture": 17,
+          "terms": [
+            "three learning principles",
+            "three",
+            "learning",
+            "principles",
+            "occam",
+            "sampling bias",
+            "data snooping"
+          ]
+        },
+        {
+          "id": "L18",
+          "title": "Epilogue",
+          "lecture": 18,
+          "terms": [
+            "epilogue"
+          ]
+        }
+      ]
     }
   ]
 }
