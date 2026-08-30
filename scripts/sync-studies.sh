@@ -297,6 +297,36 @@ while [[ "$i" -lt "$COURSE_COUNT" ]]; do
   i=$((i + 1))
 done
 
+# Invisible text layer + outline for courses with syllabus[] (macOS / Apple Vision).
+INDEX_PY="$ROOT/scripts/lib/index-study-pdf.py"
+if [[ "$(uname -s)" == "Darwin" ]] && [[ -f "$INDEX_PY" ]]; then
+  log "Indexing study PDFs (syllabus → searchable text + outline)…"
+  INDEX_REPORT="$(mktemp -t studies-index.XXXXXX)"
+  if ! "$RMRL_PY" "$INDEX_PY" --config "$CONFIG" --report "$INDEX_REPORT"; then
+    log "study PDF index failed"
+    rm -f "$INDEX_REPORT"
+    exit 1
+  fi
+  if python3 -c 'import json,sys; r=json.load(open(sys.argv[1])); sys.exit(0 if r.get("updated") else 1)' "$INDEX_REPORT"; then
+    changed=1
+  fi
+  rm -f "$INDEX_REPORT"
+  # Index rewrites PDF bytes; keep convert stamps aligned so the next run
+  # does not reconvert solely because the searchable layer changed.
+  i=0
+  while [[ "$i" -lt "$COURSE_COUNT" ]]; do
+    eval "pdf=\$COURSE_${i}_PDF"
+    dest="${STUDIES_DIR}/${pdf}"
+    stamp="${STAMP_DIR}/${pdf}.stamp"
+    if [[ -f "$dest" ]] && [[ -f "$stamp" ]] && read_stamp "$stamp"; then
+      write_stamp "$STAMP_INPUT" "$(sha256_file "$dest")" "$stamp"
+    fi
+    i=$((i + 1))
+  done
+else
+  log "Skip study PDF index (needs macOS + Apple Vision)."
+fi
+
 if [[ "$DO_PUBLISH" -eq 0 ]]; then
   if [[ "$changed" -eq 0 ]]; then
     log "No PDF changes."
