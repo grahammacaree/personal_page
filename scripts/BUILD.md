@@ -75,7 +75,18 @@ reMarkable cloud → rmapi .rmdoc → convert → index (syllabus OCR) → Googl
 
 Config: `studies.config.json` (`cloudFolder`, `notebookName`, `driveFolderId`, `pdf`, optional per-course `syllabus`). Setup: [`SETUP.md` §7](../SETUP.md#7-studies-pdfs-remarkable--drive).
 
-**Searchable notes:** On the Mac publish path, courses with a `syllabus` array get an invisible text layer (Cmd-F / tablet lookup) and PDF outline bookmarks. Lecture headers (`LECTURE N`) win as anchors when OCR finds them; otherwise the first matching term. OCR cache + stamps live under `~/Library/Application Support/remarkablesync/` (`index-cache`, `index-stamps`). Re-run with `npm run studies:index -- --force`. Courses without `syllabus` are left as image-only PDFs. Indexing is skipped on non-macOS (CI only downloads from Drive).
+**Searchable notes:** On the Mac publish path, courses with a `syllabus` array get an invisible text layer (Cmd-F / tablet lookup) and PDF outline bookmarks. Every page gets its OCR text, so search covers the whole notebook; the outline holds **one bookmark per syllabus topic**.
+
+Anchoring is deliberately conservative, because a bookmark on the wrong page is worse than no bookmark:
+
+1. A `LECTURE N` header found by OCR wins (tolerant of misreads like `LEGTURE`).
+2. Headers that run backwards against lecture order are dropped as misreads — notebooks are chronological, so only the longest rising run is kept.
+3. Otherwise the first term hit that falls **between the surrounding lectures' anchors** is used.
+4. A topic with no confident anchor is left out of the outline.
+
+Keep syllabus `terms` distinctive. Bare common words (`probability`, `distribution`) match everywhere and are useless; prefer phrases (`law of total probability`) or rare tokens (`lotus`, `pagerank`). A single word is escaped and wrapped in `\b…\b`, a multi-word value matches as a literal phrase, and a `re:` prefix passes a raw regex through.
+
+OCR cache + stamps live under `~/Library/Application Support/remarkablesync/` (`index-cache`, `index-stamps`); each course's `report.json` shows the anchor source per topic. Re-run with `npm run studies:index -- --force`. Courses without `syllabus` are left as image-only PDFs. Indexing is skipped on non-macOS (CI only downloads from Drive).
 
 Without Connect, cloud may omit notebooks idle ~50d — `--from-cloud` **skips** those and keeps prior PDFs rather than failing the run. Convert is skipped when the notebook input fingerprint (ordered page ids + `.rm` bytes, plus PDF dpi/jpeg settings) **and** the local PDF sha256 both match the last successful run — sidecars like `.content` bookkeeping and `.metadata` are ignored. Input-only match is not enough (e.g. `npm run sync` can overwrite `studies/*.pdf` from Drive). `--publish` always checks Drive upload; each file is skipped when its md5 already matches.
 

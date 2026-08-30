@@ -4,6 +4,7 @@ content/
 exports/*
 !exports/.gitkeep
 studies/*.pdf
+tmp/
 __pycache__/
 *.pyc
 .DS_Store
