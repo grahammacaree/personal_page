@@ -1,11 +1,19 @@
 name: Sync and deploy
 
+# The daily rebuild — which pulls the latest Google Docs and study PDFs and
+# redeploys Pages — runs at 14:00 UTC, but the schedule is no longer here. The
+# workflow-trigger Worker dispatches it.
+#
+# GitHub queues scheduled events best-effort. Across the 98 daily runs to 30
+# August not one started within fifteen minutes of the 14:00 slot: the median
+# was 66 minutes late, and from 27 August the median became 6.7 hours with a
+# worst case of 9.6 hours. A dispatched run starts within seconds.
+#
+# To change when the rebuild runs, edit wrangler.jsonc and JOBS in
+# workflow-trigger. Pushes to main still deploy immediately, as before.
 on:
   push:
     branches: [main]
-  schedule:
-    # Daily rebuild — pulls latest Google Docs + study PDFs, redeploys Pages
-    - cron: "0 14 * * *"
   workflow_dispatch:
 
 concurrency:
