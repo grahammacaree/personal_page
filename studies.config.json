@@ -1,5 +1,5 @@
 {
-  "description": "Course notes from a year of rebuilding my maths foundations \u2014 problem sets included.",
+  "description": "Course notes from a year of rebuilding my maths foundations — problem sets included.",
   "remarkable": {
     "wifiHost": "auto",
     "tabletFolder": "Studies",
@@ -14,7 +14,7 @@
   },
   "courses": [
     {
-      "status": "currently",
+      "status": "previously",
       "title": "Intro to Algorithms",
       "href": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
       "instructor": "Demaine, Ku and Solomon",
@@ -211,7 +211,7 @@
       ]
     },
     {
-      "status": "currently",
+      "status": "previously",
       "title": "Statistics & Probability",
       "href": "https://stat110.hsites.harvard.edu/",
       "instructor": "Joe Blitzstein",
@@ -903,7 +903,7 @@
       "year": 2012,
       "summary": [
         "The theory of machine learning",
-        "Vapnik\u2013Chervonenkis generalisation",
+        "Vapnik–Chervonenkis generalisation",
         "Bias and variance",
         "Regularisation and validation",
         "Linear models and feature transforms"
