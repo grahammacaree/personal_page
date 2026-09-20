@@ -14,6 +14,347 @@
   },
   "courses": [
     {
+      "status": "currently",
+      "title": "Differential Equations",
+      "href": "https://ocw.mit.edu/courses/18-03-differential-equations-spring-2010/",
+      "instructor": "Miller and Mattuck",
+      "year": 2010,
+      "summary": [
+        "First-order ODEs, models and autonomy",
+        "Second-order linear equations and resonance",
+        "Fourier series and Laplace transforms",
+        "Systems, phase plane and linearisation"
+      ],
+      "repo": null,
+      "pdf": "differential-equations.pdf",
+      "notebookUuid": "5a2dac98-4696-4bfd-bbe1-f72f8d927e89",
+      "notebookName": "Differential Equations",
+      "syllabus": [
+        {
+          "id": "L1",
+          "title": "Direction Fields, Existence and Uniqueness",
+          "lecture": 1,
+          "terms": [
+            "direction field",
+            "existence",
+            "uniqueness",
+            "isocline"
+          ]
+        },
+        {
+          "id": "L2",
+          "title": "Numerical Methods",
+          "lecture": 2,
+          "terms": [
+            "euler",
+            "numerical"
+          ]
+        },
+        {
+          "id": "L3",
+          "title": "Linear Equations, Models",
+          "lecture": 3,
+          "terms": [
+            "linear equation",
+            "integrating",
+            "rc circuit"
+          ]
+        },
+        {
+          "id": "L4",
+          "title": "Solution of Linear Equations, Integrating Factors",
+          "lecture": 4,
+          "terms": [
+            "integrating factor",
+            "homogeneous"
+          ]
+        },
+        {
+          "id": "L5",
+          "title": "Complex Numbers, Roots of Unity",
+          "lecture": 5,
+          "terms": [
+            "complex number",
+            "roots of unity"
+          ]
+        },
+        {
+          "id": "L6",
+          "title": "Complex Exponentials; Sinusoidal Functions",
+          "lecture": 6,
+          "terms": [
+            "complex exponential",
+            "sinusoidal"
+          ]
+        },
+        {
+          "id": "L7",
+          "title": "Linear System Response; Gain, Phase Lag",
+          "lecture": 7,
+          "terms": [
+            "gain",
+            "phase lag",
+            "exponential input"
+          ]
+        },
+        {
+          "id": "L8",
+          "title": "Autonomous Equations; Phase Line, Stability",
+          "lecture": 8,
+          "terms": [
+            "autonomous",
+            "phase line",
+            "stability"
+          ]
+        },
+        {
+          "id": "L9",
+          "title": "Linear vs. Nonlinear",
+          "lecture": 9,
+          "terms": [
+            "nonlinear"
+          ]
+        },
+        {
+          "id": "L11",
+          "title": "Modes and the Characteristic Polynomial",
+          "lecture": 11,
+          "terms": [
+            "characteristic polynomial",
+            "modes"
+          ]
+        },
+        {
+          "id": "L12",
+          "title": "Good Vibrations, Damping Conditions",
+          "lecture": 12,
+          "terms": [
+            "damping",
+            "vibration",
+            "underdamped",
+            "overdamped"
+          ]
+        },
+        {
+          "id": "L13",
+          "title": "Exponential Response Formula, Spring Drive",
+          "lecture": 13,
+          "terms": [
+            "exponential response",
+            "spring"
+          ]
+        },
+        {
+          "id": "L14",
+          "title": "Complex Gain, Dashpot Drive",
+          "lecture": 14,
+          "terms": [
+            "complex gain",
+            "dashpot"
+          ]
+        },
+        {
+          "id": "L15",
+          "title": "Operators, Undetermined Coefficients, Resonance",
+          "lecture": 15,
+          "terms": [
+            "undetermined coefficient",
+            "resonance",
+            "operator"
+          ]
+        },
+        {
+          "id": "L16",
+          "title": "Frequency Response",
+          "lecture": 16,
+          "terms": [
+            "frequency response"
+          ]
+        },
+        {
+          "id": "L17",
+          "title": "LTI Systems, Superposition, RLC Circuits",
+          "lecture": 17,
+          "terms": [
+            "lti",
+            "superposition",
+            "rlc"
+          ]
+        },
+        {
+          "id": "L18",
+          "title": "Engineering Applications",
+          "lecture": 18,
+          "terms": [
+            "engineering"
+          ]
+        },
+        {
+          "id": "L20",
+          "title": "Fourier Series",
+          "lecture": 20,
+          "terms": [
+            "fourier series",
+            "fourier"
+          ]
+        },
+        {
+          "id": "L21",
+          "title": "Operations on Fourier Series",
+          "lecture": 21,
+          "terms": [
+            "fourier"
+          ]
+        },
+        {
+          "id": "L22",
+          "title": "Periodic Solutions; Resonance",
+          "lecture": 22,
+          "terms": [
+            "periodic solution"
+          ]
+        },
+        {
+          "id": "L23",
+          "title": "Step Functions and Delta Functions",
+          "lecture": 23,
+          "terms": [
+            "step function",
+            "delta function",
+            "heaviside"
+          ]
+        },
+        {
+          "id": "L24",
+          "title": "Step Response, Impulse Response",
+          "lecture": 24,
+          "terms": [
+            "impulse response",
+            "step response"
+          ]
+        },
+        {
+          "id": "L25",
+          "title": "Convolution",
+          "lecture": 25,
+          "terms": [
+            "convolution"
+          ]
+        },
+        {
+          "id": "L26",
+          "title": "Laplace Transform: Basic Properties",
+          "lecture": 26,
+          "terms": [
+            "laplace"
+          ]
+        },
+        {
+          "id": "L27",
+          "title": "Application to ODEs",
+          "lecture": 27,
+          "terms": [
+            "laplace"
+          ]
+        },
+        {
+          "id": "L28",
+          "title": "Second Order Equations; Completing the Squares",
+          "lecture": 28,
+          "terms": [
+            "completing the square"
+          ]
+        },
+        {
+          "id": "L29",
+          "title": "The Pole Diagram",
+          "lecture": 29,
+          "terms": [
+            "pole diagram",
+            "pole"
+          ]
+        },
+        {
+          "id": "L30",
+          "title": "Transfer Function and Frequency Response",
+          "lecture": 30,
+          "terms": [
+            "transfer function"
+          ]
+        },
+        {
+          "id": "L32",
+          "title": "Linear Systems and Matrices",
+          "lecture": 32,
+          "terms": [
+            "linear system",
+            "matrix"
+          ]
+        },
+        {
+          "id": "L33",
+          "title": "Eigenvalues, Eigenvectors",
+          "lecture": 33,
+          "terms": [
+            "eigenvalue",
+            "eigenvector"
+          ]
+        },
+        {
+          "id": "L34",
+          "title": "Complex or Repeated Eigenvalues",
+          "lecture": 34,
+          "terms": [
+            "repeated eigenvalue"
+          ]
+        },
+        {
+          "id": "L35",
+          "title": "Qualitative Behavior; Phase Plane",
+          "lecture": 35,
+          "terms": [
+            "phase plane",
+            "phase portrait"
+          ]
+        },
+        {
+          "id": "L36",
+          "title": "Normal Modes and the Matrix Exponential",
+          "lecture": 36,
+          "terms": [
+            "matrix exponential",
+            "normal mode"
+          ]
+        },
+        {
+          "id": "L37",
+          "title": "Inhomogeneous Systems",
+          "lecture": 37,
+          "terms": [
+            "inhomogeneous"
+          ]
+        },
+        {
+          "id": "L38",
+          "title": "Linearization Near Equilibria; Nonlinear Pendulum",
+          "lecture": 38,
+          "terms": [
+            "linearization",
+            "pendulum"
+          ]
+        },
+        {
+          "id": "L39",
+          "title": "Limit Cycles and Chaos",
+          "lecture": 39,
+          "terms": [
+            "limit cycle",
+            "chaos"
+          ]
+        }
+      ]
+    },
+    {
       "status": "previously",
       "title": "Intro to Algorithms",
       "href": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
