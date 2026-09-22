@@ -21,7 +21,7 @@
       "year": 2010,
       "summary": [
         "First-order ODEs, models and autonomy",
-        "Second-order linear equations and resonance",
+        "Second-order linear equations",
         "Fourier series and Laplace transforms",
         "Systems, phase plane and linearisation"
       ],
@@ -350,6 +350,247 @@
           "terms": [
             "limit cycle",
             "chaos"
+          ]
+        }
+      ]
+    },
+    {
+      "status": "currently",
+      "title": "Maths for CS",
+      "href": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/",
+      "instructor": "Leighton and van Dijk",
+      "year": 2010,
+      "summary": [
+        "Proofs, induction and number theory",
+        "Graphs, networks and partial orders",
+        "Sums, recurrences and counting",
+        "Discrete probability and random walks"
+      ],
+      "repo": null,
+      "pdf": "maths-for-cs.pdf",
+      "notebookUuid": "220daf0e-e4a7-420f-91b2-dcef6e56e53b",
+      "notebookName": "Maths for CS",
+      "syllabus": [
+        {
+          "id": "L1",
+          "title": "Introduction and Proofs",
+          "lecture": 1,
+          "terms": [
+            "proof",
+            "proposition"
+          ]
+        },
+        {
+          "id": "L2",
+          "title": "Induction",
+          "lecture": 2,
+          "terms": [
+            "induction",
+            "inductive"
+          ]
+        },
+        {
+          "id": "L3",
+          "title": "Strong Induction",
+          "lecture": 3,
+          "terms": [
+            "strong induction"
+          ]
+        },
+        {
+          "id": "L4",
+          "title": "Number Theory I",
+          "lecture": 4,
+          "terms": [
+            "number theory",
+            "gcd",
+            "euclidean"
+          ]
+        },
+        {
+          "id": "L5",
+          "title": "Number Theory II",
+          "lecture": 5,
+          "terms": [
+            "modular",
+            "congruence",
+            "fermat"
+          ]
+        },
+        {
+          "id": "L6",
+          "title": "Graph Theory and Coloring",
+          "lecture": 6,
+          "terms": [
+            "graph theory",
+            "coloring",
+            "chromatic"
+          ]
+        },
+        {
+          "id": "L7",
+          "title": "Matching Problems",
+          "lecture": 7,
+          "terms": [
+            "matching",
+            "bipartite"
+          ]
+        },
+        {
+          "id": "L8",
+          "title": "Graph Theory II: Minimum Spanning Trees",
+          "lecture": 8,
+          "terms": [
+            "spanning tree",
+            "mst"
+          ]
+        },
+        {
+          "id": "L9",
+          "title": "Communication Networks",
+          "lecture": 9,
+          "terms": [
+            "communication network"
+          ]
+        },
+        {
+          "id": "L10",
+          "title": "Graph Theory III",
+          "lecture": 10,
+          "terms": [
+            "graph"
+          ]
+        },
+        {
+          "id": "L11",
+          "title": "Relations, Partial Orders, and Scheduling",
+          "lecture": 11,
+          "terms": [
+            "partial order",
+            "poset",
+            "scheduling"
+          ]
+        },
+        {
+          "id": "L12",
+          "title": "Sums",
+          "lecture": 12,
+          "terms": [
+            "sums"
+          ]
+        },
+        {
+          "id": "L13",
+          "title": "Sums and Asymptotics",
+          "lecture": 13,
+          "terms": [
+            "asymptotic",
+            "big o"
+          ]
+        },
+        {
+          "id": "L14",
+          "title": "Divide and Conquer Recurrences",
+          "lecture": 14,
+          "terms": [
+            "divide and conquer",
+            "recurrence"
+          ]
+        },
+        {
+          "id": "L15",
+          "title": "Linear Recurrences",
+          "lecture": 15,
+          "terms": [
+            "linear recurrence"
+          ]
+        },
+        {
+          "id": "L16",
+          "title": "Counting Rules I",
+          "lecture": 16,
+          "terms": [
+            "counting",
+            "bijection"
+          ]
+        },
+        {
+          "id": "L17",
+          "title": "Counting Rules II",
+          "lecture": 17,
+          "terms": [
+            "permutation",
+            "combination"
+          ]
+        },
+        {
+          "id": "L18",
+          "title": "Probability Introduction",
+          "lecture": 18,
+          "terms": [
+            "probability",
+            "sample space"
+          ]
+        },
+        {
+          "id": "L19",
+          "title": "Conditional Probability",
+          "lecture": 19,
+          "terms": [
+            "conditional probability",
+            "bayes"
+          ]
+        },
+        {
+          "id": "L20",
+          "title": "Independence",
+          "lecture": 20,
+          "terms": [
+            "independence",
+            "independent"
+          ]
+        },
+        {
+          "id": "L21",
+          "title": "Random Variables",
+          "lecture": 21,
+          "terms": [
+            "random variable"
+          ]
+        },
+        {
+          "id": "L22",
+          "title": "Expectation I",
+          "lecture": 22,
+          "terms": [
+            "expectation",
+            "linearity"
+          ]
+        },
+        {
+          "id": "L23",
+          "title": "Expectation II",
+          "lecture": 23,
+          "terms": [
+            "expectation"
+          ]
+        },
+        {
+          "id": "L24",
+          "title": "Large Deviations",
+          "lecture": 24,
+          "terms": [
+            "chernoff",
+            "large deviation",
+            "tail bound"
+          ]
+        },
+        {
+          "id": "L25",
+          "title": "Random Walks",
+          "lecture": 25,
+          "terms": [
+            "random walk"
           ]
         }
       ]
