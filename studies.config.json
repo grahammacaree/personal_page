@@ -801,8 +801,8 @@
       "summary": [
         "Fundamentals of probability",
         "Random variables and distributions",
-        "Limit theorems",
-        "Markov chains"
+        "Conditioning and expectation",
+        "Limit theorems"
       ],
       "repo": null,
       "pdf": "stat-110-probability.pdf",
