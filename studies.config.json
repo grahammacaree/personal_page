@@ -32,18 +32,17 @@
       "syllabus": [
         {
           "id": "L1",
-          "title": "Direction Fields, Existence and Uniqueness",
+          "title": "The Geometrical View of y'= f(x,y)",
           "lecture": 1,
           "terms": [
+            "geometrical",
             "direction field",
-            "existence",
-            "uniqueness",
-            "isocline"
+            "y'=f"
           ]
         },
         {
           "id": "L2",
-          "title": "Numerical Methods",
+          "title": "Euler's Numerical Method for y'=f(x,y)",
           "lecture": 2,
           "terms": [
             "euler",
@@ -52,304 +51,263 @@
         },
         {
           "id": "L3",
-          "title": "Linear Equations, Models",
+          "title": "Solving First-order Linear ODEs",
           "lecture": 3,
           "terms": [
-            "linear equation",
-            "integrating",
-            "rc circuit"
+            "first-order linear",
+            "integrating factor"
           ]
         },
         {
           "id": "L4",
-          "title": "Solution of Linear Equations, Integrating Factors",
+          "title": "First-order Substitution Methods",
           "lecture": 4,
           "terms": [
-            "integrating factor",
-            "homogeneous"
+            "substitution"
           ]
         },
         {
           "id": "L5",
-          "title": "Complex Numbers, Roots of Unity",
+          "title": "First-order Autonomous ODEs",
           "lecture": 5,
           "terms": [
-            "complex number",
-            "roots of unity"
+            "autonomous",
+            "phase line"
           ]
         },
         {
           "id": "L6",
-          "title": "Complex Exponentials; Sinusoidal Functions",
+          "title": "Complex Numbers and Complex Exponentials",
           "lecture": 6,
           "terms": [
-            "complex exponential",
-            "sinusoidal"
+            "complex number",
+            "complex exponential"
           ]
         },
         {
           "id": "L7",
-          "title": "Linear System Response; Gain, Phase Lag",
+          "title": "First-order Linear with Constant Coefficients",
           "lecture": 7,
           "terms": [
+            "constant coefficient",
             "gain",
-            "phase lag",
-            "exponential input"
+            "phase lag"
           ]
         },
         {
           "id": "L8",
-          "title": "Autonomous Equations; Phase Line, Stability",
+          "title": "Continuation",
           "lecture": 8,
-          "terms": [
-            "autonomous",
-            "phase line",
-            "stability"
-          ]
+          "terms": []
         },
         {
           "id": "L9",
-          "title": "Linear vs. Nonlinear",
+          "title": "Solving Second-order Linear ODE's with Constant Coefficients",
           "lecture": 9,
           "terms": [
-            "nonlinear"
+            "second-order",
+            "characteristic"
+          ]
+        },
+        {
+          "id": "L10",
+          "title": "Continuation: Complex Characteristic Roots",
+          "lecture": 10,
+          "terms": [
+            "complex root",
+            "characteristic root"
           ]
         },
         {
           "id": "L11",
-          "title": "Modes and the Characteristic Polynomial",
+          "title": "Theory of General Second-order Linear Homogeneous ODEs",
           "lecture": 11,
           "terms": [
-            "characteristic polynomial",
-            "modes"
+            "homogeneous",
+            "second-order"
           ]
         },
         {
           "id": "L12",
-          "title": "Good Vibrations, Damping Conditions",
+          "title": "Continuation: General Theory for Inhomogeneous ODEs",
           "lecture": 12,
           "terms": [
-            "damping",
-            "vibration",
-            "underdamped",
-            "overdamped"
+            "inhomogeneous"
           ]
         },
         {
           "id": "L13",
-          "title": "Exponential Response Formula, Spring Drive",
+          "title": "Finding Particular Solutions to Inhomogeneous ODEs",
           "lecture": 13,
           "terms": [
-            "exponential response",
-            "spring"
+            "particular solution",
+            "undetermined"
           ]
         },
         {
           "id": "L14",
-          "title": "Complex Gain, Dashpot Drive",
+          "title": "Interpretation of the Exceptional Case: Resonance",
           "lecture": 14,
           "terms": [
-            "complex gain",
-            "dashpot"
+            "resonance"
           ]
         },
         {
           "id": "L15",
-          "title": "Operators, Undetermined Coefficients, Resonance",
+          "title": "Introduction to Fourier Series",
           "lecture": 15,
-          "terms": [
-            "undetermined coefficient",
-            "resonance",
-            "operator"
-          ]
-        },
-        {
-          "id": "L16",
-          "title": "Frequency Response",
-          "lecture": 16,
-          "terms": [
-            "frequency response"
-          ]
-        },
-        {
-          "id": "L17",
-          "title": "LTI Systems, Superposition, RLC Circuits",
-          "lecture": 17,
-          "terms": [
-            "lti",
-            "superposition",
-            "rlc"
-          ]
-        },
-        {
-          "id": "L18",
-          "title": "Engineering Applications",
-          "lecture": 18,
-          "terms": [
-            "engineering"
-          ]
-        },
-        {
-          "id": "L20",
-          "title": "Fourier Series",
-          "lecture": 20,
           "terms": [
             "fourier series",
             "fourier"
           ]
         },
         {
-          "id": "L21",
-          "title": "Operations on Fourier Series",
-          "lecture": 21,
+          "id": "L16",
+          "title": "Continuation: More General Periods",
+          "lecture": 16,
+          "terms": [
+            "period",
+            "fourier"
+          ]
+        },
+        {
+          "id": "L17",
+          "title": "Finding Particular Solutions via Fourier Series",
+          "lecture": 17,
           "terms": [
             "fourier"
           ]
         },
         {
-          "id": "L22",
-          "title": "Periodic Solutions; Resonance",
-          "lecture": 22,
+          "id": "L19",
+          "title": "Introduction to the Laplace Transform",
+          "lecture": 19,
           "terms": [
-            "periodic solution"
+            "laplace"
           ]
         },
         {
-          "id": "L23",
-          "title": "Step Functions and Delta Functions",
-          "lecture": 23,
+          "id": "L20",
+          "title": "Derivative Formulas",
+          "lecture": 20,
           "terms": [
-            "step function",
-            "delta function",
-            "heaviside"
+            "derivative formula",
+            "laplace"
           ]
         },
         {
-          "id": "L24",
-          "title": "Step Response, Impulse Response",
-          "lecture": 24,
-          "terms": [
-            "impulse response",
-            "step response"
-          ]
-        },
-        {
-          "id": "L25",
-          "title": "Convolution",
-          "lecture": 25,
+          "id": "L21",
+          "title": "Convolution Formula",
+          "lecture": 21,
           "terms": [
             "convolution"
           ]
         },
         {
-          "id": "L26",
-          "title": "Laplace Transform: Basic Properties",
-          "lecture": 26,
+          "id": "L22",
+          "title": "Using Laplace Transform to Solve ODEs with Discontinuous Inputs",
+          "lecture": 22,
           "terms": [
-            "laplace"
+            "discontinuous",
+            "heaviside",
+            "step"
           ]
         },
         {
-          "id": "L27",
-          "title": "Application to ODEs",
-          "lecture": 27,
+          "id": "L23",
+          "title": "Use with Impulse Inputs",
+          "lecture": 23,
           "terms": [
-            "laplace"
+            "impulse",
+            "delta"
           ]
         },
         {
-          "id": "L28",
-          "title": "Second Order Equations; Completing the Squares",
-          "lecture": 28,
+          "id": "L24",
+          "title": "Introduction to First-order Systems of ODEs",
+          "lecture": 24,
           "terms": [
-            "completing the square"
+            "first-order system",
+            "system of odes"
           ]
         },
         {
-          "id": "L29",
-          "title": "The Pole Diagram",
-          "lecture": 29,
-          "terms": [
-            "pole diagram",
-            "pole"
-          ]
-        },
-        {
-          "id": "L30",
-          "title": "Transfer Function and Frequency Response",
-          "lecture": 30,
-          "terms": [
-            "transfer function"
-          ]
-        },
-        {
-          "id": "L32",
-          "title": "Linear Systems and Matrices",
-          "lecture": 32,
+          "id": "L25",
+          "title": "Homogeneous Linear Systems with Constant Coefficients",
+          "lecture": 25,
           "terms": [
             "linear system",
-            "matrix"
+            "eigenvalue"
           ]
         },
         {
-          "id": "L33",
-          "title": "Eigenvalues, Eigenvectors",
-          "lecture": 33,
-          "terms": [
-            "eigenvalue",
-            "eigenvector"
-          ]
-        },
-        {
-          "id": "L34",
-          "title": "Complex or Repeated Eigenvalues",
-          "lecture": 34,
+          "id": "L26",
+          "title": "Continuation: Repeated Real Eigenvalues",
+          "lecture": 26,
           "terms": [
             "repeated eigenvalue"
           ]
         },
         {
-          "id": "L35",
-          "title": "Qualitative Behavior; Phase Plane",
-          "lecture": 35,
+          "id": "L27",
+          "title": "Sketching Solutions of 2x2 Homogeneous Linear System with Constant Coefficients",
+          "lecture": 27,
           "terms": [
+            "phase portrait",
             "phase plane",
-            "phase portrait"
+            "2x2"
           ]
         },
         {
-          "id": "L36",
-          "title": "Normal Modes and the Matrix Exponential",
-          "lecture": 36,
+          "id": "L28",
+          "title": "Matrix Methods for Inhomogeneous Systems",
+          "lecture": 28,
           "terms": [
-            "matrix exponential",
-            "normal mode"
+            "matrix method",
+            "inhomogeneous system"
           ]
         },
         {
-          "id": "L37",
-          "title": "Inhomogeneous Systems",
-          "lecture": 37,
+          "id": "L29",
+          "title": "Matrix Exponentials",
+          "lecture": 29,
           "terms": [
-            "inhomogeneous"
+            "matrix exponential"
           ]
         },
         {
-          "id": "L38",
-          "title": "Linearization Near Equilibria; Nonlinear Pendulum",
-          "lecture": 38,
+          "id": "L30",
+          "title": "Decoupling Linear Systems with Constant Coefficients",
+          "lecture": 30,
           "terms": [
-            "linearization",
-            "pendulum"
+            "decoupling"
           ]
         },
         {
-          "id": "L39",
-          "title": "Limit Cycles and Chaos",
-          "lecture": 39,
+          "id": "L31",
+          "title": "Non-linear Autonomous Systems",
+          "lecture": 31,
           "terms": [
-            "limit cycle",
-            "chaos"
+            "non-linear",
+            "nonlinear",
+            "autonomous system"
+          ]
+        },
+        {
+          "id": "L32",
+          "title": "Limit Cycles",
+          "lecture": 32,
+          "terms": [
+            "limit cycle"
+          ]
+        },
+        {
+          "id": "L33",
+          "title": "Relation Between Non-linear Systems and First-order ODEs",
+          "lecture": 33,
+          "terms": [
+            "non-linear system",
+            "nonlinear system"
           ]
         }
       ]
