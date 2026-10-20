@@ -81,7 +81,7 @@ ${cards}
 /**
  * Intro HTML (optional Google Doc) + course grid from studies.config.json.
  * @param {string} introHtml cleaned intro markup (may be empty)
- * @param {{ courses: object[], description?: string }} studies
+ * @param {{ courses: object[] }} studies
  * @param {string} basePath
  * @param {{ externalLinkIcon?: string }} [opts]
  */

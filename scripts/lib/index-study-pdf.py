@@ -251,13 +251,24 @@ def extract_page_png(doc, page_index: int, out: Path) -> None:
         pix.save(out.as_posix())
 
 
+# Per-page Vision budget. Accurate mode is usually well under this; a hang
+# should fail the LaunchAgent run rather than block until the next day.
+OCR_TIMEOUT_SEC = 120
+
+
 def ocr_page(image: Path) -> str:
-    proc = subprocess.run(
-        ["swift", str(VISION), str(image)],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
+    try:
+        proc = subprocess.run(
+            ["swift", str(VISION), str(image)],
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=OCR_TIMEOUT_SEC,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise RuntimeError(
+            f"OCR timed out after {OCR_TIMEOUT_SEC}s for {image.name}"
+        ) from exc
     if proc.returncode != 0:
         err = (proc.stderr or "").strip() or f"exit {proc.returncode}"
         raise RuntimeError(f"OCR failed for {image.name}: {err}")
@@ -469,7 +480,9 @@ def index_course(
     topic_first_page, topic_pages, topic_source = resolve_topic_anchors(
         page_records, topics
     )
-    headers = find_lecture_headers(page_records)
+    # Same filtered set resolve_topic_anchors used — not the raw OCR hits,
+    # which can include backwards misreads (e.g. a phantom L83).
+    headers = monotonic_headers(find_lecture_headers(page_records))
     print(
         f"  lecture headers: {len(headers)} — "
         + ", ".join(f"L{n}@p{p}" for n, p in sorted(headers.items())),
