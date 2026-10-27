@@ -13,7 +13,7 @@
   },
   "courses": [
     {
-      "status": "currently",
+      "status": "previously",
       "title": "Differential Equations",
       "href": "https://ocw.mit.edu/courses/18-03-differential-equations-spring-2010/",
       "instructor": "Miller and Mattuck",
