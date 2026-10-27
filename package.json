@@ -22,9 +22,9 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0",
-    "googleapis": "^176.0.0"
+    "googleapis": "^186.0.0"
   },
   "devDependencies": {
-    "sharp": "^0.35.3"
+    "sharp": "^0.35.5"
   }
 }
