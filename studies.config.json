@@ -19,10 +19,10 @@
       "instructor": "Ben Polak",
       "year": 2007,
       "summary": [
-        "Dominance, best responses and Nash equilibrium",
+        "Dominance and Nash equilibrium",
         "Mixed strategies and evolutionary stability",
         "Sequential games and backward induction",
-        "Repeated games and asymmetric information"
+        "Asymmetric information"
       ],
       "repo": null,
       "pdf": "game-theory.pdf",
