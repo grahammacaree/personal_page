@@ -13,6 +13,250 @@
   },
   "courses": [
     {
+      "status": "currently",
+      "title": "Game Theory",
+      "href": "https://oyc.yale.edu/economics/econ-159",
+      "instructor": "Ben Polak",
+      "year": 2007,
+      "summary": [
+        "Dominance, best responses and Nash equilibrium",
+        "Mixed strategies and evolutionary stability",
+        "Sequential games and backward induction",
+        "Repeated games and asymmetric information"
+      ],
+      "repo": null,
+      "pdf": "game-theory.pdf",
+      "notebookUuid": "5acb952f-9795-432c-b983-185a86d7d96e",
+      "notebookName": "Game Theory",
+      "syllabus": [
+        {
+          "id": "L1",
+          "title": "Introduction: Five First Lessons",
+          "lecture": 1,
+          "terms": [
+            "prisoners' dilemma",
+            "prisoners dilemma",
+            "dominated",
+            "five first lessons",
+            "first lessons"
+          ]
+        },
+        {
+          "id": "L2",
+          "title": "Putting Yourselves into Other People's Shoes",
+          "lecture": 2,
+          "terms": [
+            "other people's shoes",
+            "strategic"
+          ]
+        },
+        {
+          "id": "L3",
+          "title": "Iterative Deletion and the Median-Voter Theorem",
+          "lecture": 3,
+          "terms": [
+            "iterative deletion",
+            "median-voter",
+            "median voter"
+          ]
+        },
+        {
+          "id": "L4",
+          "title": "Best Responses in Soccer and Business Partnerships",
+          "lecture": 4,
+          "terms": [
+            "best response",
+            "best responses"
+          ]
+        },
+        {
+          "id": "L5",
+          "title": "Nash Equilibrium: Bad Fashion and Bank Runs",
+          "lecture": 5,
+          "terms": [
+            "nash equilibrium",
+            "bank run"
+          ]
+        },
+        {
+          "id": "L6",
+          "title": "Nash Equilibrium: Dating and Cournot",
+          "lecture": 6,
+          "terms": [
+            "cournot",
+            "battle of the sexes"
+          ]
+        },
+        {
+          "id": "L7",
+          "title": "Nash Equilibrium: Shopping, Standing and Voting on a Line",
+          "lecture": 7,
+          "terms": [
+            "voting on a line",
+            "bertrand"
+          ]
+        },
+        {
+          "id": "L8",
+          "title": "Nash Equilibrium: Location, Segregation and Randomization",
+          "lecture": 8,
+          "terms": [
+            "segregation",
+            "hotelling"
+          ]
+        },
+        {
+          "id": "L9",
+          "title": "Mixed Strategies in Theory and Tennis",
+          "lecture": 9,
+          "terms": [
+            "mixed strateg",
+            "tennis"
+          ]
+        },
+        {
+          "id": "L10",
+          "title": "Mixed Strategies in Baseball, Dating and Paying Your Taxes",
+          "lecture": 10,
+          "terms": [
+            "mixed strateg",
+            "taxes"
+          ]
+        },
+        {
+          "id": "L11",
+          "title": "Evolutionary Stability: Cooperation, Mutation, and Equilibrium",
+          "lecture": 11,
+          "terms": [
+            "evolutionary stability",
+            "ess",
+            "mutation"
+          ]
+        },
+        {
+          "id": "L12",
+          "title": "Evolutionary Stability: Social Convention, Aggression, and Cycles",
+          "lecture": 12,
+          "terms": [
+            "evolutionary",
+            "aggression"
+          ]
+        },
+        {
+          "id": "L13",
+          "title": "Sequential Games: Moral Hazard, Incentives, and Hungry Lions",
+          "lecture": 13,
+          "terms": [
+            "sequential",
+            "moral hazard",
+            "hungry lion"
+          ]
+        },
+        {
+          "id": "L14",
+          "title": "Backward Induction: Commitment, Spies, and First-Mover Advantages",
+          "lecture": 14,
+          "terms": [
+            "backward induction",
+            "commitment",
+            "first-mover"
+          ]
+        },
+        {
+          "id": "L15",
+          "title": "Backward Induction: Chess, Strategies, and Credible Threats",
+          "lecture": 15,
+          "terms": [
+            "credible threat",
+            "chess"
+          ]
+        },
+        {
+          "id": "L16",
+          "title": "Backward Induction: Reputation and Duels",
+          "lecture": 16,
+          "terms": [
+            "reputation",
+            "duel"
+          ]
+        },
+        {
+          "id": "L17",
+          "title": "Backward Induction: Ultimatums and Bargaining",
+          "lecture": 17,
+          "terms": [
+            "ultimatum",
+            "bargaining"
+          ]
+        },
+        {
+          "id": "L18",
+          "title": "Imperfect Information: Information Sets and Sub-Game Perfection",
+          "lecture": 18,
+          "terms": [
+            "information set",
+            "subgame",
+            "sub-game"
+          ]
+        },
+        {
+          "id": "L19",
+          "title": "Subgame Perfect Equilibrium: Matchmaking and Strategic Investments",
+          "lecture": 19,
+          "terms": [
+            "subgame perfect",
+            "strategic investment"
+          ]
+        },
+        {
+          "id": "L20",
+          "title": "Subgame Perfect Equilibrium: Wars of Attrition",
+          "lecture": 20,
+          "terms": [
+            "war of attrition",
+            "attrition"
+          ]
+        },
+        {
+          "id": "L21",
+          "title": "Repeated Games: Cooperation vs. the End Game",
+          "lecture": 21,
+          "terms": [
+            "repeated game",
+            "end game"
+          ]
+        },
+        {
+          "id": "L22",
+          "title": "Repeated Games: Cheating, Punishment, and Outsourcing",
+          "lecture": 22,
+          "terms": [
+            "repeated game",
+            "punishment",
+            "outsourcing"
+          ]
+        },
+        {
+          "id": "L23",
+          "title": "Asymmetric Information: Silence, Signaling and Suffering Education",
+          "lecture": 23,
+          "terms": [
+            "signaling",
+            "asymmetric information"
+          ]
+        },
+        {
+          "id": "L24",
+          "title": "Asymmetric Information: Auctions and the Winner's Curse",
+          "lecture": 24,
+          "terms": [
+            "winner's curse",
+            "auction"
+          ]
+        }
+      ]
+    },
+    {
       "status": "previously",
       "title": "Differential Equations",
       "href": "https://ocw.mit.edu/courses/18-03-differential-equations-spring-2010/",
@@ -312,7 +556,7 @@
       ]
     },
     {
-      "status": "currently",
+      "status": "previously",
       "title": "Maths for CS",
       "href": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/",
       "instructor": "Leighton and van Dijk",

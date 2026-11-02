@@ -37,8 +37,23 @@ DEFAULT_CACHE = (
     / "index-cache"
 )
 
-# Vision often mangles LECTURE → LEGTURE / LECTUR / LECT
-LECTURE_HEADER = re.compile(r"l(?:ec|eg|e)t(?:ure|ur|u)?\s*(\d+)\b", re.IGNORECASE)
+# Vision often mangles LECTURE → LEGTURE / LECTUR / LECT, and
+# sometimes reads a lone "1" as "!" (e.g. "LECTURE!: Five First…").
+# Digits keep a word boundary; "!" / "l" / "I" only count when they look
+# like a title marker (before whitespace, colon, or end of string).
+LECTURE_HEADER = re.compile(
+    r"l(?:ec|eg|e)t(?:ure|ur|u)?\s*(?:(\d+)\b|([!li])(?=[\s:.,;—–-]|$))",
+    re.IGNORECASE,
+)
+
+
+def _lecture_number_from_match(match: re.Match[str]) -> int | None:
+    digit, ocr_one = match.group(1), match.group(2)
+    if digit is not None:
+        return int(digit)
+    if ocr_one is not None:
+        return 1
+    return None
 
 
 def _fitz():
@@ -114,8 +129,9 @@ def find_lecture_headers(page_records: list[dict[str, Any]]) -> dict[int, int]:
     headers: dict[int, int] = {}
     for rec in page_records:
         for match in LECTURE_HEADER.finditer(rec["text"]):
-            n = int(match.group(1))
-            headers.setdefault(n, rec["page"])
+            n = _lecture_number_from_match(match)
+            if n is not None:
+                headers.setdefault(n, rec["page"])
     return headers
 
 

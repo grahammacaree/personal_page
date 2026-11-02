@@ -132,6 +132,16 @@ class MatchAndResolveTests(unittest.TestCase):
         self.assertEqual(source["L13"], "term-fallback")
 
 
+class LectureHeaderOcrTests(unittest.TestCase):
+    def test_exclamation_read_as_lecture_one(self):
+        pages = [{"page": 1, "text": "LECTURE!: Five First Lessons", "hits": []}]
+        self.assertEqual(find_lecture_headers(pages), {1: 1})
+
+    def test_digit_headers_unchanged(self):
+        pages = [{"page": 4, "text": "LECTURE 2\ninduction", "hits": []}]
+        self.assertEqual(find_lecture_headers(pages), {2: 4})
+
+
 class MonotonicHeaderTests(unittest.TestCase):
     def test_drops_backwards_outlier(self):
         headers = {16: 81, 17: 82, 18: 85, 19: 92, 20: 94, 30: 82}
