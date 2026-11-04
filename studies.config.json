@@ -14,6 +14,316 @@
   "courses": [
     {
       "status": "currently",
+      "title": "Multivariable Calculus",
+      "href": "https://ocw.mit.edu/courses/18-02-multivariable-calculus-fall-2007/",
+      "instructor": "Denis Auroux",
+      "year": 2007,
+      "summary": [
+        "Vectors, matrices and parametric curves",
+        "Partial derivatives and optimisation",
+        "Multiple integrals and coordinate changes",
+        "Vector calculus: Green, Stokes and divergence"
+      ],
+      "repo": null,
+      "pdf": "multivariable-calculus.pdf",
+      "notebookUuid": "3a3a6b9c-57db-405f-9201-e616e7c800dc",
+      "notebookName": "Multivariable Calculus",
+      "syllabus": [
+        {
+          "id": "L1",
+          "title": "Dot Product",
+          "lecture": 1,
+          "terms": [
+            "dot product"
+          ]
+        },
+        {
+          "id": "L2",
+          "title": "Determinants",
+          "lecture": 2,
+          "terms": [
+            "determinant"
+          ]
+        },
+        {
+          "id": "L3",
+          "title": "Matrices",
+          "lecture": 3,
+          "terms": [
+            "matrices",
+            "matrix"
+          ]
+        },
+        {
+          "id": "L4",
+          "title": "Square Systems",
+          "lecture": 4,
+          "terms": [
+            "square system",
+            "cramer"
+          ]
+        },
+        {
+          "id": "L5",
+          "title": "Parametric Equations",
+          "lecture": 5,
+          "terms": [
+            "parametric"
+          ]
+        },
+        {
+          "id": "L6",
+          "title": "Kepler's Second Law",
+          "lecture": 6,
+          "terms": [
+            "kepler"
+          ]
+        },
+        {
+          "id": "L7",
+          "title": "Exam Review",
+          "lecture": 7,
+          "terms": [
+            "exam review"
+          ]
+        },
+        {
+          "id": "L8",
+          "title": "Partial Derivatives",
+          "lecture": 8,
+          "terms": [
+            "partial derivative"
+          ]
+        },
+        {
+          "id": "L9",
+          "title": "Max-Min and Least Squares",
+          "lecture": 9,
+          "terms": [
+            "least square",
+            "max-min",
+            "max min"
+          ]
+        },
+        {
+          "id": "L10",
+          "title": "Second Derivative Test",
+          "lecture": 10,
+          "terms": [
+            "second derivative"
+          ]
+        },
+        {
+          "id": "L11",
+          "title": "Chain Rule",
+          "lecture": 11,
+          "terms": [
+            "chain rule"
+          ]
+        },
+        {
+          "id": "L12",
+          "title": "Gradient",
+          "lecture": 12,
+          "terms": [
+            "gradient"
+          ]
+        },
+        {
+          "id": "L13",
+          "title": "Lagrange Multipliers",
+          "lecture": 13,
+          "terms": [
+            "lagrange"
+          ]
+        },
+        {
+          "id": "L14",
+          "title": "Non-Independent Variables",
+          "lecture": 14,
+          "terms": [
+            "non-independent",
+            "dependent variable"
+          ]
+        },
+        {
+          "id": "L15",
+          "title": "Partial Differential Equations",
+          "lecture": 15,
+          "terms": [
+            "partial differential",
+            "pde"
+          ]
+        },
+        {
+          "id": "L16",
+          "title": "Double Integrals",
+          "lecture": 16,
+          "terms": [
+            "double integral"
+          ]
+        },
+        {
+          "id": "L17",
+          "title": "Polar Coordinates",
+          "lecture": 17,
+          "terms": [
+            "polar"
+          ]
+        },
+        {
+          "id": "L18",
+          "title": "Change of Variables",
+          "lecture": 18,
+          "terms": [
+            "change of variable",
+            "jacobian"
+          ]
+        },
+        {
+          "id": "L19",
+          "title": "Vector Fields",
+          "lecture": 19,
+          "terms": [
+            "vector field"
+          ]
+        },
+        {
+          "id": "L20",
+          "title": "Path Independence",
+          "lecture": 20,
+          "terms": [
+            "path independence",
+            "path independent"
+          ]
+        },
+        {
+          "id": "L21",
+          "title": "Gradient Fields",
+          "lecture": 21,
+          "terms": [
+            "gradient field",
+            "conservative"
+          ]
+        },
+        {
+          "id": "L22",
+          "title": "Green's Theorem",
+          "lecture": 22,
+          "terms": [
+            "green's theorem",
+            "greens theorem"
+          ]
+        },
+        {
+          "id": "L23",
+          "title": "Flux",
+          "lecture": 23,
+          "terms": [
+            "flux"
+          ]
+        },
+        {
+          "id": "L24",
+          "title": "Simply Connected Regions",
+          "lecture": 24,
+          "terms": [
+            "simply connected"
+          ]
+        },
+        {
+          "id": "L25",
+          "title": "Triple Integrals",
+          "lecture": 25,
+          "terms": [
+            "triple integral"
+          ]
+        },
+        {
+          "id": "L26",
+          "title": "Spherical Coordinates",
+          "lecture": 26,
+          "terms": [
+            "spherical"
+          ]
+        },
+        {
+          "id": "L27",
+          "title": "Vector Fields in 3D",
+          "lecture": 27,
+          "terms": [
+            "vector field"
+          ]
+        },
+        {
+          "id": "L28",
+          "title": "Divergence Theorem",
+          "lecture": 28,
+          "terms": [
+            "divergence theorem",
+            "divergence"
+          ]
+        },
+        {
+          "id": "L29",
+          "title": "Divergence Theorem (cont.)",
+          "lecture": 29,
+          "terms": [
+            "divergence theorem"
+          ]
+        },
+        {
+          "id": "L30",
+          "title": "Line Integrals",
+          "lecture": 30,
+          "terms": [
+            "line integral"
+          ]
+        },
+        {
+          "id": "L31",
+          "title": "Stokes' Theorem",
+          "lecture": 31,
+          "terms": [
+            "stokes"
+          ]
+        },
+        {
+          "id": "L32",
+          "title": "Stokes' Theorem (cont.)",
+          "lecture": 32,
+          "terms": [
+            "stokes"
+          ]
+        },
+        {
+          "id": "L33",
+          "title": "Maxwell's Equations",
+          "lecture": 33,
+          "terms": [
+            "maxwell"
+          ]
+        },
+        {
+          "id": "L34",
+          "title": "Final Review",
+          "lecture": 34,
+          "terms": [
+            "final review"
+          ]
+        },
+        {
+          "id": "L35",
+          "title": "Final Review (cont.)",
+          "lecture": 35,
+          "terms": [
+            "final review"
+          ]
+        }
+      ]
+    },
+    {
+      "status": "currently",
       "title": "Game Theory",
       "href": "https://oyc.yale.edu/economics/econ-159",
       "instructor": "Ben Polak",
